@@ -1,4 +1,4 @@
-import { apolloClient } from "./apollo-client";
+import { apolloClient } from "@/apollo/client";
 import { gql } from "@apollo/client";
 
 export const CREATE_POST_TYPED_DATA = `
@@ -33,3 +33,12 @@ export const CREATE_POST_TYPED_DATA = `
    }
  }
 `;
+
+export const createPostTypedData = (createPostTypedDataRequest: any) => {
+  return apolloClient.mutate({
+    mutation: gql(CREATE_POST_TYPED_DATA),
+    variables: {
+      request: createPostTypedDataRequest,
+    },
+  });
+};
