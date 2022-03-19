@@ -9,7 +9,7 @@ import { useStore, useObservable } from "@/stores";
 import { AccountStore } from "@/stores/AccountStore";
 import { splitSignature } from "ethers/lib/utils";
 import { useAccount, useSignTypedData } from "wagmi";
-import Button from "./Button";
+import { Button } from "./Button";
 import omitDeep from "omit-deep";
 import useSWR from "swr";
 import useFollowNFT from "@/hooks/useFollowNft";

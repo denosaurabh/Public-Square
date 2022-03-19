@@ -5,7 +5,7 @@ export const PostsContainer = styled("div", {
   alignItems: "center",
   justifyContent: "center",
   flexWrap: "wrap",
+  gap: "2rem",
 
   marginTop: "5rem",
-  gap: "2rem",
 });

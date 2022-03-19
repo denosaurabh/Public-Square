@@ -1,6 +1,6 @@
 import { styled } from "@/stitches.config";
 
-const Button = styled("button", {
+export const Button = styled("button", {
   fontFamily: "$main",
   fontSize: "1.4rem",
   fontWeight: "600",
@@ -10,15 +10,15 @@ const Button = styled("button", {
   justifyContent: "center",
   gap: "0.5rem",
 
-  width: 'fit-content',
+  width: "fit-content",
 
-  borderRadius: "10000px",
+  borderRadius: "14px",
 
   variants: {
     color: {
       dark: {
         backgroundColor: "$grey-800",
-        color: "$grey-100",
+        color: "#181818",
         boxShadow: "0px 1.4rem 2rem rgba(0, 0, 0, 0.25)",
 
         svg: {
@@ -86,4 +86,14 @@ const Button = styled("button", {
   },
 });
 
-export default Button;
+export const TextButton = styled(Button, {
+  backgroundColor: "transparent !important",
+  color: "inherit",
+  boxShadow: "none !important",
+
+  "&:hover": {
+    backgroundColor: "#E7EBF9 !important",
+    color: "black",
+    boxShadow: "0px 0.2rem 1rem rgba(0, 0, 0, 0.25) !important",
+  },
+});

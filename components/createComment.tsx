@@ -1,6 +1,6 @@
 import { styled } from "@/stitches.config";
 import { useState } from "react";
-import Button from "./Button";
+import { Button } from "./Button";
 import Input from "./Input";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";

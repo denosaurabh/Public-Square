@@ -35,10 +35,11 @@ const Accounts = () => {
   const activeAccountAdr = useObservable(accountStore.activeAccountAdr);
 
   useEffect(() => {
-    if (dataRes?.data?.profiles.items[0]) {
-      accountStore.setActiveAccount(dataRes?.data?.profiles.items[0]);
-      accountStore.setActiveAccountAdr(dataRes?.data?.profiles.items[0].id);
-    }
+    const update = async () => {
+      await accountStore.updateDataFromLocalStore();
+    };
+
+    update();
   }, [dataRes]);
 
   if (!dataRes) return <></>;
@@ -64,9 +65,11 @@ const Accounts = () => {
     }
   };
 
+  if (!activeAccount) return <></>;
+
   return (
     <Select
-      defaultValue={currentProfile.id}
+      defaultValue={activeAccountAdr}
       value={activeAccountAdr}
       onValueChange={onSelectValChange}>
       <SelectTrigger>

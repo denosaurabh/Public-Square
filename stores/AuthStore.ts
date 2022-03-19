@@ -1,5 +1,9 @@
 import { apolloClient } from "@/apollo/client";
-import { MUT_AUTHENTICATION, QUERY_CHALLENGE } from "@/graphql/AUTH";
+import {
+  MUTATE_REFRESH_AUTHENTICATION,
+  MUT_AUTHENTICATION,
+  QUERY_CHALLENGE,
+} from "@/graphql/AUTH";
 import { LocalStore } from "@/utils/localStorage";
 import { gql } from "@apollo/client";
 import { observable } from ".";
@@ -34,18 +38,50 @@ export class AuthStore {
     });
   }
 
+  async refreshAuth() {
+    if (!this.refreshToken.get()) return;
+
+    let data = null;
+    try {
+      data = await apolloClient.mutate({
+        mutation: gql(MUTATE_REFRESH_AUTHENTICATION),
+        variables: {
+          request: {
+            refreshToken: this.refreshToken.get(),
+          },
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (!data?.data.refresh) return;
+
+    this.accessToken.set(data.data.refresh.accessToken);
+    this.refreshToken.set(data.data.refresh.refreshToken);
+
+    return data;
+  }
+
   async authenticate() {
     if (!this.address.get() || !this.signature.get()) return;
 
-    const data = await apolloClient.mutate({
-      mutation: gql(MUT_AUTHENTICATION),
-      variables: {
-        request: {
-          address: this.address.get(),
-          signature: this.signature.get(),
+    let data = null;
+    try {
+      data = await apolloClient.mutate({
+        mutation: gql(MUT_AUTHENTICATION),
+        variables: {
+          request: {
+            address: this.address.get(),
+            signature: this.signature.get(),
+          },
         },
-      },
-    });
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (!data) return;
 
     this.accessToken.set(data.data.authenticate.accessToken);
     this.refreshToken.set(data.data.authenticate.refreshToken);

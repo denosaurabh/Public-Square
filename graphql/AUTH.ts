@@ -12,3 +12,12 @@ export const QUERY_CHALLENGE = `
     challenge(request: $request) { text }
   }
 `;
+
+export const MUTATE_REFRESH_AUTHENTICATION = `
+  mutation($request: RefreshRequest!) { 
+    refresh(request: $request) {
+      accessToken
+      refreshToken
+    }
+ }
+`;

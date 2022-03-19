@@ -1,5 +1,5 @@
 import { Avatar, AvatarImage } from "@/components/Avatar";
-import Button from "@/components/Button";
+import { Button } from "@/components/Button";
 import Input from "@/components/Input";
 import Post from "@/components/Post";
 import { SemiBoldText, Text } from "@/components/Text";
@@ -54,7 +54,7 @@ const CreatePost = () => {
         //   type: 'image/jpeg',
         // },
       ],
-      appId: "deno-lensapp",
+      appId: "denolensapp",
     };
 
     const ipfsResult = await IPFSClient.add(JSON.stringify(metadata));

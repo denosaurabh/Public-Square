@@ -1,12 +1,12 @@
 import { useNetwork } from "wagmi";
-import { SemiBoldText } from "./Text";
+import { LightSansSerifText } from "./Text";
 
 const Network = () => {
   const [{ data, error, loading }, switchNetwork] = useNetwork();
 
   if (loading) return <></>;
 
-  return <SemiBoldText> {data.chain?.name}</SemiBoldText>;
+  return <LightSansSerifText> {data.chain?.name}</LightSansSerifText>;
 };
 
 export default Network;

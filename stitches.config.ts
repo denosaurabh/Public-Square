@@ -14,6 +14,7 @@ export const {
     fonts: {
       // main: "Satoshi-Variable",
       main: "ClashGrotesk-Variable",
+      sansSerif: "EBGaramond",
 
       websafe: `-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif`,
     },
@@ -53,6 +54,8 @@ export const globalStyles = globalCss({
     width: "100%",
     minHeight: "100vh",
     height: "fit-content",
+
+    backgroundColor: "#EEF1FB",
 
     fontSize: "62.5%",
     fontFamily: "$main",
@@ -106,6 +109,18 @@ export const globalStyles = globalCss({
       src: `url('/fonts/ClashGrotesk-Variable.woff2') format('woff2')`,
       fontDisplay: "optional",
       fontStyle: "normal",
+    },
+    {
+      fontFamily: "EBGaramond",
+      src: `url('/fonts/EBGaramond-Regular.woff2') format('woff2')`,
+      fontDisplay: "optional",
+      fontStyle: "normal",
+    },
+    {
+      fontFamily: "EBGaramond",
+      src: `url('/fonts/EBGaramond-Italic.woff2') format('woff2')`,
+      fontDisplay: "optional",
+      fontStyle: "italic",
     },
   ],
 });

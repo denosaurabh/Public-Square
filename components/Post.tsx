@@ -13,8 +13,22 @@ const Post: React.FC = (props: any) => {
   const { profile, stats, metadata, createdAt, id: postId } = props;
   const { id, handle, picture } = profile;
 
+  const len = metadata.content.length;
+  const maxLength = 300;
+  const val = len / maxLength;
+
+  let size: "xSmall" | "small" | "medium" | "large" = "medium";
+
+  if (val > 0.5) {
+    size = "large";
+  } else if (val > 0.25) {
+    size = "medium";
+  } else {
+    size = "small";
+  }
+
   return (
-    <PostContainer>
+    <PostContainer size={size}>
       <Link href={`/post/${postId}`} passHref>
         <ContentContainer>
           <ReactMarkdown
@@ -66,13 +80,44 @@ export default Post;
 const PostContainer = styled("div", {
   width: "250px",
   height: "fit-content",
+
+  backgroundColor: "#E7EBF9",
+  borderRadius: "10px",
+
+  variants: {
+    size: {
+      xSmall: {
+        width: "10rem",
+        // height: "10rem",
+      },
+      small: {
+        width: "30rem",
+        // height: "10rem",
+      },
+      medium: {
+        width: "15rem",
+        // height: "20rem",
+      },
+      big: {
+        width: "20rem",
+        // height: "30rem",
+      },
+      large: {
+        width: "25rem",
+        // height: "30rem",
+      },
+    },
+  },
+
+  defaultVariants: {
+    size: "medium",
+  },
 });
 
 const ContentContainer = styled("div", {
-  border: "1px solid grey",
-  borderRadius: "10px",
+  // border: "1px solid grey",
 
-  padding: "1rem",
+  padding: "1.5rem",
 
   "& .post-content-markdown": {
     fontSize: "1.5rem",
@@ -95,7 +140,8 @@ const Profile = styled("div", {
 });
 
 const StatsBox = styled("div", {
-  width: "100%",
+  width: "18rem",
+  margin: "1rem",
 
   display: "flex",
   alignItems: "center",
@@ -106,6 +152,19 @@ const StatsItem = styled(Text, {
   display: "flex",
   alignItems: "center",
   gap: "0.5rem",
+  padding: "1rem",
 
   color: "light-grey",
+
+  borderRadius: "10px",
+  transition: "all 0.2s ease-in-out",
+
+  margin: 0,
+
+  "&:hover": {
+    cursor: "pointer",
+
+    backgroundColor: "#F0F3FE",
+    boxShadow: "0px 7px 15px rgba(139, 146, 172, 0.57)",
+  },
 });

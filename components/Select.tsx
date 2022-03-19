@@ -16,7 +16,7 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
   fontSize: "14px",
   color: "$tint12",
 
-  width: "100%",
+  width: "fit-content",
   backgroundColor: "$tint3",
 
   border: "1px solid grey",
@@ -31,7 +31,7 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
 
   "&:hover": {
     cursor: "pointer",
-    backgroundColor: "$tint4",
+    // backgroundColor: "$tint4",
   },
 });
 
@@ -48,8 +48,13 @@ const StyledSelectIcon = styled(SelectPrimitive.Icon, {
 
 const StyledContent = styled(SelectPrimitive.Content, {
   overflow: "hidden",
-  backgroundColor: "$tint1",
-  border: 0,
+  // backgroundColor: "$tint1",
+
+  border: "1px solid grey",
+  borderRadius: "10px",
+
+  width: "max-content",
+
   boxShadow:
     "0px 10px 38px -10px rgba(22, 23, 24, 0.35), 0px 10px 20px -15px rgba(22, 23, 24, 0.2)",
 });
@@ -66,27 +71,33 @@ const StyledItem = styled(SelectPrimitive.Item, {
   justifyContent: "space-between",
   gap: "1rem",
 
-  userSelect: "none",
+  // userSelect: "none",
 
+  padding: "12px 16px",
+
+  fontFamily: "inherit",
   fontSize: "14px",
   color: "$tint12",
 
-  padding: "8px 13px",
-  borderBottom: "1px solid $tint7",
+  backgroundColor: "#E7EBF9",
+  borderBottom: "1px solid grey",
 
-  "& > span": {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    gap: "0.8rem",
-  },
+  width: "100%",
+
+  // "& > span": {
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "flex-start",
+  //   gap: "0.8rem",
+  // },
 
   "&:hover": {
     cursor: "pointer",
+    backgroundColor: "#E7EBF9",
   },
 
   "&:focus": {
-    backgroundColor: "$tint12",
+    backgroundColor: "#E7EBF9",
     color: "$tint1",
   },
 

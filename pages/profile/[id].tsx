@@ -1,12 +1,20 @@
 import { Avatar, AvatarImage } from "@/components/Avatar";
 import Follow from "@/components/follow";
+import FollowPromises from "@/components/FollowPromises";
 import Post from "@/components/Post";
-import { SemiBoldText, Text } from "@/components/Text";
+import {
+  LinkSmallText,
+  SemiBoldText,
+  SmallText,
+  Text,
+} from "@/components/Text";
 import { QUERY_PROFILE_BY_ID } from "@/graphql/PROFILE";
 import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
 import PageContainer from "@/layouts/PageContainer";
 import { styled } from "@/stitches.config";
 import { PostsContainer } from "@/style/post";
+import { cleanUrl } from "@/utils";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
@@ -45,6 +53,9 @@ const Profile = () => {
     id: profileId,
     followModule,
     ownedBy,
+    website,
+    twitterUrl,
+    location,
   } = data?.profiles.items[0];
 
   console.log(data);
@@ -54,7 +65,7 @@ const Profile = () => {
       <Container>
         <TopContainer>
           <LeftBox>
-            <Avatar css={{ width: "100px", height: "100px" }}>
+            <Avatar css={{ width: "120px", height: "120px" }}>
               <AvatarImage
                 src={
                   picture?.original.url ||
@@ -63,19 +74,41 @@ const Profile = () => {
                 alt="deno"
               />
             </Avatar>
-
+          </LeftBox>
+          <CenterBox>
             <SemiBoldText>@{handle}</SemiBoldText>
+
+            {bio ? (
+              <Text>{bio}</Text>
+            ) : (
+              <Text font="sansSerif">no bio....</Text>
+            )}
 
             <Follow
               profileId={profileId}
               followerAddress={ownedBy}
               followModule={followModule}
             />
-          </LeftBox>
+          </CenterBox>
           <RightBox>
-            <Text>{bio}</Text>
+            {website ? (
+              <Link href={website} target="_blank" passHref>
+                <LinkSmallText>{cleanUrl(website)}</LinkSmallText>
+              </Link>
+            ) : null}
+
+            {twitterUrl ? (
+              <Link href={twitterUrl} target="_blank" passHref>
+                <LinkSmallText>{cleanUrl(twitterUrl)}</LinkSmallText>
+              </Link>
+            ) : null}
+
+            {location ? <SmallText>location: {location}</SmallText> : null}
+            <SmallText>owned by: {ownedBy}</SmallText>
           </RightBox>
         </TopContainer>
+
+        <FollowPromises />
 
         <PostsContainer>
           {pubsDataRes?.data.publications.items.map((pub) => {
@@ -102,4 +135,12 @@ const TopContainer = styled("div", {
 });
 
 const LeftBox = styled("div", {});
-const RightBox = styled("div", {});
+const CenterBox = styled("div", {
+  // flex: 1,
+  // width: "100rem",
+});
+
+const RightBox = styled("div", {
+  marginLeft: "6rem",
+  width: "10rem",
+});

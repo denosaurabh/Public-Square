@@ -2,7 +2,7 @@ import { useStore } from "@/stores";
 import { AuthStore } from "@/stores/AuthStore";
 import { useEffect, useState } from "react";
 import { useAccount, useConnect, useSignMessage } from "wagmi";
-import Button from "./Button";
+import { Button, TextButton } from "./Button";
 import { useObservable } from "@/stores";
 
 const AccountButton: React.FC = () => {
@@ -23,6 +23,7 @@ const AccountButton: React.FC = () => {
     if (!window) return;
 
     authStore.updateFromLocalStorage();
+    authStore.refreshAuth();
 
     if (accessToken) return;
 
@@ -67,9 +68,9 @@ const AccountButton: React.FC = () => {
   }
 
   return (
-    <Button onClick={disconnect}>
+    <TextButton onClick={disconnect}>
       {accountData.ens?.name || accountData.address.slice(0, 10)}
-    </Button>
+    </TextButton>
   );
 };
 

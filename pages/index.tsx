@@ -12,7 +12,8 @@ const Home: NextPage = () => {
     {
       request: {
         limit: 50,
-        sortCriteria: "TOP_COLLECTED",
+        sortCriteria: "TOP_COMMENTED",
+        // sources: ["deno-lensapp"],
       },
     },
   ]);

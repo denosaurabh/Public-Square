@@ -47,6 +47,7 @@ const HeaderHomeLink = styled("div", {
   alignItems: "center",
   gap: "1.5rem",
 
+  fontFamily: "$sansSerif",
   fontSize: "1.8rem",
 });
 

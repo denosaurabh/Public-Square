@@ -1,6 +1,6 @@
 import { styled } from "@/stitches.config";
 import { useState } from "react";
-import Button from "./Button";
+import { Button } from "./Button";
 import { useStore, useObservable } from "@/stores";
 import { AccountStore } from "@/stores/AccountStore";
 import { useSignTypedData } from "wagmi";

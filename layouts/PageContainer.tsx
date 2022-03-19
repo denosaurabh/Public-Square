@@ -28,7 +28,7 @@ const Container = styled("div", {
 });
 
 const Main = styled("div", {
-  maxWidth: "70rem",
+  maxWidth: "100rem",
   width: "100%",
 
   height: "100%",
