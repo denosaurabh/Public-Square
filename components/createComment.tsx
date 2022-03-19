@@ -14,6 +14,8 @@ import { createCommentTypedData } from "@/graphql/COMMENT";
 import omitDeep from "omit-deep";
 import { splitSignature } from "ethers/lib/utils";
 import useLensHub from "@/hooks/useLensHub";
+import { SemiBoldText } from "./Text";
+import { TextArea } from "./TextArea";
 
 interface CreateCommentI {
   publicationId: string;
@@ -99,19 +101,27 @@ const CreateComment: React.FC<CreateCommentI> = ({ publicationId }) => {
 
   return (
     <CommentContainer onSubmit={onFormSubmit}>
-      <textarea
+      <SemiBoldText>Post a comment</SemiBoldText>
+
+      <TextArea
         placeholder="my comment .."
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       />
 
-      <MarkDownContainer>
-        <ReactMarkdown
-          className="post-content-markdown"
-          remarkPlugins={[remarkGfm]}>
-          {comment}
-        </ReactMarkdown>
-      </MarkDownContainer>
+      {comment ? (
+        <>
+          <SemiBoldText>Markdown Preview</SemiBoldText>
+
+          <MarkDownContainer css={{ margin: 0 }}>
+            <ReactMarkdown
+              className="post-content-markdown"
+              remarkPlugins={[remarkGfm]}>
+              {comment}
+            </ReactMarkdown>
+          </MarkDownContainer>
+        </>
+      ) : null}
 
       <Button type="submit">Comment</Button>
     </CommentContainer>
@@ -126,5 +136,5 @@ const CommentContainer = styled("form", {
   gap: "2rem",
 
   width: "40rem",
-  margin: "5rem auto",
+  margin: "5rem 0",
 });

@@ -61,7 +61,7 @@ const AccountButton: React.FC = () => {
 
   if (!accountData) {
     return (
-      <Button key={connector.id} onClick={onAuthClick}>
+      <Button key={connector.id} onClick={onAuthClick} color="dark">
         Connect
       </Button>
     );

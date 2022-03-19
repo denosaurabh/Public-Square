@@ -11,6 +11,7 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
   height: "fit-content",
 
   padding: "12px 16px",
+  margin: "0 1rem",
 
   fontFamily: "inherit",
   fontSize: "14px",

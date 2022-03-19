@@ -27,7 +27,7 @@ export const {
 
     fontSizes: {
       xs: "10px",
-      sm: "13px",
+      sm: "14px",
       md: "16px",
       lg: "19px",
       xl: "24px",

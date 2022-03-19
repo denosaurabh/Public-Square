@@ -21,6 +21,7 @@ const Home: NextPage = () => {
   return (
     <PageContainer>
       <PostsContainer>
+        {/* <Post />; */}
         {data ? (
           data?.data.explorePublications?.items.map((post) => {
             if (post.__typename === "Post") {

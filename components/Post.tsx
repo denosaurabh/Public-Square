@@ -3,6 +3,7 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Avatar, AvatarImage } from "./Avatar";
+import { MarkDownContainer } from "@/style/markdown";
 import { SmallText, Text } from "./Text";
 
 import CommentSvg from "@/icons/comment.svg";
@@ -57,25 +58,31 @@ const Post: React.FC = (props: any) => {
         </Profile>
       </Link>
 
-      <StatsBox>
-        <StatsItem>
-          <CommentSvg />
-          {stats.totalAmountOfComments}
-        </StatsItem>
-        <StatsItem>
-          <CollectSvg />
-          {stats.totalAmountOfCollects}
-        </StatsItem>
-        <StatsItem>
-          <MirrorSvg />
-          {stats.totalAmountOfMirrors}
-        </StatsItem>
-      </StatsBox>
+      <Stats stats={stats} />
     </PostContainer>
   );
 };
 
 export default Post;
+
+export const Stats = ({ stats, withText, css }) => {
+  return (
+    <StatsBox css={css}>
+      <StatsItem>
+        <CommentSvg />
+        {stats.totalAmountOfComments} {withText && "comments"}
+      </StatsItem>
+      <StatsItem>
+        <CollectSvg />
+        {stats.totalAmountOfCollects} {withText && "collects"}
+      </StatsItem>
+      <StatsItem>
+        <MirrorSvg />
+        {stats.totalAmountOfMirrors} {withText && "mirrors"}
+      </StatsItem>
+    </StatsBox>
+  );
+};
 
 const PostContainer = styled("div", {
   width: "250px",
@@ -114,10 +121,9 @@ const PostContainer = styled("div", {
   },
 });
 
-const ContentContainer = styled("div", {
-  // border: "1px solid grey",
-
+const ContentContainer = styled(MarkDownContainer, {
   padding: "1.5rem",
+  margin: "0",
 
   "& .post-content-markdown": {
     fontSize: "1.5rem",
@@ -139,7 +145,7 @@ const Profile = styled("div", {
   },
 });
 
-const StatsBox = styled("div", {
+export const StatsBox = styled("div", {
   width: "18rem",
   margin: "1rem",
 
@@ -148,7 +154,7 @@ const StatsBox = styled("div", {
   justifyContent: "space-between",
 });
 
-const StatsItem = styled(Text, {
+export const StatsItem = styled(Text, {
   display: "flex",
   alignItems: "center",
   gap: "0.5rem",
