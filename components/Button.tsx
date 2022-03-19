@@ -10,6 +10,8 @@ const Button = styled("button", {
   justifyContent: "center",
   gap: "0.5rem",
 
+  width: 'fit-content',
+
   borderRadius: "10000px",
 
   variants: {

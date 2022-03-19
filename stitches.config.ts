@@ -12,6 +12,7 @@ export const {
 } = createStitches({
   theme: {
     fonts: {
+      // main: "Satoshi-Variable",
       main: "ClashGrotesk-Variable",
 
       websafe: `-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif`,
@@ -75,6 +76,7 @@ export const globalStyles = globalCss({
 
   html: {
     backgroundColor: "$bg",
+    overflowY: "scroll",
   },
   body: {
     margin: "0 auto",
@@ -92,10 +94,18 @@ export const globalStyles = globalCss({
     border: "none",
     outline: "none",
   },
-  "@font-face": {
-    fontFamily: "ClashGrotesk-Variable",
-    src: `url('/fonts/ClashGrotesk-Variable.woff2') format('woff2')`,
-    fontDisplay: "optional",
-    fontStyle: "normal",
-  },
+  "@font-face": [
+    {
+      fontFamily: "Satoshi-Variable",
+      src: `url('/fonts/Satoshi-Variable.woff2') format('woff2')`,
+      fontDisplay: "optional",
+      fontStyle: "normal",
+    },
+    {
+      fontFamily: "ClashGrotesk-Variable",
+      src: `url('/fonts/ClashGrotesk-Variable.woff2') format('woff2')`,
+      fontDisplay: "optional",
+      fontStyle: "normal",
+    },
+  ],
 });

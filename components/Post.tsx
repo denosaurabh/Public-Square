@@ -1,24 +1,62 @@
 import { styled } from "@/stitches.config";
+import Link from "next/link";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Avatar, AvatarImage } from "./Avatar";
-import { Text } from "./Text";
+import { SmallText, Text } from "./Text";
 
-const Post: React.FC = (props) => {
-  const { profile, stats, metadata } = props;
-  const { id, handle } = profile;
+import CommentSvg from "@/icons/comment.svg";
+import CollectSvg from "@/icons/collect.svg";
+import MirrorSvg from "@/icons/mirror.svg";
+
+const Post: React.FC = (props: any) => {
+  const { profile, stats, metadata, createdAt, id: postId } = props;
+  const { id, handle, picture } = profile;
 
   return (
     <PostContainer>
-      <ContentContainer>
-        <Text>{metadata.content}</Text>
-      </ContentContainer>
+      <Link href={`/post/${postId}`} passHref>
+        <ContentContainer>
+          <ReactMarkdown
+            className="post-content-markdown"
+            remarkPlugins={[remarkGfm]}>
+            {metadata.content}
+          </ReactMarkdown>
+        </ContentContainer>
+      </Link>
 
-      <Profile>
-        <Avatar>
-          <AvatarImage src="/img/dinosaur.png" alt="deno" />
-        </Avatar>
+      <Link href={`/profile/${id}`} passHref>
+        <Profile>
+          <Avatar>
+            <AvatarImage
+              src={
+                picture?.original.url ||
+                `https://source.boringavatars.com/marble/25/${handle}`
+              }
+              alt="deno"
+            />
+          </Avatar>
+          ;<Text>{handle}</Text>
+          <SmallText css={{ marginLeft: "auto" }}>
+            {new Date(createdAt).toLocaleTimeString()}
+          </SmallText>
+        </Profile>
+      </Link>
 
-        <Text>{handle}</Text>
-      </Profile>
+      <StatsBox>
+        <StatsItem>
+          <CommentSvg />
+          {stats.totalAmountOfComments}
+        </StatsItem>
+        <StatsItem>
+          <CollectSvg />
+          {stats.totalAmountOfCollects}
+        </StatsItem>
+        <StatsItem>
+          <MirrorSvg />
+          {stats.totalAmountOfMirrors}
+        </StatsItem>
+      </StatsBox>
     </PostContainer>
   );
 };
@@ -34,12 +72,40 @@ const ContentContainer = styled("div", {
   border: "1px solid grey",
   borderRadius: "10px",
 
-  padding: "0.4rem",
+  padding: "1rem",
+
+  "& .post-content-markdown": {
+    fontSize: "1.5rem",
+  },
+
+  "&:hover": {
+    cursor: "pointer",
+  },
 });
 
 const Profile = styled("div", {
   display: "flex",
   alignItems: "center",
 
-  padding: "0.5rem 1rem",
+  padding: "0.5rem 1rem 0 1rem",
+
+  "&:hover": {
+    cursor: "pointer",
+  },
+});
+
+const StatsBox = styled("div", {
+  width: "100%",
+
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+});
+
+const StatsItem = styled(Text, {
+  display: "flex",
+  alignItems: "center",
+  gap: "0.5rem",
+
+  color: "light-grey",
 });

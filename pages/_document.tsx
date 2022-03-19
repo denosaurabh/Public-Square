@@ -9,15 +9,7 @@ export default class Document extends NextDocument {
         <Head>
           <link
             rel="preload"
-            href="/fonts/Monofett-Regular.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-
-          <link
-            rel="preload"
-            href="/fonts/mago2.woff2"
+            href="/fonts/Satoshi-Variable.woff2"
             as="font"
             type="font/woff2"
             crossOrigin="anonymous"

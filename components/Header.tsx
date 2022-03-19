@@ -6,15 +6,18 @@ import Network from "./Network";
 import Accounts from "./Accounts";
 import { AccountStore } from "@/stores/AccountStore";
 import { useStore, useObservable } from "@/stores";
+import { useRouter } from "next/router";
 
 const Header = () => {
+  const router = useRouter();
+
   const accountStore = useStore(AccountStore);
   const activeAccount = useObservable(accountStore.activeAccount);
 
   return (
     <HeaderContainer>
       <HeaderHomeLink>
-        <Link href="/" passHref>
+        <Link href={router.pathname === "/" ? "/me" : "/"} passHref>
           <a>@{activeAccount?.handle || ""}</a>
         </Link>
       </HeaderHomeLink>

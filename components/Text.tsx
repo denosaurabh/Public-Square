@@ -13,3 +13,9 @@ export const SemiBoldText = styled(Text, {
 export const BoldText = styled(Text, {
   fontWeight: "600",
 });
+
+export const SmallText = styled(Text, {
+  color: "light-grey",
+  fontWeight: "300",
+  fontSize: "$sm",
+});

@@ -17,9 +17,10 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useSignTypedData } from "wagmi";
 import omitDeep from "omit-deep";
+import { MarkDownContainer } from "@/style/markdown";
 
 const CreatePost = () => {
-  const [{ data, error, loading }, signTypedData] = useSignTypedData();
+  const [, signTypedData] = useSignTypedData();
 
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
@@ -73,16 +74,11 @@ const CreatePost = () => {
     const result = await createPostTypedData(typedDataReq);
     const typedData = result.data.createPostTypedData.typedData;
 
-    console.log(typedData);
-
     const signData = await signTypedData({
       domain: omitDeep(typedData.domain, "__typename"),
       types: omitDeep(typedData.types, "__typename"),
       value: omitDeep(typedData.value, "__typename"),
     });
-
-    console.log(signData);
-
     if (!signData.data) return;
 
     const { v, r, s } = splitSignature(signData.data);
@@ -176,11 +172,3 @@ const TopContainer = styled("div", {
 
 const LeftBox = styled("div", {});
 const RightBox = styled("div", {});
-
-const MarkDownContainer = styled("div", {
-  margin: "4rem 0",
-
-  "& .post-content-markdown": {
-    fontSize: "1.5rem",
-  },
-});

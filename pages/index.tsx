@@ -17,8 +17,6 @@ const Home: NextPage = () => {
     },
   ]);
 
-  console.log(data);
-
   return (
     <PageContainer>
       <PostsContainer>
