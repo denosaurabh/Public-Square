@@ -26,7 +26,7 @@ const Post: React.FC = (props: any) => {
           <ReactMarkdown
             className="post-content-markdown"
             remarkPlugins={[remarkGfm]}>
-            {metadata.content}
+            {metadata.content || "*weirdly nothing...*"}
           </ReactMarkdown>
         </ContentContainer>
       </Link>

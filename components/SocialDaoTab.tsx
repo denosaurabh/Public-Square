@@ -1,7 +1,8 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./Tabs";
-import { LightSansSerifText } from "./Text";
 
 import Publications from "./SocialDAO/publications";
+import Subjects from "./Subject";
+import Discussions from "./Discussions";
 
 const SocialDAOTab: React.FC = () => {
   return (
@@ -9,16 +10,16 @@ const SocialDAOTab: React.FC = () => {
       <TabsList aria-label="Manage your account">
         <TabsTrigger value="posts">Posts</TabsTrigger>
         <TabsTrigger value="subjects">Subjects</TabsTrigger>
-        <TabsTrigger value="discussion">Discussion</TabsTrigger>
+        <TabsTrigger value="discussion">Discussions</TabsTrigger>
       </TabsList>
       <TabsContent value="posts">
         <Publications />
       </TabsContent>
       <TabsContent value="subjects">
-        <LightSansSerifText>Subjects will go here</LightSansSerifText>
+        <Subjects />
       </TabsContent>
       <TabsContent value="discussion">
-        <LightSansSerifText>Discussions will go here.</LightSansSerifText>
+        <Discussions />
       </TabsContent>
     </Tabs>
   );

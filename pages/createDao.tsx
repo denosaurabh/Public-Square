@@ -1,14 +1,15 @@
-import { Avatar, AvatarImage } from "@/components/Avatar";
+import { ChangeEvent, useState } from "react";
 import { H1 } from "@/components/Heading";
+import { Avatar, AvatarImage } from "@/components/Avatar";
+import { Button } from "@/components/Button";
 import Input from "@/components/Input";
 import { Text } from "@/components/Text";
 import { TextArea } from "@/components/TextArea";
 import { createProfile } from "@/graphql/PROFILE";
 import { styled } from "@/stitches.config";
 import { IPFSClient } from "@/utils/ipfs";
-import { ChangeEvent, useState } from "react";
 
-const CreateProfile = () => {
+const CreateSocialDAO = () => {
   const [uploadedImgData, setUploadedImgData] = useState<string | ArrayBuffer>(
     ""
   );
@@ -38,7 +39,7 @@ const CreateProfile = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const onCreateProfileClick = async () => {
+  const onCreateDAOClick = async () => {
     if (!uploadedImg || !handle) return;
 
     console.log(uploadedImg, handle);
@@ -57,7 +58,7 @@ const CreateProfile = () => {
   return (
     <>
       <H1 italic font="serif">
-        Create Profile
+        Create Social DAO
       </H1>
       <Container>
         <TopContainer>
@@ -74,9 +75,7 @@ const CreateProfile = () => {
                   <AvatarImage
                     as="div"
                     css={{
-                      backgroundImage: `url(${
-                        uploadedImgData || "/img/dinosaur.png"
-                      })`,
+                      backgroundImage: `https://source.boringavatars.com/marble/25`,
                       objectFit: "cover",
                       backgroundSize: "cover",
                     }}
@@ -90,14 +89,14 @@ const CreateProfile = () => {
                     onChange={onFileUpload}
                   />
 
-                  <Text>Upload Avatar</Text>
+                  <Text>Upload DAO Avatar</Text>
                 </UploadInputContainer>
               </label>
             </AvatarBox>
           </LeftBox>
           <RightBox>
             <TextArea
-              placeholder="I am an artist...."
+              placeholder="about this social dao"
               value={bio}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 setBio(e.target.value)
@@ -107,24 +106,30 @@ const CreateProfile = () => {
         </TopContainer>
 
         <Box>
-          <LineInput placeholder="your handle, like @deno" />
-          <LineInput placeholder="location (optional)" />
-          <LineInput placeholder="website (optional)" />
+          <LineInput placeholder="dao name, like Metapysics" />
+          {/* <LineInput placeholder="location (optional)" /> */}
+          {/* <LineInput placeholder="website (optional)" /> */}
         </Box>
 
         <Box>
-          <LineInput placeholder="twitter Url (optional)" />
+          <LineInput placeholder="dao owners wallet addresses, seperate each with comma, if you are the only one for now, enter your wallet address with no comma" />
         </Box>
 
-        <UpdateButton onClick={onCreateProfileClick}>
-          Create Profile
-        </UpdateButton>
+        <Box css={{ height: "100%" }}>
+          <LineInput placeholder="Add Constitution Page one" />
+          <LineInput placeholder="Add Constitution Page two" />
+          <LineInput placeholder="Add Constitution Page three" />
+        </Box>
+
+        <SubmitButton onClick={onCreateDAOClick}>
+          Create Social DAO
+        </SubmitButton>
       </Container>
     </>
   );
 };
 
-export default CreateProfile;
+export default CreateSocialDAO;
 
 const Container = styled("div", {
   display: "flex",
@@ -234,9 +239,15 @@ const LineInput = styled(Input, {
   border: "1px solid grey",
   borderRadius: 0,
   backgroundColor: "transparent",
+
+  "&::placeholder": {
+    fontFamily: "$sansSerif",
+    fontStyle: "italic",
+    fontSize: "1.6rem",
+  },
 });
 
-const UpdateButton = styled("button", {
+const SubmitButton = styled("button", {
   backgroundColor: "transparent",
   border: "1px solid grey",
 
@@ -246,7 +257,7 @@ const UpdateButton = styled("button", {
 
   borderRadius: "0 0 20px 20px",
 
-  height: "5rem",
+  padding: "1.6rem 0",
   width: "100%",
 
   fontFamily: "$sansSerif",

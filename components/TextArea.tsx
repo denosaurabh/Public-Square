@@ -11,4 +11,10 @@ export const TextArea = styled("textarea", {
   outline: "none",
   border: "2px solid grey",
   borderRadius: "10px",
+
+  "&::placeholder": {
+    fontFamily: "$sansSerif",
+    fontStyle: "italic",
+    fontSize: "1.6rem",
+  },
 });

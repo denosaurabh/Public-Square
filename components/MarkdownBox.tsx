@@ -16,7 +16,7 @@ interface MarkDownBoxProps {
 const MarkDownBox: React.FC<MarkDownBoxProps> = ({ content, css }) => {
   return (
     <MarkDownContainer css={css}>
-      <ReactMarkdownComp>{content}</ReactMarkdownComp>
+      <ReactMarkdownComp>{content || "*weirdly nothing...*"}</ReactMarkdownComp>
     </MarkDownContainer>
   );
 };

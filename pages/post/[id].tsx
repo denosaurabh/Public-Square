@@ -56,8 +56,6 @@ const PostPage: NextPage = () => {
 
   const pub = data?.data.publication;
 
-  console.log(pub);
-
   if (!pub) return <></>;
 
   return (
