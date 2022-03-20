@@ -9,27 +9,18 @@ import { SmallText, Text } from "./Text";
 import CommentSvg from "@/icons/comment.svg";
 import CollectSvg from "@/icons/collect.svg";
 import MirrorSvg from "@/icons/mirror.svg";
+import { useState } from "react";
 
 const Post: React.FC = (props: any) => {
+  const [hover, SetHover] = useState(false);
+
   const { profile, stats, metadata, createdAt, id: postId } = props;
   const { id, handle, picture } = profile;
 
-  const len = metadata.content.length;
-  const maxLength = 300;
-  const val = len / maxLength;
-
-  let size: "xSmall" | "small" | "medium" | "large" = "medium";
-
-  if (val > 0.5) {
-    size = "large";
-  } else if (val > 0.25) {
-    size = "medium";
-  } else {
-    size = "small";
-  }
-
   return (
-    <PostContainer size={size}>
+    <PostContainer
+      onMouseEnter={() => SetHover(true)}
+      onMouseLeave={() => SetHover(false)}>
       <Link href={`/post/${postId}`} passHref>
         <ContentContainer>
           <ReactMarkdown
@@ -39,6 +30,13 @@ const Post: React.FC = (props: any) => {
           </ReactMarkdown>
         </ContentContainer>
       </Link>
+
+      <Stats
+        stats={stats}
+        css={{
+          opacity: hover ? "1" : "0",
+        }}
+      />
 
       <Link href={`/profile/${id}`} passHref>
         <Profile>
@@ -57,15 +55,23 @@ const Post: React.FC = (props: any) => {
           </SmallText>
         </Profile>
       </Link>
-
-      <Stats stats={stats} />
     </PostContainer>
   );
 };
 
 export default Post;
 
-export const Stats = ({ stats, withText, css }) => {
+interface StatsProps {
+  stats: {
+    totalAmountOfComments: number;
+    totalAmountOfCollects: number;
+    totalAmountOfMirrors: number;
+  };
+  withText?: boolean;
+  css?: Record<string, any>;
+}
+
+export const Stats: React.FC<StatsProps> = ({ stats, withText, css }) => {
   return (
     <StatsBox css={css}>
       <StatsItem>
@@ -91,34 +97,7 @@ const PostContainer = styled("div", {
   backgroundColor: "#E7EBF9",
   borderRadius: "10px",
 
-  variants: {
-    size: {
-      xSmall: {
-        width: "10rem",
-        // height: "10rem",
-      },
-      small: {
-        width: "30rem",
-        // height: "10rem",
-      },
-      medium: {
-        width: "15rem",
-        // height: "20rem",
-      },
-      big: {
-        width: "20rem",
-        // height: "30rem",
-      },
-      large: {
-        width: "25rem",
-        // height: "30rem",
-      },
-    },
-  },
-
-  defaultVariants: {
-    size: "medium",
-  },
+  transition: "all 0.3s ease-in-out",
 });
 
 const ContentContainer = styled(MarkDownContainer, {
@@ -138,7 +117,7 @@ const Profile = styled("div", {
   display: "flex",
   alignItems: "center",
 
-  padding: "0.5rem 1rem 0 1rem",
+  padding: "0.5rem 1rem",
 
   "&:hover": {
     cursor: "pointer",
@@ -146,8 +125,9 @@ const Profile = styled("div", {
 });
 
 export const StatsBox = styled("div", {
-  width: "18rem",
-  margin: "1rem",
+  width: "20rem",
+  margin: "0 1rem",
+  marginTop: "2rem",
 
   display: "flex",
   alignItems: "center",

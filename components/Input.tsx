@@ -58,7 +58,7 @@ const StyledInput = styled("input", {
 interface InputI {
   size?: "mini";
   label?: string | JSX.Element;
-  css?: Record<string, unknown>;
+  css?: Record<string, any>;
   [key: string]: unknown;
 }
 

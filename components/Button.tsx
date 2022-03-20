@@ -91,9 +91,13 @@ export const TextButton = styled(Button, {
   color: "inherit",
   boxShadow: "none !important",
 
+  transition: "all 200ms",
+
   "&:hover": {
-    backgroundColor: "#E7EBF9 !important",
+    // backgroundColor: "#E7EBF9 !important",
     color: "black",
     boxShadow: "0px 0.2rem 1rem rgba(0, 0, 0, 0.25) !important",
+    outline: "1px solid grey",
+    transform: "translateY(-4px) !important",
   },
 });

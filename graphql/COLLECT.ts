@@ -1,14 +1,14 @@
 import { apolloClient } from "@/apollo/client";
 import { gql } from "@apollo/client";
 
-export const CREATE_MIRROR_TYPED_DATA = `
-  mutation($request: CreateMirrorRequest!) { 
-    createMirrorTypedData(request: $request) {
+export const CREATE_COLLECT_TYPED_DATA = `
+mutation($request: CreateCollectRequest!) { 
+    createCollectTypedData(request: $request) {
       id
       expiresAt
       typedData {
         types {
-          MirrorWithSig {
+          CollectWithSig {
             name
             type
           }
@@ -23,21 +23,21 @@ export const CREATE_MIRROR_TYPED_DATA = `
         nonce
         deadline
         profileId
-        profileIdPointed
-        pubIdPointed
-        referenceModule
-        referenceModuleData
+				pubId
+        data
       }
      }
    }
  }
 `;
 
-export const createMirrorTypedData = (createMirrorTypedDataRequest: Record<string, any>) => {
+export const createCollectTypedData = (
+  createCollectTypedDataRequest: Record<string, any>
+) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_MIRROR_TYPED_DATA),
+    mutation: gql(CREATE_COLLECT_TYPED_DATA),
     variables: {
-      request: createMirrorTypedDataRequest,
+      request: createCollectTypedDataRequest,
     },
   });
 };

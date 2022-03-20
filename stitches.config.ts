@@ -87,7 +87,7 @@ export const globalStyles = globalCss({
     lineHeight: "20px",
   },
   a: {
-    textDecoration: "none",
+    textDecoration: "underline",
     color: "inherit",
   },
   button: {

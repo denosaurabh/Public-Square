@@ -1,4 +1,3 @@
-import PageContainer from "@/layouts/PageContainer";
 import { useStore, useObservable } from "@/stores";
 import { AccountStore } from "@/stores/AccountStore";
 import { useRouter } from "next/router";
@@ -20,7 +19,7 @@ const Profile = () => {
     }
   }, [, activeAccountAdr]);
 
-  return <PageContainer></PageContainer>;
+  return <></>;
 };
 
 export default Profile;

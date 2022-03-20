@@ -12,11 +12,23 @@ const Comment: React.FC = (props: any) => {
   return (
     <CommentContainer>
       <ContentContainer>
-        <ReactMarkdown
-          className="post-content-markdown"
-          remarkPlugins={[remarkGfm]}>
-          {metadata.content}
-        </ReactMarkdown>
+        {/* <Avatar>
+          <AvatarImage
+            src={
+              picture?.original.url ||
+              `https://source.boringavatars.com/marble/25/${handle}`
+            }
+            alt="deno"
+          />
+        </Avatar> */}
+
+        <MarkdownContent>
+          <ReactMarkdown
+            className="post-content-markdown"
+            remarkPlugins={[remarkGfm]}>
+            {metadata.content}
+          </ReactMarkdown>
+        </MarkdownContent>
       </ContentContainer>
 
       <Link href={`/profile/${id}`} passHref>
@@ -47,10 +59,13 @@ const CommentContainer = styled("div", {
 });
 
 const ContentContainer = styled("div", {
-  border: "1px solid grey",
   borderRadius: "10px",
 
   padding: "1rem",
+
+  display: "flex",
+  alignItems: "center",
+  gap: "1rem",
 
   "& .post-content-markdown": {
     fontSize: "1.5rem",
@@ -61,11 +76,20 @@ const ContentContainer = styled("div", {
   },
 });
 
+const MarkdownContent = styled("div", {
+  border: "1px solid grey",
+  backgroundColor: "#E7EBF9",
+  borderRadius: "10px",
+
+  padding: "1rem",
+  width: "100%",
+});
+
 const Profile = styled("div", {
   display: "flex",
   alignItems: "center",
 
-  padding: "0.5rem 1rem",
+  padding: "0rem 1rem",
 
   "&:hover": {
     cursor: "pointer",

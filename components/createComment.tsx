@@ -136,5 +136,5 @@ const CommentContainer = styled("form", {
   gap: "2rem",
 
   width: "40rem",
-  margin: "5rem 0",
+  // margin: "5rem 0",
 });

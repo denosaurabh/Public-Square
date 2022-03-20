@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAccount, useConnect, useSignMessage } from "wagmi";
 import { Button, TextButton } from "./Button";
 import { useObservable } from "@/stores";
+import { smallAddress } from "@/utils";
 
 const AccountButton: React.FC = () => {
   const [{ data }, connect] = useConnect();
@@ -69,7 +70,7 @@ const AccountButton: React.FC = () => {
 
   return (
     <TextButton onClick={disconnect}>
-      {accountData.ens?.name || accountData.address.slice(0, 10)}
+      {accountData.ens?.name || smallAddress(accountData.address)}
     </TextButton>
   );
 };

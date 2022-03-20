@@ -1,19 +1,17 @@
-import Post from "@/components/Post";
-import { Text } from "@/components/Text";
 import { EXPLORE_PUBLICATIONS } from "@/graphql/DISCOVERY";
 import { PostsContainer } from "@/style/post";
-import type { NextPage } from "next";
 import useSWR from "swr";
+import Post from "../Post";
+import { LightSansSerifText } from "../Text";
 
-const Home: NextPage = () => {
-  const { data } = useSWR(
+const Publications: React.FC = () => {
+  const { data: pubsData } = useSWR(
     [
       EXPLORE_PUBLICATIONS,
       {
         request: {
           limit: 50,
           sortCriteria: "TOP_COMMENTED",
-          // sources: ["deno-lensapp", "denolensapp"],
         },
       },
     ],
@@ -22,18 +20,17 @@ const Home: NextPage = () => {
 
   return (
     <PostsContainer>
-      {/* <Post />; */}
-      {data ? (
-        data?.data.explorePublications?.items.map((post: any) => {
+      {pubsData ? (
+        pubsData?.data.explorePublications?.items.map((post: any) => {
           if (post.__typename === "Post") {
             return <Post {...post} key={post.id} />;
           }
         })
       ) : (
-        <Text>loading....</Text>
+        <LightSansSerifText>loading....</LightSansSerifText>
       )}
     </PostsContainer>
   );
 };
 
-export default Home;
+export default Publications;

@@ -7,6 +7,7 @@ import "micro-observables/batchingForReactDom";
 import { SWRConfig } from "swr";
 import { apolloClient } from "@/apollo/client";
 import { gql } from "@apollo/client";
+import PageContainer from "@/layouts/PageContainer";
 
 const store = createStore();
 
@@ -29,7 +30,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                 variables,
               }),
           }}>
-          <Component {...pageProps} />
+          <PageContainer>
+            <Component {...pageProps} />
+          </PageContainer>
         </SWRConfig>
       </Provider>
     </StoreProvider>

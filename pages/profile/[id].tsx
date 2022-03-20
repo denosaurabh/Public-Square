@@ -10,7 +10,6 @@ import {
 } from "@/components/Text";
 import { QUERY_PROFILE_BY_ID } from "@/graphql/PROFILE";
 import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
-import PageContainer from "@/layouts/PageContainer";
 import { styled } from "@/stitches.config";
 import { PostsContainer } from "@/style/post";
 import { cleanUrl } from "@/utils";
@@ -43,7 +42,7 @@ const Profile = () => {
     },
   ]);
 
-  if (!profileDataRes) return <PageContainer></PageContainer>;
+  if (!profileDataRes) return <></>;
 
   const { data } = profileDataRes;
   const {
@@ -58,67 +57,63 @@ const Profile = () => {
     location,
   } = data?.profiles.items[0];
 
-  console.log(data);
-
   return (
-    <PageContainer>
-      <Container>
-        <TopContainer>
-          <LeftBox>
-            <Avatar css={{ width: "120px", height: "120px" }}>
-              <AvatarImage
-                src={
-                  picture?.original.url ||
-                  `https://source.boringavatars.com/marble/25/${handle}`
-                }
-                alt="deno"
-              />
-            </Avatar>
-          </LeftBox>
-          <CenterBox>
-            <SemiBoldText>@{handle}</SemiBoldText>
-
-            {bio ? (
-              <Text>{bio}</Text>
-            ) : (
-              <Text font="sansSerif">no bio....</Text>
-            )}
-
-            <Follow
-              profileId={profileId}
-              followerAddress={ownedBy}
-              followModule={followModule}
+    <Container>
+      <TopContainer>
+        <LeftBox>
+          <Avatar css={{ width: "120px", height: "120px" }}>
+            <AvatarImage
+              src={
+                picture?.original.url ||
+                `https://source.boringavatars.com/marble/25/${handle}`
+              }
+              alt="deno"
             />
-          </CenterBox>
-          <RightBox>
-            {website ? (
-              <Link href={website} target="_blank" passHref>
-                <LinkSmallText>{cleanUrl(website)}</LinkSmallText>
-              </Link>
-            ) : null}
+          </Avatar>
+        </LeftBox>
+        <CenterBox>
+          <SemiBoldText>@{handle}</SemiBoldText>
 
-            {twitterUrl ? (
-              <Link href={twitterUrl} target="_blank" passHref>
-                <LinkSmallText>{cleanUrl(twitterUrl)}</LinkSmallText>
-              </Link>
-            ) : null}
+          {bio ? <Text>{bio}</Text> : <Text font="sansSerif">no bio....</Text>}
 
-            {location ? <SmallText>location: {location}</SmallText> : null}
-            <SmallText>owned by: {ownedBy}</SmallText>
-          </RightBox>
-        </TopContainer>
+          <Follow
+            profileId={profileId}
+            followerAddress={ownedBy}
+            followModule={followModule}
+          />
+        </CenterBox>
+        <RightBox>
+          {website ? (
+            <Link href={website} passHref>
+              <LinkSmallText as="a" target="_blank">
+                {cleanUrl(website)}
+              </LinkSmallText>
+            </Link>
+          ) : null}
 
-        <FollowPromises />
+          {twitterUrl ? (
+            <Link href={twitterUrl} passHref>
+              <LinkSmallText as="a" target="_blank">
+                {cleanUrl(twitterUrl)}
+              </LinkSmallText>
+            </Link>
+          ) : null}
 
-        <PostsContainer>
-          {pubsDataRes?.data.publications.items.map((pub) => {
-            if (pub.__typename === "Post") {
-              return <Post {...pub} key={pub.id} />;
-            }
-          })}
-        </PostsContainer>
-      </Container>
-    </PageContainer>
+          {location ? <SmallText>location: {location}</SmallText> : null}
+          <SmallText>owned by: {ownedBy}</SmallText>
+        </RightBox>
+      </TopContainer>
+
+      <FollowPromises />
+
+      <PostsContainer>
+        {pubsDataRes?.data.publications.items.map((pub: any) => {
+          if (pub.__typename === "Post") {
+            return <Post {...pub} key={pub.id} />;
+          }
+        })}
+      </PostsContainer>
+    </Container>
   );
 };
 
@@ -143,4 +138,20 @@ const CenterBox = styled("div", {
 const RightBox = styled("div", {
   marginLeft: "6rem",
   width: "10rem",
+
+  display: "flex",
+  flexDirection: "column",
+  gap: "0.5rem",
+
+  "a, p": {
+    margin: 1,
+  },
+
+  "& a": {
+    marginBottom: "2rem",
+
+    "&:first-child": {
+      marginBottom: "0",
+    },
+  },
 });

@@ -5,19 +5,19 @@ import Post from "@/components/Post";
 import { SemiBoldText, Text } from "@/components/Text";
 import { createPostTypedData } from "@/graphql/POST";
 import useLensHub from "@/hooks/useLensHub";
-import PageContainer from "@/layouts/PageContainer";
 import { styled } from "@/stitches.config";
 import { useStore, useObservable } from "@/stores";
 import { AccountStore } from "@/stores/AccountStore";
 import { IPFSClient } from "@/utils/ipfs";
 import { splitSignature } from "ethers/lib/utils";
 import { nanoid } from "nanoid";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useSignTypedData } from "wagmi";
 import omitDeep from "omit-deep";
 import { MarkDownContainer } from "@/style/markdown";
+import { TextArea } from "@/components/TextArea";
 
 const CreatePost = () => {
   const [, signTypedData] = useSignTypedData();
@@ -104,11 +104,10 @@ const CreatePost = () => {
   };
 
   return (
-    <PageContainer>
-      <Container>
-        <TopContainer>
-          <LeftBox>
-            {/* <label htmlFor="avatar-upload">
+    <Container>
+      <TopContainer>
+        <LeftBox>
+          {/* <label htmlFor="avatar-upload">
               <Avatar css={{ width: "100px", height: "100px" }}>
                 <AvatarImage
                   as="div"
@@ -123,38 +122,39 @@ const CreatePost = () => {
               </Avatar>
             </label> */}
 
-            {/* <Input id="avatar-upload" type="file" onChange={onFileUpload} /> */}
-            {/* <Input
+          {/* <Input id="avatar-upload" type="file" onChange={onFileUpload} /> */}
+          {/* <Input
               type="name"
               placeHolder="@handle"
               value={name}
               onChange={(e) => setName(e.target.value)}
             /> */}
-            <Input
-              type="name"
-              placeholder="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+          <Input
+            type="name"
+            placeholder="name"
+            value={name}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setName(e.target.value)
+            }
+          />
 
-            <textarea
-              placeholder="I am an artist...."
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
+          <TextArea
+            placeholder="I am an artist...."
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
 
-            <MarkDownContainer>
-              <ReactMarkdown
-                className="post-content-markdown"
-                remarkPlugins={[remarkGfm]}>
-                {content}
-              </ReactMarkdown>
-            </MarkDownContainer>
-            <Button onClick={onCreatePostClick}>Create Post</Button>
-          </LeftBox>
-        </TopContainer>
-      </Container>
-    </PageContainer>
+          <MarkDownContainer>
+            <ReactMarkdown
+              className="post-content-markdown"
+              remarkPlugins={[remarkGfm]}>
+              {content}
+            </ReactMarkdown>
+          </MarkDownContainer>
+          <Button onClick={onCreatePostClick}>Create Post</Button>
+        </LeftBox>
+      </TopContainer>
+    </Container>
   );
 };
 
