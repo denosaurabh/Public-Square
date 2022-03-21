@@ -6,11 +6,14 @@ import {
 } from "@/graphql/AUTH";
 import { LocalStore } from "@/utils/localStorage";
 import { gql } from "@apollo/client";
+import { Signer } from "ethers";
 import { observable } from ".";
 
 export class AuthStore {
   address = observable<string | null>(null);
   signature = observable<string | null>(null);
+
+  signer = observable<Signer | undefined>(undefined);
 
   accessToken = observable<string | null>(null);
   refreshToken = observable<string | null>(null);
@@ -36,6 +39,10 @@ export class AuthStore {
         this.localStoresAuth.update({ refreshToken: "" });
       }
     });
+  }
+
+  setSigner(signer: Signer) {
+    this.signer.set(signer);
   }
 
   async refreshAuth() {

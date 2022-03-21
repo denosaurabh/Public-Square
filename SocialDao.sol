@@ -15,8 +15,10 @@ contract SocialDAO {
     event ExecuteTransaction(address indexed owner, uint indexed txIndex);
 
     string public name;
+    string public lensProfileId;
     string[] public constitution;
     address[] public owners;
+    string[] public infoUris;
 
     mapping(address => bool) public isOwner;
     uint public numConfirmationsRequired;
@@ -78,6 +80,11 @@ contract SocialDAO {
 
         name = _name;
         constitution = _constitution;
+    }
+
+    function setLensProfileAndInfo(string memory _lensProfileId, string[] memory _infoUris) public onlyOwner {
+        lensProfileId = _lensProfileId;
+        infoUris = _infoUris;
     }
 
     receive() external payable {
@@ -161,8 +168,16 @@ contract SocialDAO {
         return owners;
     }
 
-    function getInfo() public view returns (address[] memory, string memory, string[] memory) {
-        return (owners, name, constitution);
+    function getInfo() public view returns (
+        address[] memory, 
+        string memory, 
+        string[] memory, 
+        string memory, 
+        string[] memory
+        ) 
+    {
+
+        return (owners, name, constitution, lensProfileId, infoUris);
     }
 
     function getTransactionCount() public view returns (uint) {

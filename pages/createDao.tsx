@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { H1 } from "@/components/Heading";
 import { Avatar, AvatarImage } from "@/components/Avatar";
 import { Button } from "@/components/Button";
@@ -8,15 +8,38 @@ import { TextArea } from "@/components/TextArea";
 import { createProfile } from "@/graphql/PROFILE";
 import { styled } from "@/stitches.config";
 import { IPFSClient } from "@/utils/ipfs";
+import { SocialDAOStore } from "@/stores/SocialDaoStore";
+import { useStore } from "@/stores";
 
 const CreateSocialDAO = () => {
   const [uploadedImgData, setUploadedImgData] = useState<string | ArrayBuffer>(
     ""
   );
   const [uploadedImg, setUploadedImg] = useState("");
+  const [formInput, setFormInput] = useState({
+    name: "",
+    about: "",
+    owners: "",
+    constitutionOne: "",
+    constitutionTwo: "",
+    constitutionThree: "",
+  });
 
-  const [handle, setHandle] = useState("");
-  const [bio, setBio] = useState("");
+  const socialDaoStore = useStore(SocialDAOStore);
+
+  const onInputChangeEvent = (e: ChangeEvent<Element>) => {
+    e.preventDefault();
+
+    const { name, value } = e.target;
+
+    if (name === "name") {
+      setUploadedImg(
+        `https://source.boringavatars.com/marble/25/${name || "deno"}`
+      );
+    }
+
+    setFormInput({ ...formInput, [name]: value });
+  };
 
   const onFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;
@@ -39,20 +62,18 @@ const CreateSocialDAO = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const onCreateDAOClick = async () => {
-    if (!uploadedImg || !handle) return;
+  const onFormSubmit = async (e: FormEvent<HTMLFormElement> | SubmitEvent) => {
+    e.preventDefault();
 
-    console.log(uploadedImg, handle);
+    console.log(formInput);
 
-    const res = await createProfile({
-      handle,
-      profilePictureUri: uploadedImg,
-      followModule: {
-        emptyFollowModule: true,
-      },
+    // socialDaoStore.socialDaoTransactions();
+    // return;
+
+    await socialDaoStore.createSocialDAO({
+      ...formInput,
+      uploadedImgUrl: uploadedImg,
     });
-
-    console.log(res);
   };
 
   return (
@@ -60,7 +81,7 @@ const CreateSocialDAO = () => {
       <H1 italic font="serif">
         Create Social DAO
       </H1>
-      <Container>
+      <Container onSubmit={onFormSubmit}>
         <TopContainer>
           <LeftBox>
             <AvatarBox>
@@ -73,12 +94,20 @@ const CreateSocialDAO = () => {
                     border: "1px solid grey",
                   }}>
                   <AvatarImage
-                    as="div"
-                    css={{
-                      backgroundImage: `https://source.boringavatars.com/marble/25`,
-                      objectFit: "cover",
-                      backgroundSize: "cover",
-                    }}
+                    // as="div"
+                    src={
+                      uploadedImg ||
+                      `https://source.boringavatars.com/marble/25/${
+                        formInput.name || "deno"
+                      }`
+                    }
+                    alt="deno"
+                    // css={{
+                    //   // backgroundImage:
+                    //   //  !important`,
+                    //   objectFit: "cover",
+                    //   backgroundSize: "cover",
+                    // }}
                   />
                 </Avatar>
 
@@ -97,31 +126,59 @@ const CreateSocialDAO = () => {
           <RightBox>
             <TextArea
               placeholder="about this social dao"
-              value={bio}
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                setBio(e.target.value)
-              }
+              name="about"
+              value={formInput.about}
+              onChange={onInputChangeEvent}
+              required
             />
           </RightBox>
         </TopContainer>
 
         <Box>
-          <LineInput placeholder="dao name, like Metapysics" />
-          {/* <LineInput placeholder="location (optional)" /> */}
-          {/* <LineInput placeholder="website (optional)" /> */}
+          <LineInput
+            name="name"
+            placeholder="name of this social dao, like Metaphysics"
+            value={formInput.name}
+            onChange={onInputChangeEvent}
+            required
+          />
         </Box>
 
         <Box>
-          <LineInput placeholder="dao owners wallet addresses, seperate each with comma, if you are the only one for now, enter your wallet address with no comma" />
+          <LineInput
+            name="owners"
+            value={formInput.owners}
+            onChange={onInputChangeEvent}
+            placeholder="dao owners wallet addresses, seperate each with comma, if you are the only one for now, enter your wallet address with no comma"
+            required
+          />
         </Box>
 
         <Box css={{ height: "100%" }}>
-          <LineInput placeholder="Add Constitution Page one" />
-          <LineInput placeholder="Add Constitution Page two" />
-          <LineInput placeholder="Add Constitution Page three" />
+          <LineTextArea
+            placeholder="Add Constitution Page one"
+            name="constitutionOne"
+            value={formInput.constitutionOne}
+            onChange={onInputChangeEvent}
+            required
+          />
+          <LineTextArea
+            placeholder="Add Constitution Page two"
+            name="constitutionTwo"
+            value={formInput.constitutionTwo}
+            onChange={onInputChangeEvent}
+            required
+          />
+          <LineTextArea
+            placeholder="Add Constitution Page three"
+            name="constitutionThree"
+            value={formInput.constitutionThree}
+            onChange={onInputChangeEvent}
+            required
+          />
         </Box>
 
-        <SubmitButton onClick={onCreateDAOClick}>
+        <SubmitButton type="submit" onClick={onFormSubmit}>
           Create Social DAO
         </SubmitButton>
       </Container>
@@ -131,7 +188,7 @@ const CreateSocialDAO = () => {
 
 export default CreateSocialDAO;
 
-const Container = styled("div", {
+const Container = styled("form", {
   display: "flex",
   flexDirection: "column",
 
@@ -247,6 +304,26 @@ const LineInput = styled(Input, {
   },
 });
 
+const LineTextArea = styled(TextArea, {
+  border: 0,
+  borderRadius: 0,
+  borderBottom: 0,
+
+  backgroundColor: "transparent",
+
+  "&:first-child": {
+    borderLeft: 0,
+    borderRight: "1px solid grey !important",
+  },
+
+  "&:last-child": {
+    borderRight: 0,
+    borderLeft: "1px solid grey !important",
+  },
+
+  height: "100%",
+});
+
 const SubmitButton = styled("button", {
   backgroundColor: "transparent",
   border: "1px solid grey",
@@ -264,4 +341,8 @@ const SubmitButton = styled("button", {
   fontSize: "1.8rem",
 
   marginTop: "auto",
+
+  "&:hover": {
+    cursor: "pointer",
+  },
 });

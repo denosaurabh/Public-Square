@@ -1,7 +1,7 @@
 import { useStore } from "@/stores";
 import { AuthStore } from "@/stores/AuthStore";
 import { useEffect, useState } from "react";
-import { useAccount, useConnect, useSignMessage } from "wagmi";
+import { useAccount, useConnect, useSigner, useSignMessage } from "wagmi";
 import { Button, TextButton } from "./Button";
 import { useObservable } from "@/stores";
 import { smallAddress } from "@/utils";
@@ -12,6 +12,7 @@ const AccountButton: React.FC = () => {
     fetchEns: true,
   });
   const [, signMessage] = useSignMessage();
+  const [{ data: signer, error, loading }, getSigner] = useSigner();
 
   const authStore = useStore(AuthStore);
   const accessToken = useObservable(authStore.accessToken);
@@ -57,6 +58,12 @@ const AccountButton: React.FC = () => {
       setLoad(true);
     }
   }, [accountData]);
+
+  useEffect(() => {
+    if (signer) {
+      authStore.signer.set(signer);
+    }
+  }, [signer]);
 
   if (!connector) return <></>;
 

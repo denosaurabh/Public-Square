@@ -2,8 +2,9 @@ import { styled } from "@/stitches.config";
 
 export const Button = styled("button", {
   fontFamily: "$main",
-  fontSize: "1.4rem",
-  fontWeight: "600",
+  fontSize: "1.6rem",
+  fontWeight: "500",
+  // textTransform: "uppercase",
 
   display: "flex",
   alignItems: "center",
@@ -12,14 +13,14 @@ export const Button = styled("button", {
 
   width: "fit-content",
 
-  borderRadius: "14px",
+  borderRadius: "20px",
 
   variants: {
     color: {
       dark: {
         backgroundColor: "$grey-800",
         color: "#181818",
-        boxShadow: "0px 1.4rem 2rem rgba(0, 0, 0, 0.25)",
+        boxShadow: "0px 1rem 2rem rgba(0, 0, 0, 0.15)",
 
         svg: {
           fill: "$grey-800",
@@ -60,7 +61,7 @@ export const Button = styled("button", {
         padding: "2.8rem 5rem",
       },
       medium: {
-        padding: "1.4rem 2rem",
+        padding: "1rem 2rem",
       },
       small: {
         padding: "1rem 1.6rem",

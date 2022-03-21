@@ -14,3 +14,5 @@ export const smallAddress = (address: string) => {
 
   return smallAddress;
 };
+
+export const EMPTY_ADDRESS = "0x0000000000000000000000000000000000000000";

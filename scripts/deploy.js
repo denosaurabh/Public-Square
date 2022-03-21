@@ -6,19 +6,12 @@
 const hre = require("hardhat");
 
 async function main() {
-  const SocialDao = await hre.ethers.getContractFactory("SocialDao");
-  const socialDao = await SocialDao.deploy();
+  const SuperDeno = await hre.ethers.getContractFactory("SuperDeno");
+  const superDeno = await SuperDeno.deploy(["Discipline 1", "Discipline 2"]);
 
-  await socialDao.deployed();
+  await superDeno.deployed();
 
-  console.log(`NFTMarket deployed to: ${socialDao.address}`);
-
-  const NFT = await hre.ethers.getContractFactory("NFT");
-  const nft = await NFT.deploy(socialDao.address);
-
-  await nft.deployed();
-
-  console.log(`NFT deployed to: ${nft.address}`);
+  console.log(`SuperDeno deployed to: ${superDeno.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

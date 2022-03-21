@@ -26,7 +26,7 @@ const Profile = () => {
     {
       request: {
         profileIds: [id],
-        limit: 3,
+        limit: 1,
       },
     },
   ]);
@@ -37,7 +37,7 @@ const Profile = () => {
       request: {
         profileId: id,
         publicationTypes: ["POST", "COMMENT", "MIRROR"],
-        limit: 50,
+        limit: 10,
       },
     },
   ]);

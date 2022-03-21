@@ -11,7 +11,7 @@ const Home: NextPage = () => {
       EXPLORE_PUBLICATIONS,
       {
         request: {
-          limit: 50,
+          limit: 40,
           sortCriteria: "TOP_COMMENTED",
           // sources: ["deno-lensapp", "denolensapp"],
         },

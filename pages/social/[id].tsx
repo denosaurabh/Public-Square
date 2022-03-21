@@ -12,15 +12,74 @@ import {
   SmallText,
   Text,
 } from "@/components/Text";
+import { SUPER_DENO_DAO } from "@/contratcts";
 import { EXPLORE_PUBLICATIONS } from "@/graphql/DISCOVERY";
 import { styled } from "@/stitches.config";
 import { PostsContainer } from "@/style/post";
-import { cleanUrl } from "@/utils";
+import { cleanUrl, EMPTY_ADDRESS } from "@/utils";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { useContract, useSigner } from "wagmi";
+import SuperDeno from "@/artifacts/contracts/SocialDao.sol/SuperDeno.json";
+import SocialDao from "@/artifacts/contracts/SocialDao.sol/SocialDAO.json";
+
+import { useEffect, useState } from "react";
+import { ethers } from "ethers";
 
 const SocialDAO = () => {
+  const router = useRouter();
+  const { id: daoName } = router.query;
+
+  const [{ data: signer }] = useSigner();
+
+  const contract = useContract({
+    addressOrName: SUPER_DENO_DAO,
+    contractInterface: SuperDeno.abi,
+    signerOrProvider: signer,
+  });
+
+  const [info, setInfo] = useState<any>({
+    name: "",
+    constitution: ["", "", ""],
+    owners: [],
+  });
+
+  useEffect(() => {
+    if (!window) return;
+
+    const getDaoInfo = async () => {
+      if (!contract || !signer) return;
+
+      const address = await contract.getDAOAddressByName(daoName);
+      console.log("address", address);
+
+      if (address === EMPTY_ADDRESS || !address) return;
+
+      const socialDao = new ethers.Contract(address, SocialDao.abi, signer);
+
+      const info = await socialDao.getInfo();
+      console.log("info", info);
+
+      if (info.length) {
+        setInfo({
+          owners: info[0],
+          name: info[1],
+          constitution: info[2],
+        });
+      }
+
+      // setNames(names);
+      //   await socialDaoStore.getContract();
+      //   await socialDaoStore.getAllDaosNames(contract);
+    };
+
+    // if (!daosNames.length) {
+    console.log("getting daos names");
+    getDaoInfo();
+    // }
+  }, [, contract, signer]);
+
   let profileDataRes = {
     data: {
       profiles: {
@@ -82,7 +141,7 @@ const SocialDAO = () => {
           </LightSansSerifText>
         </LeftBox>
         <CenterBox>
-          <H1>{handle}</H1>
+          <H1>{info.name}</H1>
 
           {bio ? (
             <Text css={{ margin: 0 }}>{bio}</Text>
