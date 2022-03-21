@@ -11,6 +11,12 @@ export const Text = styled("p", {
         fontFamily: "$sansSerif",
       },
     },
+
+    italic: {
+      true: {
+        fontStyle: "italic",
+      },
+    },
   },
 });
 

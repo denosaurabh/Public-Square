@@ -129,6 +129,7 @@ const UpdateProfile = () => {
     const { name, value } = e.target;
     setFormInput({ ...formInput, [name]: value });
   };
+
   return (
     <>
       <H1 italic font="serif">
@@ -218,11 +219,105 @@ const UpdateProfile = () => {
           Update Profile
         </UpdateButton>
       </Container>
+
+      <AddFollowModule />
     </>
   );
 };
 
 export default UpdateProfile;
+
+const AddFollowModule = () => {
+  const [formInput, setFormInput] = useState({
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+    6: "",
+  });
+
+  const onFormSubmit = async (e) => {
+    e.preventDefault();
+
+    const values = Object.values(formInput);
+    const promises = values.filter((v) => v);
+
+    if (!promises.length) {
+      console.log("no promises");
+      return;
+    }
+  };
+
+  const onInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormInput({ ...formInput, [name]: value });
+  };
+
+  return (
+    <>
+      <H1 italic font="serif" css={{ marginTop: "10rem" }}>
+        Add Follow Module
+      </H1>
+      <Text italic font="sansSerif" css={{ margin: "1rem 0" }}>
+        This follow feature is special, it will let you to add a subscription
+        based module to your profile. more info soon....
+      </Text>
+      <Text italic font="sansSerif" css={{ margin: "1rem 0" }}>
+        Your don&apos;t have to fill out all of them, just just any many as you
+        wish.
+      </Text>
+
+      <Container onSubmit={onFormSubmit}>
+        <Box>
+          <NoBorderTextArea
+            name={"1"}
+            value={formInput["1"]}
+            onChange={onInputChange}
+            required
+            placeholder="Your first promise"
+          />
+          <NoBorderTextArea
+            name={"2"}
+            value={formInput["2"]}
+            onChange={onInputChange}
+            placeholder="Your second promise"
+          />
+          <NoBorderTextArea
+            name={"3"}
+            value={formInput["3"]}
+            onChange={onInputChange}
+            placeholder="Your third promise"
+          />
+        </Box>
+        <Box>
+          <NoBorderTextArea
+            name={"4"}
+            value={formInput["4"]}
+            onChange={onInputChange}
+            placeholder="Your fourth promise"
+          />
+          <NoBorderTextArea
+            name={"5"}
+            value={formInput["5"]}
+            onChange={onInputChange}
+            placeholder="Your fifth promise"
+          />
+          <NoBorderTextArea
+            name={"6"}
+            value={formInput["6"]}
+            onChange={onInputChange}
+            placeholder="Your sixth promise"
+          />
+        </Box>
+
+        <UpdateButton type="submit" onClick={onFormSubmit}>
+          Add Fee Follow Module
+        </UpdateButton>
+      </Container>
+    </>
+  );
+};
 
 const Container = styled("form", {
   display: "flex",
@@ -231,7 +326,7 @@ const Container = styled("form", {
   outline: "1px solid grey",
   borderRadius: "20px",
 
-  height: "70rem",
+  height: "fit-content",
 
   marginTop: "5rem",
 });
@@ -354,5 +449,21 @@ const UpdateButton = styled("button", {
 
   "&:hover": {
     cursor: "pointer",
+  },
+});
+
+const NoBorderTextArea = styled(TextArea, {
+  borderTop: 0,
+  borderLeft: 0,
+  borderBottom: 0,
+
+  borderRadius: 0,
+
+  borderRight: "1px solid grey",
+
+  height: "35rem",
+
+  "&:last-child": {
+    borderRight: 0,
   },
 });
