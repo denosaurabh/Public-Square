@@ -41,3 +41,10 @@ export const LightSansSerifText = styled(Text, {
   fontStyle: "italic",
   color: "light-grey",
 });
+
+export const LinkText = styled(Text, {
+  "&:hover": {
+    textDecoration: "underline",
+    cursor: "pointer",
+  },
+});

@@ -86,6 +86,8 @@ const CreatePost = () => {
     if (!lensHub) return;
 
     const tx = await lensHub.postWithSig({
+      // const tx = await lensHub.postWithSig({
+
       profileId: typedData.value.profileId,
       contentURI: typedData.value.contentURI,
       collectModule: typedData.value.collectModule,

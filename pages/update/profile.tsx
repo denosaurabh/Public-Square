@@ -1,45 +1,54 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { H1 } from "@/components/Heading";
+import { apolloClient } from "@/apollo/client";
 import { Avatar, AvatarImage } from "@/components/Avatar";
-import { Button } from "@/components/Button";
+import { H1 } from "@/components/Heading";
 import Input from "@/components/Input";
 import { Text } from "@/components/Text";
 import { TextArea } from "@/components/TextArea";
-import { createProfile } from "@/graphql/PROFILE";
+import {
+  createProfile,
+  QUERY_PROFILE_BY_ID,
+  updateProfile,
+} from "@/graphql/PROFILE";
 import { styled } from "@/stitches.config";
 import { IPFSClient } from "@/utils/ipfs";
-import { SocialDAOStore } from "@/stores/SocialDaoStore";
-import { useStore } from "@/stores";
+import { gql } from "@apollo/client";
+import { useObservable, useStore } from "@/stores/index";
+import { ChangeEvent, useEffect, useState } from "react";
+import { AccountStore } from "@/stores/AccountStore";
 
-const CreateSocialDAO = () => {
+const UpdateProfile = () => {
   const [uploadedImgData, setUploadedImgData] = useState<string | ArrayBuffer>(
     ""
   );
-  const [uploadedImg, setUploadedImg] = useState("");
+
+  const accountStore = useStore(AccountStore);
+  const activeAccount = useObservable(accountStore.activeAccount);
+
+  console.log(activeAccount);
+
   const [formInput, setFormInput] = useState({
-    name: "",
-    about: "",
-    owners: "",
-    constitutionOne: "",
-    constitutionTwo: "",
-    constitutionThree: "",
+    handle: "",
+    bio: "",
+    location: "",
+    website: "",
+    twitterUrl: "",
   });
 
-  const socialDaoStore = useStore(SocialDAOStore);
+  const [uploadedImg, setUploadedImg] = useState(
+    `https://source.boringavatars.com/marble/25/${formInput.handle || "deno"}`
+  );
 
-  const onInputChangeEvent = (e: ChangeEvent<Element>) => {
-    e.preventDefault();
-
-    const { name, value } = e.target;
-
-    if (name === "name") {
-      setUploadedImg(
-        `https://source.boringavatars.com/marble/25/${name || "deno"}`
-      );
+  useEffect(() => {
+    if (activeAccount) {
+      setFormInput({
+        handle: activeAccount.handle,
+        bio: activeAccount?.bio || "",
+        location: activeAccount?.location || "",
+        website: activeAccount?.website || "",
+        twitterUrl: activeAccount?.twitterUrl || "",
+      });
     }
-
-    setFormInput({ ...formInput, [name]: value });
-  };
+  }, [activeAccount]);
 
   const onFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;
@@ -62,24 +71,68 @@ const CreateSocialDAO = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
-  const onFormSubmit = async (e: FormEvent<HTMLFormElement> | SubmitEvent) => {
+  const onFormSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formInput);
+    if (!uploadedImg || !formInput.handle) return;
 
-    // socialDaoStore.socialDaoTransactions();
-    // return;
+    console.log(uploadedImg, formInput.handle);
 
-    await socialDaoStore.createSocialDAO({
-      ...formInput,
-      uploadedImgUrl: uploadedImg,
-    });
+    // const res = await createProfile({
+    //   handle: formInput.handle,
+    //   profilePictureUri: uploadedImg,
+    //   followModule: {
+    //     emptyFollowModule: true,
+    //   },
+    // });
+
+    // console.log(res);
+
+    if (formInput.location || formInput.twitterUrl || formInput.website) {
+      const profileRes = await apolloClient.query({
+        query: gql(QUERY_PROFILE_BY_ID),
+        variables: {
+          request: {
+            handles: [formInput.handle],
+            limit: 1,
+          },
+        },
+      });
+
+      console.log(profileRes);
+      const profile = profileRes.data.profiles.items[0];
+
+      if (!profile) {
+        console.log("profile not found");
+        return;
+      }
+
+      if (!activeAccount) {
+        console.log("activeAccount not found");
+        return;
+      }
+
+      const updatedProfile = await updateProfile({
+        profileId: activeAccount?.id,
+        name: activeAccount?.handle,
+
+        bio: formInput.bio,
+        location: formInput.location,
+        twitterUrl: formInput.twitterUrl,
+        website: formInput.website,
+      });
+      console.log(updatedProfile);
+    }
   };
 
+  const onInputChange = (e: ChangeEvent) => {
+    const { name, value } = e.target;
+    setFormInput({ ...formInput, [name]: value });
+  };
   return (
     <>
       <H1 italic font="serif">
-        Create Social DAO
+        Update your Profile
       </H1>
       <Container onSubmit={onFormSubmit}>
         <TopContainer>
@@ -94,20 +147,17 @@ const CreateSocialDAO = () => {
                     border: "1px solid grey",
                   }}>
                   <AvatarImage
-                    // as="div"
-                    src={
-                      uploadedImg ||
-                      `https://source.boringavatars.com/marble/25/${
-                        formInput.name || "deno"
-                      }`
-                    }
-                    alt="deno"
-                    // css={{
-                    //   // backgroundImage:
-                    //   //  !important`,
-                    //   objectFit: "cover",
-                    //   backgroundSize: "cover",
-                    // }}
+                    as="div"
+                    css={{
+                      backgroundImage: `url(${
+                        uploadedImgData ||
+                        `https://source.boringavatars.com/marble/25/${
+                          formInput.handle || "deno"
+                        }`
+                      })`,
+                      objectFit: "cover",
+                      backgroundSize: "cover",
+                    }}
                   />
                 </Avatar>
 
@@ -118,17 +168,17 @@ const CreateSocialDAO = () => {
                     onChange={onFileUpload}
                   />
 
-                  <Text>Upload DAO Avatar</Text>
+                  <Text>Upload Avatar</Text>
                 </UploadInputContainer>
               </label>
             </AvatarBox>
           </LeftBox>
           <RightBox>
             <TextArea
-              placeholder="about this social dao"
-              name="about"
-              value={formInput.about}
-              onChange={onInputChangeEvent}
+              placeholder="I am an artist...."
+              name="bio"
+              value={formInput.bio}
+              onChange={onInputChange}
               required
             />
           </RightBox>
@@ -136,57 +186,43 @@ const CreateSocialDAO = () => {
 
         <Box>
           <LineInput
-            name="name"
-            placeholder="name of this social dao, like Metaphysics"
-            value={formInput.name}
-            onChange={onInputChangeEvent}
-            required
+            name="handle"
+            value={formInput.handle}
+            placeholder="your handle, like @deno"
+            // onChange={onInputChange}
+          />
+          <LineInput
+            name="location"
+            value={formInput.location}
+            placeholder="location (optional)"
+            onChange={onInputChange}
+          />
+          <LineInput
+            name="website"
+            value={formInput.website}
+            placeholder="website (optional)"
+            onChange={onInputChange}
           />
         </Box>
 
         <Box>
           <LineInput
-            name="owners"
-            value={formInput.owners}
-            onChange={onInputChangeEvent}
-            placeholder="dao owners wallet addresses, seperate each with comma, if you are the only one for now, enter your wallet address with no comma"
-            required
+            name="twitterUrl"
+            value={formInput.twitterUrl}
+            placeholder="twitter Url (optional)"
+            onChange={onInputChange}
           />
         </Box>
 
-        <Box css={{ height: "100%" }}>
-          <LineTextArea
-            placeholder="Add Constitution Page one"
-            name="constitutionOne"
-            value={formInput.constitutionOne}
-            onChange={onInputChangeEvent}
-            required
-          />
-          <LineTextArea
-            placeholder="Add Constitution Page two"
-            name="constitutionTwo"
-            value={formInput.constitutionTwo}
-            onChange={onInputChangeEvent}
-            required
-          />
-          <LineTextArea
-            placeholder="Add Constitution Page three"
-            name="constitutionThree"
-            value={formInput.constitutionThree}
-            onChange={onInputChangeEvent}
-            required
-          />
-        </Box>
-
-        <SubmitButton type="submit" onClick={onFormSubmit}>
-          Create Social DAO
-        </SubmitButton>
+        <UpdateButton type="submit" onClick={onFormSubmit}>
+          Update Profile
+        </UpdateButton>
       </Container>
     </>
   );
 };
 
-export default CreateSocialDAO;
+export default UpdateProfile;
 
 const Container = styled("form", {
   display: "flex",
@@ -296,35 +332,9 @@ const LineInput = styled(Input, {
   border: "1px solid grey",
   borderRadius: 0,
   backgroundColor: "transparent",
-
-  "&::placeholder": {
-    fontFamily: "$sansSerif",
-    fontStyle: "italic",
-    fontSize: "1.6rem",
-  },
 });
 
-const LineTextArea = styled(TextArea, {
-  border: 0,
-  borderRadius: 0,
-  borderBottom: 0,
-
-  backgroundColor: "transparent",
-
-  "&:first-child": {
-    borderLeft: 0,
-    borderRight: "1px solid grey !important",
-  },
-
-  "&:last-child": {
-    borderRight: 0,
-    borderLeft: "1px solid grey !important",
-  },
-
-  height: "100%",
-});
-
-const SubmitButton = styled("button", {
+const UpdateButton = styled("button", {
   backgroundColor: "transparent",
   border: "1px solid grey",
 
@@ -334,7 +344,7 @@ const SubmitButton = styled("button", {
 
   borderRadius: "0 0 20px 20px",
 
-  padding: "1.6rem 0",
+  height: "5rem",
   width: "100%",
 
   fontFamily: "$sansSerif",

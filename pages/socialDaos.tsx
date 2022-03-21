@@ -1,6 +1,6 @@
 import { styled } from "@/stitches.config";
 import { H3 } from "@/components/Heading";
-import { SocialDAOStore } from "@/stores/SocialDaoStore";
+import { SuperDenoDAOStore } from "@/stores/SuperDenoDAOStore";
 import { useStore, useObservable } from "@/stores";
 import { useEffect, useState } from "react";
 import { SUPER_DENO_DAO } from "@/contratcts";
@@ -19,7 +19,7 @@ const SocialDaos = () => {
     signerOrProvider: signer,
   });
 
-  const socialDaoStore = useStore(SocialDAOStore);
+  const socialDaoStore = useStore(SuperDenoDAOStore);
   const daosNames = useObservable(socialDaoStore.daoNames);
 
   useEffect(() => {

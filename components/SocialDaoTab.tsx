@@ -11,6 +11,7 @@ const SocialDAOTab: React.FC = () => {
         <TabsTrigger value="posts">Posts</TabsTrigger>
         <TabsTrigger value="subjects">Subjects</TabsTrigger>
         <TabsTrigger value="discussion">Discussions</TabsTrigger>
+        <TabsTrigger value="transactions">Transactions</TabsTrigger>
       </TabsList>
       <TabsContent value="posts">
         <Publications />
@@ -19,6 +20,9 @@ const SocialDAOTab: React.FC = () => {
         <Subjects />
       </TabsContent>
       <TabsContent value="discussion">
+        <Discussions />
+      </TabsContent>
+      <TabsContent value="transactions">
         <Discussions />
       </TabsContent>
     </Tabs>

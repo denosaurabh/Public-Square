@@ -27,6 +27,8 @@ import SocialDao from "@/artifacts/contracts/SocialDao.sol/SocialDAO.json";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import Constitution from "@/components/SocialDAO/constitution";
+import { useStore, useObservable } from "@/stores";
+import { SocialDAOStore } from "@/stores/SocialDAO";
 
 const SocialDAO = () => {
   const router = useRouter();
@@ -34,83 +36,113 @@ const SocialDAO = () => {
 
   const [{ data: signer }] = useSigner();
 
-  const contract = useContract({
-    addressOrName: SUPER_DENO_DAO,
-    contractInterface: SuperDeno.abi,
-    signerOrProvider: signer,
-  });
+  // const contract = useContract({
+  //   addressOrName: SUPER_DENO_DAO,
+  //   contractInterface: SuperDeno.abi,
+  //   signerOrProvider: signer,
+  // });
 
-  const [info, setInfo] = useState<any>({
-    name: "",
-    constitution: ["", "", ""],
-    owners: [],
-  });
+  // const [info, setInfo] = useState<any>({
+  //   address: "",
+  //   name: "",
+  //   constitution: ["", "", ""],
+  //   owners: [],
+  // });
+
+  const socialDao = useStore(SocialDAOStore);
+  const info = useObservable(socialDao.currentDaoContractInfo);
+  const contract = useObservable(socialDao.currentSocialDAOContract);
 
   useEffect(() => {
     if (!window) return;
 
     const getDaoInfo = async () => {
-      if (!contract || !signer) return;
+      if (!daoName || !signer) return;
 
-      const address = await contract.getDAOAddressByName(daoName);
-      console.log("address", address);
+      await socialDao.getDAOInfoByName(`${daoName}`, signer);
 
-      if (address === EMPTY_ADDRESS || !address) return;
+      //   if (!contract || !signer) return;
 
-      const socialDao = new ethers.Contract(address, SocialDao.abi, signer);
+      //   const address = await contract.getDAOAddressByName(daoName);
+      //   console.log("address", address);
 
-      const info = await socialDao.getInfo();
-      console.log("info", info);
+      //   if (address === EMPTY_ADDRESS || !address) return;
 
-      if (info.length) {
-        setInfo({
-          owners: info[0],
-          name: info[1],
-          constitution: info[2],
-        });
-      }
+      //   const socialDao = new ethers.Contract(address, SocialDao.abi, signer);
 
-      // setNames(names);
-      //   await socialDaoStore.getContract();
-      //   await socialDaoStore.getAllDaosNames(contract);
+      //   const info = await socialDao.getInfo();
+      //   console.log("info", info);
+
+      //   if (info.length) {
+      //     setInfo({
+      //       address,
+      //       owners: info[0],
+      //       name: info[1],
+      //       constitution: info[2],
+      //     });
+      //   }
+
+      //   // setNames(names);
+      //   //   await socialDaoStore.getContract();
+      //   //   await socialDaoStore.getAllDaosNames(contract);
+      // };
+
+      // // if (!daosNames.length) {
+      // console.log("getting daos names");
+      // getDaoInfo();
     };
 
-    // if (!daosNames.length) {
-    console.log("getting daos names");
-    getDaoInfo();
-    // }
-  }, [, contract, signer]);
+    if (signer) {
+      getDaoInfo();
+    }
+  }, [, signer]);
 
-  let profileDataRes = {
-    data: {
-      profiles: {
-        items: [
-          {
-            handle: "Science",
-            bio: "Synthetic diamond is diamond produced in a technological process. Claims of diamond synthesis were documented between 1879 and 1928 but none have been confirmed. In the 1940s, research began in the United States, Sweden and the Soviet Union to grow diamond using chemical vapor deposition (CVD) and high-pressure high-temperature (HPHT) processes. The first reproducible synthesis was in 1953. CVD and HPHT still dominate the production of synthetic diamonds,",
-            picture: null,
-            id: "",
-            followModule: [],
-            ownedBy: "0x438E2EC928a5975113Da95E0114Cc3B075bA5aDC",
-            website: "https://www.science.com",
-            twitterUrl: "https://twitter.com/science",
-            location: "",
-          },
-        ],
-      },
-    },
-  };
+  // let profileDataRes = {
+  //   data: {
+  //     profiles: {
+  //       items: [
+  //         {
+  //           handle: "Science",
+  //           bio: "Synthetic diamond is diamond produced in a technological process. Claims of diamond synthesis were documented between 1879 and 1928 but none have been confirmed. In the 1940s, research began in the United States, Sweden and the Soviet Union to grow diamond using chemical vapor deposition (CVD) and high-pressure high-temperature (HPHT) processes. The first reproducible synthesis was in 1953. CVD and HPHT still dominate the production of synthetic diamonds,",
+  //           picture: null,
+  //           id: "",
+  //           followModule: [],
+  //           ownedBy: "0x438E2EC928a5975113Da95E0114Cc3B075bA5aDC",
+  //           website: "https://www.science.com",
+  //           twitterUrl: "https://twitter.com/science",
+  //           location: "",
+  //         },
+  //       ],
+  //     },
+  //   },
+  // };
 
-  const { data } = profileDataRes;
+  // const { data } = profileDataRes;
 
-  const {
-    handle,
-    bio,
-    picture,
-    id: profileId,
-    followModule,
-    ownedBy,
-  } = data?.profiles.items[0];
+  // const {
+  //   handle,
+  //   bio,
+  //   picture,
+  //   id: profileId,
+  //   followModule,
+  //   ownedBy,
+  // } = data?.profiles.items[0];
+
+  // const onUpdateClick = async () => {
+  //   if (!contract || !signer) return;
+
+  //   const address = await contract.getDAOAddressByName(daoName);
+  //   console.log("address", address);
+
+  //   const socialDao = new ethers.Contract(address, SocialDao.abi, signer);
+
+  //   const tx = await socialDao.setLensProfileAndInfo("hellothisisdao", [
+  //     "ipfs://hellothisisdao_uri",
+  //   ]);
+  //   console.log("tx", tx);
+  // };
+
+  if (!info) return <></>;
 
   return (
     <Container>
@@ -120,8 +152,8 @@ const SocialDAO = () => {
             css={{ width: "120px", height: "120px", marginBottom: "1rem" }}>
             <AvatarImage
               src={
-                picture?.original.url ||
-                `https://source.boringavatars.com/marble/25/${handle}`
+                info.picture?.original.url ||
+                `https://source.boringavatars.com/marble/25/${info.handle}`
               }
               alt="deno"
             />
@@ -144,25 +176,25 @@ const SocialDAO = () => {
         <CenterBox>
           <H1>{info.name}</H1>
 
-          {bio ? (
-            <Text css={{ margin: 0 }}>{bio}</Text>
+          {info.bio ? (
+            <Text css={{ margin: 0 }}>{info.bio}</Text>
           ) : (
             <Text font="sansSerif">no bio....</Text>
           )}
 
           <ButtonsContainer>
-            <Follow
-              profileId={profileId}
-              followerAddress={ownedBy}
-              followModule={followModule}
-            />
+            {/* <Follow
+              profileId={info.profileId}
+              followerAddress={info.ownedBy}
+              followModule={info.followModule}
+            /> */}
             <Button>Join</Button>
-           <Constitution constitutions={["a", "b", "c"]} />
+            <Constitution constitutions={info.constitutions} />
           </ButtonsContainer>
         </CenterBox>
       </TopContainer>
 
-      <SocialDAOTab />
+      <SocialDAOTab address={info.address} />
     </Container>
   );
 };
@@ -188,4 +220,3 @@ const ButtonsContainer = styled("div", {
 
   marginTop: "2rem",
 });
-

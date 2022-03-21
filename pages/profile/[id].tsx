@@ -44,6 +44,8 @@ const Profile = () => {
 
   if (!profileDataRes) return <></>;
 
+  console.log(pubsDataRes);
+
   const { data } = profileDataRes;
   const {
     handle,

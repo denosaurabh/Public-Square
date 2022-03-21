@@ -9,6 +9,7 @@ import { SUPER_DENO_DAO } from "@/contratcts";
 import {
   createProfile,
   QUERY_PROFILES_OWNED_BY_ADDRESS,
+  UPDATE_PROFILE,
 } from "@/graphql/PROFILE";
 import {
   LensHub__factory,
@@ -29,7 +30,7 @@ interface CreateDaoInput {
   uploadedImgUrl: string;
 }
 
-export class SocialDAOStore {
+export class SuperDenoDAOStore {
   superDenoDaoAddress: string = SUPER_DENO_DAO;
   superDenoDao: ethers.Contract | null = null;
   daoNames = observable<string[]>([]);
@@ -62,6 +63,7 @@ export class SocialDAOStore {
 
     const {
       name,
+      about,
       owners,
       constitutionOne,
       constitutionTwo,
@@ -71,6 +73,7 @@ export class SocialDAOStore {
 
     if (
       !name ||
+      !about ||
       !owners ||
       !constitutionOne ||
       !constitutionTwo ||
@@ -116,7 +119,7 @@ export class SocialDAOStore {
     const inputStruct: CreateProfileDataStruct = {
       to: socialDaoAddress,
       handle: name,
-      imageURI: "ipfs://yrynrty",
+      imageURI: uploadedImgUrl,
       followModule: EMPTY_ADDRESS,
       followModuleData: [],
       followNFTURI: "ipfs://yrynry",
@@ -155,7 +158,18 @@ export class SocialDAOStore {
       return;
     }
 
-    const { id } = profileData.data.profiles.items[0];
+    const { id, name: profileName } = profileData.data.profiles.items[0];
+
+    await apolloClient.mutate({
+      mutation: gql(UPDATE_PROFILE),
+      variables: {
+        request: {
+          profileId: id,
+          name: profileName,
+          bio: about,
+        },
+      },
+    });
 
     const socialDAO = new ethers.Contract(
       socialDaoAddress,
