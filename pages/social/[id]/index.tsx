@@ -26,6 +26,7 @@ import SocialDao from "@/artifacts/contracts/SocialDao.sol/SocialDAO.json";
 
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import Constitution from "@/components/SocialDAO/constitution";
 
 const SocialDAO = () => {
   const router = useRouter();
@@ -156,9 +157,7 @@ const SocialDAO = () => {
               followModule={followModule}
             />
             <Button>Join</Button>
-            <ConstitutionText as="a" href="/">
-              Constitution
-            </ConstitutionText>
+           <Constitution constitutions={["a", "b", "c"]} />
           </ButtonsContainer>
         </CenterBox>
       </TopContainer>
@@ -190,11 +189,3 @@ const ButtonsContainer = styled("div", {
   marginTop: "2rem",
 });
 
-const ConstitutionText = styled(Text, "a", {
-  fontFamily: "$sansSerif",
-  fontWeight: "700",
-  fontStyle: "italic",
-  fontSize: "2rem",
-
-  marginLeft: "auto",
-});

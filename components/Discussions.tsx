@@ -7,25 +7,7 @@ const Discussions: React.FC = () => {
   return (
     <DiscussionsContainer>
       {[...Array(6)].map((_, i) => (
-        <DiscussionBox key={i}>
-          <LightSansSerifText>1.</LightSansSerifText>
-          <H3 font="serif" italic>
-            Metaphysics
-          </H3>
-
-          <AvatarGroup gap="-0.5rem">
-            {[...Array(Math.round(Math.random() * 10))].map((v, i) => (
-              <Avatar key={i}>
-                <AvatarImage
-                  src={`https://source.boringavatars.com/marble/25/${i}`}
-                  alt="deno"
-                />
-              </Avatar>
-            ))}
-          </AvatarGroup>
-
-          <LightSansSerifText>+10 members</LightSansSerifText>
-        </DiscussionBox>
+        <Discussion key={i} />
       ))}
 
       <CreateDiscussionHeading as="a" href="/">
@@ -36,6 +18,30 @@ const Discussions: React.FC = () => {
 };
 
 export default Discussions;
+
+export const Discussion: React.FC = () => {
+  return (
+    <DiscussionBox>
+    <LightSansSerifText>1.</LightSansSerifText>
+    <H3 font="serif" italic>
+      Metaphysics
+    </H3>
+
+    <AvatarGroup gap="-0.5rem">
+      {[...Array(Math.round(Math.random() * 10))].map((v, i) => (
+        <Avatar>
+          <AvatarImage
+            src={`https://source.boringavatars.com/marble/25/${i}`}
+            alt="deno"
+          />
+        </Avatar>
+      ))}
+    </AvatarGroup>
+
+    <LightSansSerifText>+10 members</LightSansSerifText>
+  </DiscussionBox>
+  )
+} 
 
 const DiscussionsContainer = styled("div", {
   display: "flex",
