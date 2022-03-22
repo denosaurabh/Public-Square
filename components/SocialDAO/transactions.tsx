@@ -1,6 +1,6 @@
 import { styled } from "@/stitches.config";
 import { useStore, useObservable } from "@/stores";
-import { SocialDAOStore } from "@/stores/SocialDaoStore";
+import { DaoPostType, SocialDAOStore } from "@/stores/SocialDaoStore";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Button } from "../Button";
 import ContentInput from "../ContentInput";
@@ -10,12 +10,24 @@ import { TextArea } from "../TextArea";
 import "draft-js/dist/Draft.css";
 import { LightSansSerifText, Text } from "../Text";
 import { smallAddress } from "@/utils";
+import { Dialog, DialogContent, DialogTrigger } from "../Dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectItemText,
+  SelectTrigger,
+  SelectValue,
+  SelectViewport,
+} from "../Select";
 
 const Transactions = () => {
   const [showAddPost, setShowAddPost] = useState(false);
 
   const [name, setName] = useState("");
   const [content, setContent] = useState("");
+  const [description, setDescription] = useState("");
+  const [type, setType] = useState<DaoPostType>("POST");
 
   const socialDao = useStore(SocialDAOStore);
   const currentSocialDAOContract = useObservable(
@@ -28,7 +40,7 @@ const Transactions = () => {
   const onPostClick = async () => {
     if (!name || !content) return;
 
-    await socialDao.postPubication(name, content);
+    await socialDao.postPubication({ name, content, description, type });
   };
 
   useEffect(() => {
@@ -55,6 +67,11 @@ const Transactions = () => {
     (e: TransactionProps) => e.executed
   );
 
+  const onSelectValChange = (val: DaoPostType) => {
+    if (!val) return;
+    setType(val);
+  };
+
   return (
     <TransactionContainer>
       <PublishButton onClick={() => setShowAddPost(!showAddPost)}>
@@ -68,13 +85,51 @@ const Transactions = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+          <Input
+            placeholder="Short Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
           <TextArea
             placeholder="enter content..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
 
-          <Button onClick={onPostClick}>Post</Button>
+          <Select
+            defaultValue={type}
+            value={type}
+            onValueChange={onSelectValChange}>
+            <SelectTrigger>
+              <SelectValue>
+                {/* {dataRes &&
+            data &&
+            activeAccount &&
+            dataRes?.data?.profiles.items.filter(
+              (a) => a.handle === activeAccount
+            )[0].handle} */}
+                {type}
+              </SelectValue>
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectViewport>
+                <SelectItem value={"POST"}>
+                  <SelectItemText>Post</SelectItemText>
+                </SelectItem>
+                <SelectItem value={"SUBJECT"}>
+                  <SelectItemText>Subject</SelectItemText>
+                </SelectItem>{" "}
+                <SelectItem value={"DISCUSSION"}>
+                  <SelectItemText>Dsicussion</SelectItemText>
+                </SelectItem>
+              </SelectViewport>
+            </SelectContent>
+          </Select>
+
+          <Button onClick={onPostClick} css={{ marginTop: "3rem" }}>
+            Create
+          </Button>
         </ContentInputContainer>
       )}
       <TotalTxHeading>
@@ -170,14 +225,13 @@ const Transaction: React.FC<TransactionProps> = ({
         {totalNoOfConfirmations}
       </Text>
       <Text>
-        <span>data: </span> <u>see</u>
+        <span>data: </span> <TransactionData data={data} />
       </Text>
 
       {numConfirmations === totalNoOfConfirmations && (
         <Text>Transaction has been confirmed</Text>
       )}
       {executed && <Text>Transaction has been executed</Text>}
-      {/* <H5>{data}</H5> */}
 
       <ActionBox>
         <Button
@@ -191,6 +245,27 @@ const Transaction: React.FC<TransactionProps> = ({
         </Button>
       </ActionBox>
     </TransactionBox>
+  );
+};
+
+interface TransactionDataProps {
+  data: Record<string, any>;
+}
+
+const TransactionData: React.FC<TransactionDataProps> = ({ data }) => {
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <u>see</u>
+      </DialogTrigger>
+      <StyledDialogContent>
+        {Object.keys(data).map((key, i) => (
+          <Text key={i}>
+            <span>{key}: </span> {data[key]}
+          </Text>
+        ))}
+      </StyledDialogContent>
+    </Dialog>
   );
 };
 
@@ -262,4 +337,31 @@ const ActionBox = styled("div", {
   gap: "1rem",
 
   padding: "1rem",
+});
+
+const StyledDialogContent = styled(DialogContent, {
+  display: "flex",
+  flexDirection: "column",
+
+  width: "70rem",
+  height: "fit-content",
+
+  border: "1px solid #D3D3D3",
+  borderRadius: "14px",
+
+  p: {
+    display: "flex",
+
+    padding: "1rem 2rem",
+    margin: "0",
+
+    fontWeight: "500",
+
+    span: {
+      fontWeight: "400",
+      marginRight: "auto",
+    },
+
+    borderBottom: "1px solid #D3D3D3",
+  },
 });

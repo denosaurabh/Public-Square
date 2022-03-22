@@ -41,7 +41,7 @@ const StyledContent = styled(DialogPrimitive.Content, {
   "&:focus": { outline: "none" },
 });
 
-const Content = ({ children, ...props }) => {
+const Content: React.FC = ({ children, ...props }) => {
   return (
     <DialogPrimitive.Portal>
       <StyledOverlay />
@@ -70,8 +70,12 @@ const StyledDescription = styled(DialogPrimitive.Description, {
   lineHeight: 1.5,
 });
 
+const StyledTrigger = styled(DialogPrimitive.Trigger, {
+  backgroundColor: "transparent",
+});
+
 export const Dialog = DialogPrimitive.Root;
-export const DialogTrigger = DialogPrimitive.Trigger;
+export const DialogTrigger = StyledTrigger;
 export const DialogContent = Content;
 export const DialogTitle = StyledTitle;
 export const DialogDescription = StyledDescription;

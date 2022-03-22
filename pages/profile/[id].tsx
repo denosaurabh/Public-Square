@@ -2,6 +2,7 @@ import { Avatar, AvatarImage } from "@/components/Avatar";
 import Follow from "@/components/follow";
 import FollowPromises from "@/components/FollowPromises";
 import Post from "@/components/Post";
+import ProfileTabs from "@/components/profile/ProfileTabs";
 import {
   LinkSmallText,
   SemiBoldText,
@@ -108,13 +109,7 @@ const Profile = () => {
 
       <FollowPromises />
 
-      <PostsContainer>
-        {pubsDataRes?.data.publications.items.map((pub: any) => {
-          if (pub.__typename === "Post") {
-            return <Post {...pub} key={pub.id} />;
-          }
-        })}
-      </PostsContainer>
+      <ProfileTabs ownerAddress={ownedBy} />
     </Container>
   );
 };

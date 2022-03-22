@@ -167,7 +167,7 @@ const SocialDAO = () => {
           </Avatar>
 
           <AvatarGroup gap="-0.5rem">
-            {[...Array(6)].map((v, i) => (
+            {[...Array(info.owners.length)].map((v, i) => (
               <Avatar key={i}>
                 <AvatarImage
                   src={`https://source.boringavatars.com/marble/25/${i}`}
@@ -176,8 +176,8 @@ const SocialDAO = () => {
               </Avatar>
             ))}
           </AvatarGroup>
-          <LightSansSerifText css={{ width: "100%" }}>
-            +1.2m members...
+          <LightSansSerifText css={{ textAlign: "center" }}>
+            {info.owners.length} owner{info.owners.length > 1 ? "s" : ""}
           </LightSansSerifText>
         </LeftBox>
         <CenterBox>

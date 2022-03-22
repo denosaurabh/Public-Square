@@ -25,6 +25,7 @@ import { useState } from "react";
 import useMirrorPost from "@/hooks/useMirrorPost";
 import useCollectPost from "@/hooks/useCollectPost";
 import CommentsContainer from "@/components/CommentsContainer";
+import { H5 } from "@/components/Heading";
 
 const PostPage: NextPage = () => {
   const router = useRouter();
@@ -62,7 +63,10 @@ const PostPage: NextPage = () => {
     <Container>
       {pub.metadata ? (
         <LeftBox>
-          <MarkDownBox content={pub.metadata.content} />
+          <div>
+            <H5>{pub.metadata.name}</H5>
+            <MarkDownBox content={pub.metadata.content} />
+          </div>
 
           <ColumnStatsBox>
             <StatsItem onClick={() => setOpenCreateComment(!openCreateComment)}>

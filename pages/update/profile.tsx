@@ -15,6 +15,7 @@ import { gql } from "@apollo/client";
 import { useObservable, useStore } from "@/stores/index";
 import { ChangeEvent, useEffect, useState } from "react";
 import { AccountStore } from "@/stores/AccountStore";
+import { toast } from "react-toastify";
 
 const UpdateProfile = () => {
   const [uploadedImgData, setUploadedImgData] = useState<string | ArrayBuffer>(
@@ -89,39 +90,47 @@ const UpdateProfile = () => {
     // console.log(res);
 
     if (formInput.location || formInput.twitterUrl || formInput.website) {
-      const profileRes = await apolloClient.query({
-        query: gql(QUERY_PROFILE_BY_ID),
-        variables: {
-          request: {
-            handles: [formInput.handle],
-            limit: 1,
+      // toast.loading("Updating profile ...");
+
+      try {
+        const profileRes = await apolloClient.query({
+          query: gql(QUERY_PROFILE_BY_ID),
+          variables: {
+            request: {
+              handles: [formInput.handle],
+              limit: 1,
+            },
           },
-        },
-      });
+        });
 
-      console.log(profileRes);
-      const profile = profileRes.data.profiles.items[0];
+        console.log(profileRes);
+        const profile = profileRes.data.profiles.items[0];
 
-      if (!profile) {
-        console.log("profile not found");
-        return;
+        if (!profile) {
+          console.log("profile not found");
+          return;
+        }
+
+        if (!activeAccount) {
+          console.log("activeAccount not found");
+          return;
+        }
+
+        const updatedProfile = await updateProfile({
+          profileId: activeAccount?.id,
+          name: activeAccount?.handle,
+
+          bio: formInput.bio,
+          location: formInput.location,
+          twitterUrl: formInput.twitterUrl,
+          website: formInput.website,
+        });
+        console.log(updatedProfile);
+
+        toast.success("Profile updated succcessfully");
+      } catch (err) {
+        toast.error("Error updating profile");
       }
-
-      if (!activeAccount) {
-        console.log("activeAccount not found");
-        return;
-      }
-
-      const updatedProfile = await updateProfile({
-        profileId: activeAccount?.id,
-        name: activeAccount?.handle,
-
-        bio: formInput.bio,
-        location: formInput.location,
-        twitterUrl: formInput.twitterUrl,
-        website: formInput.website,
-      });
-      console.log(updatedProfile);
     }
   };
 

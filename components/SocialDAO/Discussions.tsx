@@ -1,21 +1,25 @@
 import { bee } from "@/bee";
 import { styled } from "@/stitches.config";
+import { useStore, useObservable } from "@/stores";
+import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import { Avatar, AvatarGroup, AvatarImage } from "../Avatar";
 import { H3, H6 } from "../Heading";
 import { LightSansSerifText } from "../Text";
 
 const Discussions: React.FC = () => {
-  // const onDiscussionCreateClick = () => {
-  //   const topic = bee.makeFeedTopic(`social/${address}/1`);
-  //   console.log("topic", topic);
-  //   // a93f852cfa0fbc7ce83b8cade7c96487e4bc1d6bf5108c17191a9b14ddef362c
-  // };
+  const socialDao = useStore(SocialDAOStore);
+  const discussions = useObservable(socialDao.discussions);
 
   return (
     <DiscussionsContainer>
-      {[...Array(6)].map((_, i) => (
-        <Discussion key={i} />
-      ))}
+      {discussions ? (
+        discussions.map((el, i) => <Discussion {...el} key={i} />)
+      ) : (
+        <LightSansSerifText>loading...</LightSansSerifText>
+      )}
+      {!discussions.length ? (
+        <LightSansSerifText>No Discussions</LightSansSerifText>
+      ) : null}
 
       <CreateDiscussionHeading>
         Create your own discussion
@@ -26,12 +30,16 @@ const Discussions: React.FC = () => {
 
 export default Discussions;
 
-export const Discussion: React.FC = () => {
+interface DiscussionProps {
+  metadata: Record<string, any>;
+}
+
+export const Discussion: React.FC<DiscussionProps> = ({ id, metadata }) => {
   return (
-    <DiscussionBox>
+    <DiscussionBox as="a" href={`/post/${id}`}>
       <LightSansSerifText>1.</LightSansSerifText>
       <H3 font="serif" italic>
-        Metaphysics
+        {metadata.name}
       </H3>
 
       <AvatarGroup gap="-0.5rem">

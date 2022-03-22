@@ -8,6 +8,7 @@ import { SWRConfig } from "swr";
 import { apolloClient } from "@/apollo/client";
 import { gql } from "@apollo/client";
 import PageContainer from "@/layouts/PageContainer";
+import { ToastContainer } from "@/components/ToastContainer";
 
 const store = createStore();
 
@@ -32,6 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           }}>
           <PageContainer>
             <Component {...pageProps} />
+            <ToastContainer autoClose={3000} position="bottom-right" />
           </PageContainer>
         </SWRConfig>
       </Provider>

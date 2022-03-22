@@ -10,6 +10,16 @@ import { LENSHUB_PROXY } from "@/contratcts";
 import { LensHub, LensHub__factory } from "@/typechain-types";
 import { nanoid } from "nanoid";
 import { IPFSClient } from "@/utils/ipfs";
+import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
+
+export type DaoPostType = "POST" | "SUBJECT" | "DISCUSSION";
+
+interface PostPubication {
+  name: string;
+  description: string;
+  content: string;
+  type: DaoPostType;
+}
 
 export class SocialDAOStore {
   currentSocialDAOContract = observable<ethers.Contract | null>(null);
@@ -20,10 +30,65 @@ export class SocialDAOStore {
   transactions = observable<any>([]);
   noOfTransactions = observable<number>(0);
 
+  posts = observable<any>([]);
+  subjects = observable<any>([]);
+  discussions = observable<any>([]);
+
   constructor(private store: Store) {}
 
   private get superDenoDaoStore(): SuperDenoDAOStore {
     return this.store.get(SuperDenoDAOStore);
+  }
+
+  async fetchPosts(daoProfileId: string) {
+    const pubsData = await apolloClient.query({
+      query: gql(QUERY_PUBLICATIONS),
+      variables: {
+        request: {
+          profileId: daoProfileId,
+          publicationTypes: ["POST", "COMMENT", "MIRROR"],
+          limit: 30,
+        },
+      },
+    });
+
+    let posts: object[] = [];
+    let subjects: object[] = [];
+    let discussions: object[] = [];
+
+    if (!pubsData?.data.publications?.items) return;
+
+    pubsData?.data.publications?.items.map((el: any, i: number) => {
+      if (el.__typename === "Post") {
+        console.log(el);
+
+        const daoPostTypeAttributeObj = el.metadata.attributes.filter(
+          (el: any) => el.traitType === "DAOPostType"
+        )[0];
+
+        console.log(daoPostTypeAttributeObj);
+
+        if (!daoPostTypeAttributeObj) {
+          return posts.push(el);
+        }
+
+        if (daoPostTypeAttributeObj.value === "POST") {
+          return posts.push(el);
+        } else if (daoPostTypeAttributeObj.value === "SUBJECT") {
+          return subjects.push(el);
+        } else if (daoPostTypeAttributeObj.value === "DISCUSSION") {
+          return discussions.push(el);
+        } else {
+          return posts.push(el);
+        }
+      }
+
+      return posts.push(el);
+    });
+
+    this.posts.set(posts);
+    this.subjects.set(subjects);
+    this.discussions.set(discussions);
   }
 
   async getDAOInfoByName(daoName: string, signer: ethers.Signer) {
@@ -42,7 +107,7 @@ export class SocialDAOStore {
     this.currentSocialDAOContract.set(socialDao);
 
     const info = await socialDao.getInfo();
-    console.log("info", info);
+    // console.log("info", info);
 
     const profileRes = await apolloClient.query({
       query: gql(QUERY_PROFILES_OWNED_BY_ADDRESS),
@@ -54,7 +119,7 @@ export class SocialDAOStore {
       },
     });
 
-    console.log("profileRes", profileRes);
+    // console.log("profileRes", profileRes);
 
     const infoObj = {
       ...profileRes.data.profiles.items[0],
@@ -65,21 +130,31 @@ export class SocialDAOStore {
       about: profileRes.data.profiles.items[0]?.bio,
     };
 
+    // console.log(infoObj);
+
     this.currentDaoContractInfo.set(infoObj);
     this.currentDaoProfileInfo.set(profileRes.data.profiles.items[0]);
+
+    await this.fetchPosts(infoObj.id);
   }
 
-  async postPubication(name: string, content: string) {
+  async postPubication({ name, content, description, type }: PostPubication) {
     const metadata = {
       version: "1.0.0",
       metadata_id: nanoid(),
-      description: content,
+      description,
       content,
       external_url: null,
       image: null,
       imageMimeType: null,
       name,
-      attributes: [],
+      attributes: [
+        {
+          displayType: "string",
+          traitType: "DAOPostType",
+          value: type,
+        },
+      ],
       media: [
         // {
         //   item: 'https://scx2.b-cdn.net/gfx/news/hires/2018/lion.jpg',
@@ -158,7 +233,7 @@ export class SocialDAOStore {
     }
 
     const tx = await socialDao.revokeConfirmation(txNum);
-    console.log("execute", tx);
+    console.log("revoke", tx);
   }
 
   async getNoOfTransactions() {
@@ -170,8 +245,6 @@ export class SocialDAOStore {
     }
 
     const tx = await socialDao.getTransactionCount();
-    console.log("getTransactions", tx);
-
     if (!tx) return;
 
     const number = parseInt(tx._hex, 16);
@@ -215,7 +288,7 @@ export class SocialDAOStore {
       const decodedData = decodeTxEncodedData(tx.data);
 
       return {
-        txNo: allTransactions.length - i,
+        txNo: allTransactions.length - i - 1,
         data: decodedData,
         value,
         to: tx.to,

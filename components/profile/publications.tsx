@@ -1,15 +1,28 @@
-import { EXPLORE_PUBLICATIONS } from "@/graphql/DISCOVERY";
 import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
-import { useStore, useObservable } from "@/stores";
-import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import { PostsContainer } from "@/style/post";
+import { useRouter } from "next/router";
 import useSWR from "swr";
 import Post from "../Post";
 import { LightSansSerifText } from "../Text";
 
 const Publications: React.FC = () => {
-  const socialDao = useStore(SocialDAOStore);
-  const posts = useObservable(socialDao.posts);
+  const router = useRouter();
+  const { id } = router.query;
+
+  const { data: pubsDataRes } = useSWR([
+    QUERY_PUBLICATIONS,
+    {
+      request: {
+        profileId: id,
+        publicationTypes: ["POST", "COMMENT", "MIRROR"],
+        limit: 10,
+      },
+    },
+  ]);
+
+  if (!pubsDataRes) return <LightSansSerifText>loading....</LightSansSerifText>;
+
+  const posts = pubsDataRes?.data.publications.items;
 
   return (
     <PostsContainer>
@@ -23,9 +36,7 @@ const Publications: React.FC = () => {
         <LightSansSerifText>loading....</LightSansSerifText>
       )}
 
-      {!posts.length ? (
-        <LightSansSerifText>No Publications</LightSansSerifText>
-      ) : null}
+      {!posts.length ? <LightSansSerifText>No Posts</LightSansSerifText> : null}
     </PostsContainer>
   );
 };

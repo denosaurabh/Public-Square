@@ -1,22 +1,31 @@
 import { styled } from "@/stitches.config";
+import { useStore, useObservable } from "@/stores";
+import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import { H3 } from "../Heading";
-import { Text } from "../Text";
+import { LightSansSerifText, Text } from "../Text";
 
 const Subjects: React.FC = () => {
+  const socialDao = useStore(SocialDAOStore);
+  const subjects = useObservable(socialDao.subjects);
+
   return (
     <SubjectsContainer>
-      {[...Array(6)].map((_, i) => (
-        <SubjectBox key={i}>
-          <H3 font="serif" italic>
-            Metaphysics
-          </H3>
-          <Text>
-            The fundamental nature of reality, the first principles of being,
-            identity and change, space and time, causality, necessity, and
-            possibility.
-          </Text>
-        </SubjectBox>
-      ))}
+      {subjects ? (
+        subjects.map((subject, i) => (
+          <SubjectBox key={i} as="a" href={`/post/${subject.id}`}>
+            <H3 font="serif" italic>
+              {subject.metadata.name}
+            </H3>
+            <Text>{subject.metadata.description}</Text>
+          </SubjectBox>
+        ))
+      ) : (
+        <LightSansSerifText>loading....</LightSansSerifText>
+      )}
+
+      {!subjects.length ? (
+        <LightSansSerifText>No Subjects</LightSansSerifText>
+      ) : null}
     </SubjectsContainer>
   );
 };
@@ -43,6 +52,7 @@ const SubjectBox = styled("div", {
   justifyContent: "center",
 
   textAlign: "center",
+  textDecoration: "none",
 
   h3: {
     marginBottom: "1rem",

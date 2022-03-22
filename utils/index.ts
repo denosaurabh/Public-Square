@@ -26,16 +26,22 @@ export const decodeTxEncodedData = (data: string) => {
   try {
     const decodedData = lensHubI.decodeFunctionData("post", data);
 
-    const filteredDecodedData = Object.keys(decodedData.vars).map(
-      (key: any, i: number, arr) => {
-        if (!Number(key)) {
-          return;
-        }
+    let filteredDecodedData: Record<string, any> = {};
 
-        delete decodedData.vars[`${key}`];
-        return;
+    Object.entries(decodedData.vars).map((key: any, i: number, arr) => {
+      if (Number(key[0]) || key[0] == 0) {
+        return null;
       }
-    );
+
+      filteredDecodedData[`${key[0]}`] = key[1];
+    });
+
+    console.log(filteredDecodedData);
+
+    const profileInt = filteredDecodedData?.profileId?._hex;
+    filteredDecodedData?.profileId = profileInt;
+
+    filteredDecodedData.type = "POST";
 
     return filteredDecodedData;
   } catch (err) {
