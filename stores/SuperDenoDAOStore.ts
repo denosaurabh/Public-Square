@@ -160,12 +160,14 @@ export class SuperDenoDAOStore {
 
     const { id, name: profileName } = profileData.data.profiles.items[0];
 
+    console.log(profileData, id);
+
     await apolloClient.mutate({
       mutation: gql(UPDATE_PROFILE),
       variables: {
         request: {
           profileId: id,
-          name: profileName,
+          name,
           bio: about,
         },
       },

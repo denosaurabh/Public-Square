@@ -145,7 +145,7 @@ const UpdateProfile = () => {
                     width: "100px",
                     height: "100px",
                     margin: "2rem auto",
-                    border: "1px solid grey",
+                    border: "1px solid #D3D3D3",
                   }}>
                   <AvatarImage
                     as="div"
@@ -340,7 +340,7 @@ const TopContainer = styled("div", {
 });
 
 const LeftBox = styled("div", {
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
   borderTopLeftRadius: "20px",
 
   borderTop: 0,
@@ -350,7 +350,7 @@ const LeftBox = styled("div", {
   width: "25%",
 });
 const RightBox = styled("div", {
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
   borderTop: 0,
   borderRight: 0,
 
@@ -372,7 +372,7 @@ const AvatarBox = styled("div", {
 });
 
 const UploadInputContainer = styled("div", {
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
   borderBottom: 0,
   borderLeft: 0,
   borderRight: 0,
@@ -392,14 +392,14 @@ const UploadInputContainer = styled("div", {
 const UploadInput = styled(Input, {
   backgroundColor: "transparent",
 
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
   borderRadius: "0 0 20px 20px",
 });
 
 const Box = styled("div", {
   display: "flex",
   justifyContent: "space-between",
-  borderBottom: "1px solid grey",
+  borderBottom: "1px solid #D3D3D3",
 
   div: {
     flex: 1,
@@ -424,14 +424,14 @@ const Box = styled("div", {
 });
 
 const LineInput = styled(Input, {
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
   borderRadius: 0,
   backgroundColor: "transparent",
 });
 
 const UpdateButton = styled("button", {
   backgroundColor: "transparent",
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
 
   borderLeft: 0,
   borderRight: 0,

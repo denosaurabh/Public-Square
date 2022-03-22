@@ -1,6 +1,6 @@
 import { styled } from "@/stitches.config";
-import { H3 } from "./Heading";
-import { Text } from "./Text";
+import { H3 } from "../Heading";
+import { Text } from "../Text";
 
 const Subjects: React.FC = () => {
   return (
@@ -36,7 +36,7 @@ const SubjectBox = styled("div", {
 
   padding: "2rem",
 
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
 
   display: "flex",
   flexDirection: "column",

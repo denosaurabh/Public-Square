@@ -5,7 +5,7 @@ import { Text } from "./Text";
 const StyledContent = styled(PopoverPrimitive.Content, {
   marginTop: "10px",
 
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
   borderRadius: "16px",
 
   textAlign: "center",
@@ -18,7 +18,7 @@ const StyledContent = styled(PopoverPrimitive.Content, {
 const StyledTrigger = styled(PopoverPrimitive.Trigger, {
   padding: "0.5rem 0.5rem",
 
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
   borderRadius: "100px",
 
   transition: "all 0.1s ease-in-out",
@@ -37,7 +37,7 @@ const StyledText = styled(Text, {
   padding: "1.4rem 2.5rem",
   margin: 0,
 
-  borderBottom: "1px solid grey",
+  borderBottom: "1px solid #D3D3D3",
 
   "&:last-child": {
     borderBottom: 0,

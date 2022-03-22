@@ -1,8 +1,8 @@
 import { bee } from "@/bee";
 import { styled } from "@/stitches.config";
-import { Avatar, AvatarGroup, AvatarImage } from "./Avatar";
-import { H3, H6 } from "./Heading";
-import { LightSansSerifText } from "./Text";
+import { Avatar, AvatarGroup, AvatarImage } from "../Avatar";
+import { H3, H6 } from "../Heading";
+import { LightSansSerifText } from "../Text";
 
 const Discussions: React.FC = () => {
   // const onDiscussionCreateClick = () => {

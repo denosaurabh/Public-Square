@@ -31,9 +31,15 @@ export const Button = styled("button", {
         },
 
         "&:disabled": {
-          backgroundColor: "$grey-600",
-          color: "$grey-100",
-          boxShadow: "0px 0.2rem 1rem rgba(0, 0, 0, 0.25)",
+          // backgroundColor: "$grey-600",
+          // color: "$grey-100",
+          opacity: 0.7,
+          boxShadow: "0px 0.2rem 1rem rgba(0, 0, 0, 0.2)",
+
+          "&:hover": {
+            transform: "translateY(0) scale(1)",
+            cursor: "not-allowed",
+          },
         },
       },
       light: {

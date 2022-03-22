@@ -15,6 +15,8 @@ export default class Document extends NextDocument {
             crossOrigin="anonymous"
           />
 
+          <meta charSet="utf-8" />
+
           <style
             id="stitches"
             dangerouslySetInnerHTML={{ __html: getCssText() }}

@@ -77,7 +77,7 @@ const ContentContainer = styled("div", {
 });
 
 const MarkdownContent = styled("div", {
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
   backgroundColor: "#E7EBF9",
   borderRadius: "10px",
 

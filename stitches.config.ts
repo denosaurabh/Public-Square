@@ -83,7 +83,7 @@ export const globalStyles = globalCss({
   },
   body: {
     margin: "0 auto",
-    fontFamily: "$display",
+    fontFamily: "$main",
     lineHeight: "20px",
   },
   a: {

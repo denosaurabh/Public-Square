@@ -1,12 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./Tabs";
 
 import Publications from "./SocialDAO/publications";
-import Subjects from "./Subject";
-import Discussions from "./Discussions";
+import Subjects from "./SocialDAO/Subject";
+import Discussions from "./SocialDAO/Discussions";
+import Transactions from "./SocialDAO/transactions";
 
 const SocialDAOTab: React.FC = () => {
   return (
-    <Tabs defaultValue="posts" css={{ margin: "5rem auto" }}>
+    <Tabs defaultValue="transactions" css={{ margin: "5rem auto" }}>
       <TabsList aria-label="Manage your account">
         <TabsTrigger value="posts">Posts</TabsTrigger>
         <TabsTrigger value="subjects">Subjects</TabsTrigger>
@@ -23,7 +24,7 @@ const SocialDAOTab: React.FC = () => {
         <Discussions />
       </TabsContent>
       <TabsContent value="transactions">
-        <Discussions />
+        <Transactions />
       </TabsContent>
     </Tabs>
   );

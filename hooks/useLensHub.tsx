@@ -1,3 +1,4 @@
+import { LENSHUB_PROXY } from "@/contratcts";
 import { LensHub, LensHub__factory } from "@/typechain-types";
 import { useEffect, useState } from "react";
 import { useSigner } from "wagmi";
@@ -13,12 +14,7 @@ const useLensHub = () => {
 
         if (!signer) return;
 
-        setLensHub(
-          LensHub__factory.connect(
-            "0xd7B3481De00995046C7850bCe9a5196B7605c367",
-            signer
-          )
-        );
+        setLensHub(LensHub__factory.connect(LENSHUB_PROXY, signer));
       };
 
       getLensHub();

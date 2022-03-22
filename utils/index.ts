@@ -3,13 +3,13 @@ export const cleanUrl = (url: string) => {
   return url.replace(/^https?:\/\//, "");
 };
 
-export const smallAddress = (address: string) => {
+export const smallAddress = (address: string, cutBy?: number) => {
   if (!address) return address;
 
   const smallAddress = [
-    address.slice(0, 4),
-    "..",
-    address.slice(address.length - 4, address.length),
+    address.slice(0, cutBy || 4),
+    "...",
+    address.slice(address.length - (cutBy || 4), address.length),
   ].join("");
 
   return smallAddress;

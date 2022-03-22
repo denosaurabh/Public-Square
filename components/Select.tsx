@@ -20,7 +20,7 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
   width: "fit-content",
   backgroundColor: "$tint3",
 
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
   borderRadius: "10px",
 
   "& > span": {
@@ -51,7 +51,7 @@ const StyledContent = styled(SelectPrimitive.Content, {
   overflow: "hidden",
   // backgroundColor: "$tint1",
 
-  border: "1px solid grey",
+  border: "1px solid #D3D3D3",
   borderRadius: "10px",
 
   width: "max-content",
@@ -81,7 +81,7 @@ const StyledItem = styled(SelectPrimitive.Item, {
   color: "$tint12",
 
   backgroundColor: "#E7EBF9",
-  borderBottom: "1px solid grey",
+  borderBottom: "1px solid #D3D3D3",
 
   width: "100%",
 

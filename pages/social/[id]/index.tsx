@@ -28,7 +28,7 @@ import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import Constitution from "@/components/SocialDAO/constitution";
 import { useStore, useObservable } from "@/stores";
-import { SocialDAOStore } from "@/stores/SocialDAO";
+import { SocialDAOStore } from "@/stores/SocialDaoStore";
 
 const SocialDAO = () => {
   const router = useRouter();
@@ -97,6 +97,13 @@ const SocialDAO = () => {
     }
   }, [, signer]);
 
+  useEffect(() => {
+    if (socialDao) {
+      socialDao.currentDaoProfileInfo.set(null);
+      socialDao.currentDaoContractInfo.set(null);
+    }
+  }, []);
+
   // let profileDataRes = {
   //   data: {
   //     profiles: {
@@ -142,7 +149,7 @@ const SocialDAO = () => {
   //   console.log("tx", tx);
   // };
 
-  if (!info) return <></>;
+  if (!info?.name) return <LightSansSerifText>Loading...</LightSansSerifText>;
 
   return (
     <Container>
@@ -194,7 +201,7 @@ const SocialDAO = () => {
         </CenterBox>
       </TopContainer>
 
-      <SocialDAOTab address={info.address} />
+      <SocialDAOTab />
     </Container>
   );
 };

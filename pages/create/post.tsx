@@ -74,6 +74,8 @@ const CreatePost = () => {
     const result = await createPostTypedData(typedDataReq);
     const typedData = result.data.createPostTypedData.typedData;
 
+    console.log(typedData);
+
     const signData = await signTypedData({
       domain: omitDeep(typedData.domain, "__typename"),
       types: omitDeep(typedData.types, "__typename"),
@@ -84,6 +86,15 @@ const CreatePost = () => {
     const { v, r, s } = splitSignature(signData.data);
 
     if (!lensHub) return;
+
+    console.log("signing", {
+      profileId: typedData.value.profileId,
+      contentURI: typedData.value.contentURI,
+      collectModule: typedData.value.collectModule,
+      collectModuleData: typedData.value.collectModuleData,
+      referenceModule: typedData.value.referenceModule,
+      referenceModuleData: typedData.value.referenceModuleData,
+    });
 
     const tx = await lensHub.postWithSig({
       // const tx = await lensHub.postWithSig({
