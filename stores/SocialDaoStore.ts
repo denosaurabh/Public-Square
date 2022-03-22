@@ -1,4 +1,4 @@
-import { EMPTY_ADDRESS } from "@/utils";
+import { decodeTxEncodedData, EMPTY_ADDRESS } from "@/utils";
 import { ethers } from "ethers";
 import { observable, Store } from ".";
 import { SuperDenoDAOStore } from "./SuperDenoDAOStore";
@@ -8,6 +8,8 @@ import { gql } from "@apollo/client";
 import { QUERY_PROFILES_OWNED_BY_ADDRESS } from "@/graphql/PROFILE";
 import { LENSHUB_PROXY } from "@/contratcts";
 import { LensHub, LensHub__factory } from "@/typechain-types";
+import { nanoid } from "nanoid";
+import { IPFSClient } from "@/utils/ipfs";
 
 export class SocialDAOStore {
   currentSocialDAOContract = observable<ethers.Contract | null>(null);
@@ -68,6 +70,29 @@ export class SocialDAOStore {
   }
 
   async postPubication(name: string, content: string) {
+    const metadata = {
+      version: "1.0.0",
+      metadata_id: nanoid(),
+      description: content,
+      content,
+      external_url: null,
+      image: null,
+      imageMimeType: null,
+      name,
+      attributes: [],
+      media: [
+        // {
+        //   item: 'https://scx2.b-cdn.net/gfx/news/hires/2018/lion.jpg',
+        //   // item: 'https://assets-global.website-files.com/5c38aa850637d1e7198ea850/5f4e173f16b537984687e39e_AAVE%20ARTICLE%20website%20main%201600x800.png',
+        //   type: 'image/jpeg',
+        // },
+      ],
+      appId: "denolensapp",
+    };
+
+    const ipfsResult = await IPFSClient.add(JSON.stringify(metadata));
+    console.log(ipfsResult);
+
     const socialDao = this.currentSocialDAOContract.get();
     console.log("socialDao", socialDao);
 
@@ -82,7 +107,7 @@ export class SocialDAOStore {
     const encodedData = lensHub.encodeFunctionData("post", [
       {
         profileId: profileInt,
-        contentURI: "ipfs://QmSNLpH1US1uSYtksVW4ozaQ8k7BK84Prn4rYp4anYhxwG",
+        contentURI: "ipfs://" + ipfsResult.path,
         collectModule: "0xb96e42b5579e76197b4d2ea710ff50e037881253",
         collectModuleData: "0x",
         referenceModule: EMPTY_ADDRESS,
@@ -106,6 +131,8 @@ export class SocialDAOStore {
       return;
     }
 
+    console.log(txNum);
+
     const tx = await socialDao.confirmTransaction(txNum);
     console.log("confirm", tx);
   }
@@ -119,6 +146,18 @@ export class SocialDAOStore {
     }
 
     const tx = await socialDao.executeTransaction(txNum);
+    console.log("execute", tx);
+  }
+
+  async revokeTransaction(txNum: number) {
+    const socialDao = this.currentSocialDAOContract.get();
+
+    if (!socialDao) {
+      console.log("socialDao is null");
+      return;
+    }
+
+    const tx = await socialDao.revokeConfirmation(txNum);
     console.log("execute", tx);
   }
 
@@ -166,18 +205,23 @@ export class SocialDAOStore {
 
     const allTransactions = await Promise.all(allTransactionsPromises);
 
-    console.log("allTransactions", allTransactions);
+    const valHex = await socialDao.numConfirmationsRequired();
+    const totalNoOfConfirmations = parseInt(valHex._hex, 16);
 
-    const transactionsData = allTransactions.map((tx) => {
+    const transactionsData = allTransactions.map((tx, i) => {
       const value = parseInt(tx.value._hex, 16);
       const numConfirmations = parseInt(tx.numConfirmations._hex, 16);
 
+      const decodedData = decodeTxEncodedData(tx.data);
+
       return {
-        data: tx.data,
+        txNo: allTransactions.length - i,
+        data: decodedData,
         value,
         to: tx.to,
         executed: tx.executed,
         numConfirmations,
+        totalNoOfConfirmations,
       };
     });
 

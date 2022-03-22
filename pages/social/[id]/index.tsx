@@ -99,8 +99,8 @@ const SocialDAO = () => {
 
   useEffect(() => {
     if (socialDao) {
-      socialDao.currentDaoProfileInfo.set(null);
-      socialDao.currentDaoContractInfo.set(null);
+      // socialDao.currentDaoProfileInfo.set(null);
+      // socialDao.currentDaoContractInfo.set(null);
     }
   }, []);
 

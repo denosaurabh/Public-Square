@@ -4,11 +4,11 @@ import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Button } from "../Button";
 import ContentInput from "../ContentInput";
-import { H3, H5 } from "../Heading";
+import { H3, H5, H6 } from "../Heading";
 import Input from "../Input";
 import { TextArea } from "../TextArea";
 import "draft-js/dist/Draft.css";
-import { Text } from "../Text";
+import { LightSansSerifText, Text } from "../Text";
 import { smallAddress } from "@/utils";
 
 const Transactions = () => {
@@ -42,6 +42,19 @@ const Transactions = () => {
     }
   }, [currentSocialDAOContract]);
 
+  const confirmingProposals = transactions.filter(
+    (e: TransactionProps) =>
+      e.numConfirmations < e.totalNoOfConfirmations && !e.executed
+  );
+  const toBeExecutedProposals = transactions.filter(
+    (e: TransactionProps) =>
+      e.numConfirmations === e.totalNoOfConfirmations && !e.executed
+  );
+
+  const executedProposals = transactions.filter(
+    (e: TransactionProps) => e.executed
+  );
+
   return (
     <TransactionContainer>
       <PublishButton onClick={() => setShowAddPost(!showAddPost)}>
@@ -69,11 +82,37 @@ const Transactions = () => {
         far...
       </TotalTxHeading>
 
-      {transactions.map((tx: TransactionProps, i) => (
-        <Transaction key={i} {...tx} />
-      ))}
+      <Label>Confirming proposals</Label>
+      <TransactionsBoxContainer>
+        {confirmingProposals.map((tx: TransactionProps, i: number) => (
+          <Transaction key={i} {...tx} />
+        ))}
+        {!confirmingProposals.length && (
+          <LightSansSerifText>No confirming proposals</LightSansSerifText>
+        )}
+      </TransactionsBoxContainer>
 
-      <Text>transactions controlled by {info.owners.join(", ")}</Text>
+      <Label>To be executed proposals</Label>
+      <TransactionsBoxContainer>
+        {toBeExecutedProposals.map((tx: TransactionProps, i: number) => (
+          <Transaction key={i} {...tx} />
+        ))}
+        {!toBeExecutedProposals.length && (
+          <LightSansSerifText>No To be executed proposals</LightSansSerifText>
+        )}
+      </TransactionsBoxContainer>
+
+      <Label>Executed proposals</Label>
+      <TransactionsBoxContainer>
+        {executedProposals.map((tx: TransactionProps, i: number) => (
+          <Transaction key={i} {...tx} />
+        ))}
+        {!executedProposals.length && (
+          <LightSansSerifText>No executed proposals</LightSansSerifText>
+        )}
+      </TransactionsBoxContainer>
+
+      <Text>transactions controlled by: {info.owners.join(", ")}</Text>
     </TransactionContainer>
   );
 };
@@ -87,6 +126,7 @@ interface TransactionProps {
   data: string[];
   executed: boolean;
   numConfirmations: number;
+  totalNoOfConfirmations: number;
 }
 
 const Transaction: React.FC<TransactionProps> = ({
@@ -96,6 +136,7 @@ const Transaction: React.FC<TransactionProps> = ({
   data,
   executed,
   numConfirmations,
+  totalNoOfConfirmations,
 }) => {
   const socialDao = useStore(SocialDAOStore);
 
@@ -103,31 +144,48 @@ const Transaction: React.FC<TransactionProps> = ({
     await socialDao.confirmTransaction(txNo);
   };
 
+  const onRevokeTxClick = async () => {
+    await socialDao.revokeTransaction(txNo);
+  };
+
   const onExecuteTxClick = async () => {
     await socialDao.executeTransaction(txNo);
   };
 
+  console.log(data);
+
   return (
     <TransactionBox>
       <Text>
-        <span>to: </span> {smallAddress(to, 10)}
+        <span>TX No: </span> {txNo}
       </Text>
       <Text>
-        <span>value: </span> {value}
+        <span>amount: </span> {value}
       </Text>
       <Text>
         <span>executed: </span> {executed ? "yes" : "no"}
       </Text>
       <Text>
-        <span>confirmations: </span> {numConfirmations}
+        <span>confirmations: </span> {numConfirmations} /{" "}
+        {totalNoOfConfirmations}
+      </Text>
+      <Text>
+        <span>data: </span> <u>see</u>
       </Text>
 
-      {numConfirmations && <Text>Transaction has been confirmed</Text>}
+      {numConfirmations === totalNoOfConfirmations && (
+        <Text>Transaction has been confirmed</Text>
+      )}
       {executed && <Text>Transaction has been executed</Text>}
       {/* <H5>{data}</H5> */}
 
       <ActionBox>
-        <Button onClick={onConfirmTxClick}>Confirm Tx</Button>
+        <Button
+          onClick={onConfirmTxClick}
+          disabled={numConfirmations === totalNoOfConfirmations}>
+          Confirm Tx
+        </Button>
+
         <Button onClick={onExecuteTxClick} disabled={executed}>
           Execute Tx
         </Button>
@@ -153,6 +211,14 @@ const TotalTxHeading = styled(H5, {
   span: { color: "black", fontSize: "150%" },
 });
 
+const TransactionsBoxContainer = styled("div", {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "5rem",
+
+  marginBottom: "5rem",
+});
+
 const TransactionBox = styled("div", {
   display: "flex",
   flexDirection: "column",
@@ -162,8 +228,6 @@ const TransactionBox = styled("div", {
 
   border: "1px solid #D3D3D3",
   borderRadius: "14px",
-
-  margin: "4rem",
 
   p: {
     display: "flex",
@@ -178,8 +242,18 @@ const TransactionBox = styled("div", {
       marginRight: "auto",
     },
 
+    u: {
+      "&:hover": {
+        cursor: "pointer",
+      },
+    },
+
     borderBottom: "1px solid #D3D3D3",
   },
+});
+
+const Label = styled(H6, {
+  margin: "2rem 1rem",
 });
 
 const ActionBox = styled("div", {
