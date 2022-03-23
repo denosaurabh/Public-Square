@@ -30,6 +30,8 @@ const AccountButton: React.FC = () => {
     if (accessToken) return;
 
     if (accountData?.address) {
+      console.log("accountData", accountData);
+
       authStore?.address.set(accountData.address);
       const challange = await authStore?.getChallange();
 
@@ -52,12 +54,18 @@ const AccountButton: React.FC = () => {
     connect(connector);
   };
 
+  const disconnectAuth = async () => {
+    disconnect();
+
+    authStore.logout();
+  };
+
   useEffect(() => {
     if (accountData && !load) {
       loadAuth();
       setLoad(true);
     }
-  }, [accountData]);
+  }, [, accountData]);
 
   useEffect(() => {
     if (signer) {
@@ -76,7 +84,7 @@ const AccountButton: React.FC = () => {
   }
 
   return (
-    <TextButton onClick={disconnect}>
+    <TextButton onClick={disconnectAuth}>
       {accountData.ens?.name || smallAddress(accountData.address)}
     </TextButton>
   );

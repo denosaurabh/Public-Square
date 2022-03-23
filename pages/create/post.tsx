@@ -26,7 +26,7 @@ const CreatePost = () => {
   const [content, setContent] = useState("");
 
   const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeAccountAdr);
+  const activeAccountAdr = useObservable(accountStore.activeProfileId);
 
   const lensHub = useLensHub();
 

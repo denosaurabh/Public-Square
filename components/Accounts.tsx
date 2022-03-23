@@ -14,48 +14,46 @@ import {
   SelectItemText,
 } from "./Select";
 import { useEffect } from "react";
+import { LightSansSerifText, LinkText } from "./Text";
+import { AuthStore } from "@/stores/AuthStore";
+import Link from "next/link";
 
 const Accounts = () => {
-  const [{ data: accountData }] = useAccount({
-    fetchEns: true,
-  });
-
-  const { data: dataRes } = useSWR([
-    QUERY_PROFILES_OWNED_BY_ADDRESS,
-    {
-      request: {
-        ownedBy: accountData?.address,
-        limit: 30,
-      },
-    },
-  ]);
-
   const accountStore = useStore(AccountStore);
-  const activeAccount = useObservable(accountStore.activeAccount);
-  const activeAccountAdr = useObservable(accountStore.activeAccountAdr);
+  const authStore = useStore(AuthStore);
+
+  const address = useObservable(authStore.address);
+  const allProfiles = useObservable(accountStore.allProfiles);
+
+  const activeProfile = useObservable(accountStore.activeProfile);
+  const activeProfileId = useObservable(accountStore.activeProfileId);
 
   useEffect(() => {
-    const update = async () => {
-      await accountStore.updateDataFromLocalStore();
+    const fetchAndUpdateProfiles = async () => {
+      // await accountStore.updateDataFromLocalStore(data?.profiles.items[0].id);
+      await accountStore.fetchProfiles();
     };
 
-    update();
-  }, [dataRes]);
+    // if (data?.profiles?.items[0]?.id) {
+    if (address) {
+      fetchAndUpdateProfiles();
+    } else {
+      console.log("no address");
+    }
+    // }
+  }, [address]);
 
-  if (!dataRes) return <></>;
-
-  const { data, loading, error } = dataRes;
-
-  if (!data) return <></>;
-
-  const currentProfile = data?.profiles.items[0];
-  //   accountStore.setActiveAccount(currentProfile.id);
+  if (!allProfiles.length) {
+    return (
+      <Link href="/create/profile" passHref>
+        <LinkText as={LightSansSerifText}>Create Profile</LinkText>
+      </Link>
+    );
+  }
 
   const onSelectValChange = (val: string) => {
     if (val) {
-      const profile = data.profiles.items.filter(
-        (profile) => profile.id === val
-      );
+      const profile = allProfiles.filter((profile) => profile.id === val);
 
       if (profile.length) {
         accountStore.setActiveAccount(profile[0]);
@@ -65,12 +63,12 @@ const Accounts = () => {
     }
   };
 
-  if (!activeAccount) return <></>;
+  if (!activeProfile) return <></>;
 
   return (
     <Select
-      defaultValue={activeAccountAdr}
-      value={activeAccountAdr}
+      defaultValue={activeProfileId}
+      value={activeProfileId}
       onValueChange={onSelectValChange}>
       <SelectTrigger>
         <SelectValue>
@@ -80,14 +78,14 @@ const Accounts = () => {
             dataRes?.data?.profiles.items.filter(
               (a) => a.handle === activeAccount
             )[0].handle} */}
-          {activeAccount?.handle} {activeAccountAdr}
+          {activeProfile?.handle} {activeProfileId}
         </SelectValue>
       </SelectTrigger>
 
       <SelectContent>
         <SelectViewport>
-          {dataRes &&
-            dataRes.data?.profiles.items.map((profile) => {
+          {allProfiles ? (
+            allProfiles.map((profile) => {
               return (
                 <SelectItem value={profile.id} key={profile.id}>
                   <SelectItemText>
@@ -95,7 +93,10 @@ const Accounts = () => {
                   </SelectItemText>
                 </SelectItem>
               );
-            })}
+            })
+          ) : (
+            <LightSansSerifText>Create account</LightSansSerifText>
+          )}
         </SelectViewport>
       </SelectContent>
     </Select>

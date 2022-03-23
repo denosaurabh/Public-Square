@@ -29,7 +29,7 @@ const Follow: React.FC<FollowProps> = ({
   const [{ data: accountData }] = useAccount();
 
   const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeAccountAdr);
+  const activeAccountAdr = useObservable(accountStore.activeProfileId);
 
   const { data: doesFollowReq } = useSWR([
     QUERY_DOES_FOLLOW,

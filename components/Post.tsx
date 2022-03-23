@@ -95,6 +95,7 @@ const PostContainer = styled("div", {
   height: "fit-content",
 
   backgroundColor: "#E7EBF9",
+  border: "1px solid grey",
   borderRadius: "10px",
 
   transition: "all 0.3s ease-in-out",

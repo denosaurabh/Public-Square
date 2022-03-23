@@ -28,7 +28,7 @@ const CreateComment: React.FC<CreateCommentI> = ({ publicationId }) => {
   const [, signTypedData] = useSignTypedData();
 
   const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeAccountAdr);
+  const activeAccountAdr = useObservable(accountStore.activeProfileId);
 
   const lensHub = useLensHub();
 

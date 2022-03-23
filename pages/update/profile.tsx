@@ -23,7 +23,7 @@ const UpdateProfile = () => {
   );
 
   const accountStore = useStore(AccountStore);
-  const activeAccount = useObservable(accountStore.activeAccount);
+  const activeAccount = useObservable(accountStore.activeProfile);
 
   console.log(activeAccount);
 

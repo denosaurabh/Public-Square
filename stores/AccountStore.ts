@@ -2,16 +2,19 @@ import { apolloClient } from "@/apollo/client";
 import { LocalStore } from "@/utils/localStorage";
 import { gql } from "@apollo/client";
 import { QUERY_PROFILE_BY_ID } from "@/graphql/PROFILE";
-import { observable } from ".";
+import { observable, Store } from ".";
+import { AuthStore } from "./AuthStore";
 
 export class AccountStore {
-  activeAccount = observable<Record<string, any> | null>(null);
-  activeAccountAdr = observable<string>("");
+  allProfiles = observable<Record<string, any>[]>([]);
+
+  activeProfile = observable<Record<string, any> | null>(null);
+  activeProfileId = observable<string>("");
 
   localStoreAccount = new LocalStore<{ activeAccountAdr: string }>("@account");
 
-  constructor() {
-    this.activeAccountAdr.subscribe((activeAccountAdr) => {
+  constructor(private store: Store) {
+    this.activeProfileId.subscribe((activeAccountAdr) => {
       if (activeAccountAdr) {
         this.localStoreAccount.update({ activeAccountAdr });
       } else {
@@ -20,35 +23,100 @@ export class AccountStore {
     });
   }
 
+  private get authStore(): AuthStore {
+    return this.store.get(AuthStore);
+  }
+
+  async fetchProfiles() {
+    const address = this.authStore.address.get();
+
+    console.log("fetchProfiles", address);
+
+    if (!address) return;
+
+    const data = await apolloClient.query({
+      query: gql(QUERY_PROFILE_BY_ID),
+      variables: {
+        request: {
+          ownedBy: [address],
+          // profileIds: [this.activeAccountAdr.get],
+          limit: 30,
+        },
+      },
+    });
+
+    const profiles = data?.data?.profiles?.items;
+
+    console.log("fetchProfiles", profiles);
+
+    if (profiles?.length) {
+      this.allProfiles.set(profiles);
+
+      const localActiveAccountId =
+        this.localStoreAccount.get()?.activeAccountAdr;
+      if (localActiveAccountId) {
+        this.setActiveAccountAdr(`${localActiveAccountId}` || profiles[0].id);
+
+        this.setActiveAccount(
+          profiles.filter((p) => p.id === localActiveAccountId)[0]
+        );
+
+        return;
+      }
+
+      if (!this.activeProfile.get() || !this.activeProfileId.get()) {
+        const currentProfile = profiles[0];
+
+        this.activeProfile.set(currentProfile);
+        this.activeProfileId.set(currentProfile.id);
+        this.localStoreAccount.update({ activeAccountAdr: currentProfile.id });
+      }
+    } else {
+      this.localStoreAccount.set({ activeAccountAdr: "" });
+    }
+  }
+
   setActiveAccount(accountData: Record<string, any>) {
-    this.activeAccount.set(accountData);
+    this.activeProfile.set(accountData);
   }
 
   setActiveAccountAdr(address: string) {
-    this.activeAccountAdr.set(address);
+    this.activeProfileId.set(address);
   }
 
-  async updateDataFromLocalStore() {
+  updateDataFromLocalStore(id: string) {
     const localData = this.localStoreAccount.get();
+    // const adr = this.authStore.address.get;
 
     if (localData?.activeAccountAdr) {
-      this.activeAccountAdr.set(localData.activeAccountAdr);
-
-      const data = await apolloClient.query({
-        query: gql(QUERY_PROFILE_BY_ID),
-        variables: {
-          request: {
-            profileIds: [localData.activeAccountAdr],
-            limit: 1,
-          },
-        },
-      });
-
-      const profile = data?.data?.profiles?.items?.[0];
-
-      if (profile) {
-        this.setActiveAccount(profile);
-      }
+      this.activeProfileId.set(localData?.activeAccountAdr || id);
     }
+
+    // const data = await apolloClient.query({
+    //   query: gql(QUERY_PROFILE_BY_ID),
+    //   variables: {
+    //     request: {
+    //       // ownedBy: [],
+    //       profileIds: [localData?.activeAccountAdr || id],
+    //       limit: 1,
+    //     },
+    //   },
+    // });
+
+    // const profile = data?.data?.profiles?.items?.[0];
+
+    // if (profile) {
+    //   this.setActiveAccount(profile);
+    // }
+    // }
+  }
+
+  clearProfiles() {
+    this.allProfiles.set([]);
+
+    this.activeProfile.set(null);
+    this.activeProfileId.set("");
+
+    this.localStoreAccount.set({ activeAccountAdr: "" });
   }
 }

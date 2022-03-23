@@ -49,6 +49,7 @@ export const LightSansSerifText = styled(Text, {
 });
 
 export const LinkText = styled(Text, {
+
   "&:hover": {
     textDecoration: "underline",
     cursor: "pointer",

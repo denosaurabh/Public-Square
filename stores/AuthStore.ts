@@ -7,7 +7,8 @@ import {
 import { LocalStore } from "@/utils/localStorage";
 import { gql } from "@apollo/client";
 import { Signer } from "ethers";
-import { observable } from ".";
+import { observable, Store } from ".";
+import { AccountStore } from "./AccountStore";
 
 export class AuthStore {
   address = observable<string | null>(null);
@@ -23,7 +24,7 @@ export class AuthStore {
     refreshToken: string;
   }>("@auth");
 
-  constructor() {
+  constructor(private store: Store) {
     this.accessToken.subscribe((token) => {
       if (token) {
         this.localStoresAuth.update({ accessToken: token });
@@ -39,6 +40,10 @@ export class AuthStore {
         this.localStoresAuth.update({ refreshToken: "" });
       }
     });
+  }
+
+  private get accountStore(): AccountStore {
+    return this.store.get(AccountStore);
   }
 
   setSigner(signer: Signer) {
@@ -110,6 +115,22 @@ export class AuthStore {
       },
     });
     return challange;
+  }
+
+  async logout() {
+    this.address.set(null);
+    this.signature.set(null);
+
+    this.signer.set(undefined);
+
+    this.accessToken.set(null);
+    this.refreshToken.set(null);
+
+    this.localStoresAuth.update({ accessToken: "", refreshToken: "" });
+
+    this.accountStore.activeProfile.set(null);
+    this.accountStore.activeProfileId.set("");
+    this.accountStore.localStoreAccount.update({ activeAccountAdr: "" });
   }
 
   updateFromLocalStorage() {

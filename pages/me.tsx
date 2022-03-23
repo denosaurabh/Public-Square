@@ -7,7 +7,7 @@ const Profile = () => {
   const router = useRouter();
 
   const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeAccountAdr);
+  const activeAccountAdr = useObservable(accountStore.activeProfileId);
 
   useEffect(() => {
     if (!window) return;

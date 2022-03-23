@@ -12,7 +12,7 @@ const useCollectPost = (publicationId: string) => {
   const [{ data, error, loading }] = useAccount();
 
   const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeAccountAdr);
+  const activeAccountAdr = useObservable(accountStore.activeProfileId);
 
   const lensHub = useLensHub();
 

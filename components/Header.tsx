@@ -22,7 +22,7 @@ const Header = () => {
   const router = useRouter();
 
   const accountStore = useStore(AccountStore);
-  const activeAccount = useObservable(accountStore.activeAccount);
+  const activeAccount = useObservable(accountStore.activeProfile);
 
   return (
     <HeaderContainer>
