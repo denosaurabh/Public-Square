@@ -14,7 +14,7 @@ const Discussions: React.FC = () => {
   return (
     <DiscussionsContainer>
       {discussions ? (
-        discussions.map((el, i) => <Discussion {...el} key={i} />)
+        discussions.map((el, i) => <Discussion no={i + 1} {...el} key={i} />)
       ) : (
         <LightSansSerifText>loading...</LightSansSerifText>
       )}
@@ -33,13 +33,14 @@ export default Discussions;
 
 interface DiscussionProps {
   metadata: Record<string, any>;
+  no: string;
 }
 
-export const Discussion: React.FC<DiscussionProps> = ({ id, metadata }) => {
+export const Discussion: React.FC<DiscussionProps> = ({ id, metadata, no }) => {
   return (
     <Link href={`/post/${id}`} passHref>
       <DiscussionBox>
-        <LightSansSerifText>1.</LightSansSerifText>
+        <LightSansSerifText>{no}.</LightSansSerifText>
         <H3 font="serif" italic>
           {metadata.name}
         </H3>

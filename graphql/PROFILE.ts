@@ -162,6 +162,36 @@ query ($request: ProfileQueryRequest!) {
     }
   }`;
 
+export const CREATE_SET_FOLLOW_MODULE_TYPED_DATA = `
+  mutation($request: CreateSetFollowModuleRequest!) { 
+    createSetFollowModuleTypedData(request: $request) {
+      id
+      expiresAt
+      typedData {
+        types {
+          SetFollowModuleWithSig {
+            name
+            type
+          }
+        }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        nonce
+        deadline
+        profileId
+        followModule
+        followModuleData
+      }
+     }
+   }
+ }
+`;
+
 export const MUTATE_PROFILE = `
     mutation($request: CreateProfileRequest!) { 
         createProfile(request: $request) {
@@ -198,6 +228,15 @@ export const updateProfile = (profileInfo) => {
     mutation: gql(UPDATE_PROFILE),
     variables: {
       request: profileInfo,
+    },
+  });
+};
+
+export const createSetFollowModuleTypedData = (setFollowModuleRequest) => {
+  return apolloClient.mutate({
+    mutation: gql(CREATE_SET_FOLLOW_MODULE_TYPED_DATA),
+    variables: {
+      request: setFollowModuleRequest,
     },
   });
 };

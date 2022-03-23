@@ -13,6 +13,7 @@ import { Button } from "./Button";
 import omitDeep from "omit-deep";
 import useSWR from "swr";
 import useFollowNFT from "@/hooks/useFollowNft";
+import { FOLLOW_MODULES } from "@/contratcts";
 
 interface FollowProps {
   profileId: string;
@@ -53,13 +54,33 @@ const Follow: React.FC<FollowProps> = ({
   const [followNft, setFollowNft] = useFollowNFT();
 
   const follow = async () => {
+    // __typename;
+
+    const followData = FOLLOW_MODULES[followModule?.__typename];
+
+    let followModuleObj = null;
+
+    if (followData) {
+      followModuleObj = {
+        [followData.type]: {
+          // recipient: followModule.recipient,
+          amount: {
+            currency: followModule.amount.asset.address,
+            value: followModule.amount.value,
+          },
+        },
+      };
+    }
+
+    console.log("followModuleObj", followModuleObj, profileId);
+
     const followRequest = [
       {
         profile: activeAccountAdr,
       },
       {
         profile: profileId,
-        followModule: followModule,
+        followModule: followModuleObj,
       },
     ];
 

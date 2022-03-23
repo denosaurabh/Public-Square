@@ -32,20 +32,9 @@ const Profile = () => {
     },
   ]);
 
-  const { data: pubsDataRes } = useSWR([
-    QUERY_PUBLICATIONS,
-    {
-      request: {
-        profileId: id,
-        publicationTypes: ["POST", "COMMENT", "MIRROR"],
-        limit: 10,
-      },
-    },
-  ]);
+  console.log(profileDataRes);
 
   if (!profileDataRes) return <></>;
-
-  console.log(pubsDataRes);
 
   const { data } = profileDataRes;
   const {
@@ -107,7 +96,7 @@ const Profile = () => {
         </RightBox>
       </TopContainer>
 
-      <FollowPromises />
+      {/* <FollowPromises /> */}
 
       <ProfileTabs ownerAddress={ownedBy} />
     </Container>

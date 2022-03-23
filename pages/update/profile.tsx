@@ -16,6 +16,10 @@ import { useObservable, useStore } from "@/stores/index";
 import { ChangeEvent, useEffect, useState } from "react";
 import { AccountStore } from "@/stores/AccountStore";
 import { toast } from "react-toastify";
+import { ModuleSelect } from "@/components/ModuleSelect";
+import { FOLLOW_MODULES } from "@/contratcts";
+import { compareAddress } from "@/utils";
+import useUpdateFollowModule from "@/hooks/useUpdateFollowModule";
 
 const UpdateProfile = () => {
   const [uploadedImgData, setUploadedImgData] = useState<string | ArrayBuffer>(
@@ -246,21 +250,106 @@ const AddFollowModule = () => {
     6: "",
   });
 
+  const onInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormInput({ ...formInput, [name]: value });
+  };
+
+  const [updateProfileFollowModule] = useUpdateFollowModule();
+
+  const [followModule, setFollowModule] = useState(
+    FOLLOW_MODULES["EmptyFollowModuleSettings"]
+  );
+
+  const [moduleInputValues, setModuleInputValues] = useState({
+    Follow: {
+      amount: {
+        currency: "",
+        value: "",
+      },
+      recipient: "",
+    },
+  });
+
+  const onCollectModuleChange = (val: string) => {
+    if (!val) return;
+
+    const module = Object.values(FOLLOW_MODULES).filter((m) =>
+      compareAddress(m.address, val)
+    )[0];
+    if (!module) return;
+
+    setFollowModule(module);
+  };
+
+  const onModuleInputChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    name: "Collect" | "Reference",
+    key: string,
+    innerKey: string
+  ) => {
+    const { value } = e.target;
+
+    if (innerKey) {
+      setModuleInputValues((prev) => ({
+        ...prev,
+        [name]: {
+          ...prev[name],
+          [key]: {
+            ...prev[name][key],
+            [innerKey]: value,
+          },
+        },
+      }));
+
+      console.table(moduleInputValues);
+
+      return;
+    }
+
+    setModuleInputValues((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev[name],
+        [key]: value,
+      },
+    }));
+
+    console.table(moduleInputValues);
+  };
+
   const onFormSubmit = async (e) => {
     e.preventDefault();
 
     const values = Object.values(formInput);
     const promises = values.filter((v) => v);
 
-    if (!promises.length) {
-      console.log("no promises");
-      return;
-    }
-  };
+    let modifiedFollowData = {};
 
-  const onInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormInput({ ...formInput, [name]: value });
+    if (followModule.type === "followerOnlyReferenceModule") {
+      modifiedFollowData = {
+        recipient: moduleInputValues.Follow.recipient,
+        amount: {
+          currency: moduleInputValues.Follow.amount.currency,
+          value: moduleInputValues.Follow.amount.value,
+        },
+      };
+    }
+
+    const followData = {
+      [followModule.type]:
+        followModule.type === "emptyFollowModule"
+          ? true
+          : moduleInputValues.Follow,
+    };
+
+    await updateProfileFollowModule(followData);
+    // await updateProfileFollowModule(modifiedFollowData);
+
+    // if (!promises.length) {
+    //   console.log("no promises");
+    //   return;
+    // }
   };
 
   return (
@@ -268,11 +357,21 @@ const AddFollowModule = () => {
       <H1 italic font="serif" css={{ marginTop: "10rem" }}>
         Add Follow Module
       </H1>
-      <Text italic font="sansSerif" css={{ margin: "1rem 0" }}>
+      {/* <Text italic font="sansSerif" css={{ margin: "1rem 0" }}>
         This follow feature is special, it will let you to add a subscription
         based module to your profile. more info soon....
-      </Text>
-      <Text italic font="sansSerif" css={{ margin: "1rem 0" }}>
+      </Text> */}
+
+      <ModuleSelect
+        name="Follow"
+        value={followModule}
+        onSelectChange={onCollectModuleChange}
+        modules={FOLLOW_MODULES}
+        onInputChange={onModuleInputChange}
+        inputValues={moduleInputValues}
+      />
+
+      {/* <Text italic font="sansSerif" css={{ margin: "1rem 0" }}>
         Your don&apos;t have to fill out all of them, just just any many as you
         wish.
       </Text>
@@ -319,11 +418,11 @@ const AddFollowModule = () => {
             placeholder="Your sixth promise"
           />
         </Box>
-
-        <UpdateButton type="submit" onClick={onFormSubmit}>
-          Add Fee Follow Module
-        </UpdateButton>
-      </Container>
+ */}
+      <UpdateButton type="submit" onClick={onFormSubmit}>
+        Update Follow Module
+      </UpdateButton>
+      {/* </Container> */}
     </>
   );
 };
@@ -442,9 +541,9 @@ const UpdateButton = styled("button", {
   backgroundColor: "transparent",
   border: "1px solid #D3D3D3",
 
-  borderLeft: 0,
-  borderRight: 0,
-  borderBottom: 0,
+  // borderLeft: 0,
+  // borderRight: 0,
+  // borderBottom: 0,
 
   borderRadius: "0 0 20px 20px",
 

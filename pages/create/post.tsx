@@ -42,6 +42,7 @@ import {
 } from "@/components/Select";
 import { compareAddress } from "@/utils";
 import { H6 } from "@/components/Heading";
+import { ModuleSelect } from "@/components/ModuleSelect";
 
 const CreatePost = () => {
   const [, signTypedData] = useSignTypedData();
@@ -53,7 +54,7 @@ const CreatePost = () => {
     COLLECT_MODULES["EmptyCollectModuleSettings"]
   );
   const [referenceModule, setReferenceModule] = useState(
-    REFERENCE_MODULES["null"]
+    REFERENCE_MODULES["none"]
   );
 
   const [moduleInputValues, setModuleInputValues] = useState({
@@ -79,6 +80,16 @@ const CreatePost = () => {
   const onCreatePostClick = async () => {
     console.log(name, content, activeProfileId);
 
+    Number(moduleInputValues?.Collect?.collectLimit);
+    Number(moduleInputValues?.Collect?.amount?.value);
+    parseFloat(moduleInputValues?.Collect?.referralFee);
+
+    moduleInputValues?.Collect?.referralFee = 0;
+
+    if (collectModule.type !== "limitedFeeCollectModule") {
+      delete moduleInputValues?.Collect?.collectLimit;
+    }
+
     const collectModuleObj = {
       [collectModule.type]:
         collectModule.dataType === "Boolean"
@@ -94,6 +105,9 @@ const CreatePost = () => {
     };
 
     if (!content || !name || !activeProfileId) return;
+
+    console.log(collectModuleObj);
+    console.log(referenceModuleObj);
 
     console.log("creating post");
 
@@ -123,12 +137,8 @@ const CreatePost = () => {
     const typedDataReq = {
       profileId: activeProfileId,
       contentURI: "ipfs://" + ipfsResult.path,
-      collectModule: {
-        emptyCollectModule: true,
-      },
-      referenceModule: {
-        followerOnlyReferenceModule: false,
-      },
+      collectModule: collectModuleObj,
+      referenceModule: referenceModuleObj,
     };
 
     const result = await createPostTypedData(typedDataReq);
@@ -312,108 +322,6 @@ const CreatePost = () => {
 
 export default CreatePost;
 
-interface ModuleSelectProps {
-  name: "Collect" | "Reference";
-  modules: ModulesI;
-  value: Module;
-  onSelectChange: (value: string) => void;
-  onInputChange: (e: any, name: string, key: string, innerKey: string) => void;
-  inputValues: { [key: string]: Amount } | {};
-}
-
-const ModuleSelect: React.FC<ModuleSelectProps> = ({
-  name,
-  modules,
-  value,
-  onSelectChange,
-  onInputChange,
-  inputValues,
-}) => {
-  return (
-    <ModuleBox>
-      <BoldText>{name} Module</BoldText>
-      <LightSansSerifText>
-        This is a {name} module. Here you can add any functionality to when
-        someone tries to {name} this post
-      </LightSansSerifText>
-
-      <Select
-        defaultValue={value.address}
-        value={value.address}
-        onValueChange={onSelectChange}>
-        <SelectTrigger css={{ width: "40rem", marginBottom: "3rem" }}>
-          <SelectValue>{value.name}</SelectValue>
-        </SelectTrigger>
-
-        <SelectContent css={{ width: "40rem" }}>
-          <SelectViewport>
-            {Object.values(modules).map((module, i) => {
-              const { name, address } = module;
-
-              return (
-                <SelectItem value={address} key={name}>
-                  <SelectItemText>{name}</SelectItemText>
-                </SelectItem>
-              );
-            })}
-          </SelectViewport>
-        </SelectContent>
-      </Select>
-
-      <LightSansSerifText>{value.message}</LightSansSerifText>
-
-      <ModuleInputs>
-        {typeof value.dataType === "object" ? (
-          <>
-            {Object.keys(value.dataType).map((key: string, i, arr) => {
-              if (typeof value.dataType[`${key}`] === "object") {
-                const vals = Object.keys(value.dataType[`${key}`]).map(
-                  (innerKey: string, innerI, innerArr) => {
-                    return (
-                      <LineInput
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                          onInputChange(e, name, key, innerKey)
-                        }
-                        name={innerKey}
-                        key={innerI}
-                        type={value.dataType[key][innerKey].toLowerCase()}
-                        placeholder={innerKey}
-                        value={inputValues[name][key][innerKey]}
-                        required
-                      />
-                    );
-                  }
-                );
-
-                return vals;
-              }
-
-              if (typeof value.dataType[`${key}`] === "string") {
-                return (
-                  <LineInput
-                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                      onInputChange(e, name, key)
-                    }
-                    key={key}
-                    type={value.dataType[key].toLowerCase()}
-                    placeholder={key}
-                    value={inputValues[name][key]}
-                    required
-                  />
-                );
-              }
-
-              // return <Input key={i} type="" />;
-            })}
-          </>
-        ) : (
-          <></>
-        )}
-      </ModuleInputs>
-    </ModuleBox>
-  );
-};
-
 const Container = styled("div", { marginTop: "5rem" });
 
 const TopContainer = styled("div", {
@@ -426,14 +334,3 @@ const TopContainer = styled("div", {
 
 const LeftBox = styled("div", {});
 const RightBox = styled("div", {});
-
-const ModuleBox = styled("div", {});
-
-const LineInput = styled(Input, {
-  border: "1px solid #ccc",
-  borderRadius: 0,
-});
-
-const ModuleInputs = styled("form", {
-  marginBottom: "6rem",
-});

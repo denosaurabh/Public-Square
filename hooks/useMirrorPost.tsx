@@ -16,7 +16,7 @@ const useMirrorPost = (publicationId: string) => {
   const lensHub = useLensHub();
 
   const mirrorPost = async (mirrorData: object) => {
-    e?.preventDefault();
+    // e?.preventDefault();
 
     try {
       const mirrorReq = {

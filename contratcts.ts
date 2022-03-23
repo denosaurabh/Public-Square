@@ -24,6 +24,7 @@ export interface Module {
   message: string;
   dataType: "Boolean" | Amount;
   dataValue?: boolean;
+  userMessage: string;
 }
 
 export type ModulesI = Record<string, Module>;
@@ -35,6 +36,7 @@ export const FOLLOW_MODULES: ModulesI = {
     address: ZERO_ADDRESS,
     dataType: "Boolean",
     message: "Any user can follow you",
+    userMessage: "You can freely follow this person",
   },
   FeeFollowModuleSettings: {
     type: "feeFollowModule",
@@ -48,6 +50,7 @@ export const FOLLOW_MODULES: ModulesI = {
       recipient: "ADDRESS",
     },
     message: "Users have to pay a specific amount to follow you",
+    userMessage: "You have to pay this specific amount to follow this person",
   },
   // ApprovalFollowModuleSettings: {
   //   type: "approvalFollowModule",
@@ -71,6 +74,7 @@ export const COLLECT_MODULES: ModulesI = {
       referralFee: "NUMBER",
     },
     message: "Users have to pay value and referral fee to collect your post",
+    userMessage: "You have to pay value and referral fee to collect this post",
   },
   LimitedFeeCollectModuleSettings: {
     type: "limitedFeeCollectModule",
@@ -87,6 +91,8 @@ export const COLLECT_MODULES: ModulesI = {
     },
     message:
       "Users have to pay value and referral fee to collect your post but only in a limited amount of collect",
+    userMessage:
+      "You have to pay value and referral fee to collect this post. There are only limited amount of collects that can be accepted.",
   },
   TimedFeeCollectModuleSettings: {
     type: "timedFeeCollectModule",
@@ -102,6 +108,8 @@ export const COLLECT_MODULES: ModulesI = {
     },
     message:
       "Users can pay an optional referral fee to collect your post but only within 24 hours",
+    userMessage:
+      "You can pay an optional referral fee to collect your post but only within 24 hours",
   },
   LimitedTimedFeeCollectModuleSettings: {
     type: "limitedTimedFeeCollectModule",
@@ -117,6 +125,8 @@ export const COLLECT_MODULES: ModulesI = {
     },
     message:
       "Users have to pay value and referral fee to collect your post but only in a limited amount of collects and within 24 hours",
+    userMessage:
+      "You have to pay the value and referral fee to collect this post and within 24 hours. There are only a limited amount of posts to be collected",
   },
   RevertCollectModuleSettings: {
     type: "revertCollectModule",
@@ -125,6 +135,7 @@ export const COLLECT_MODULES: ModulesI = {
     dataType: "Boolean",
     message: "No one can collect your post",
     dataValue: true,
+    userMessage: "The post creater has disabled Collect for this post",
   },
   EmptyCollectModuleSettings: {
     type: "emptyCollectModule",
@@ -133,24 +144,28 @@ export const COLLECT_MODULES: ModulesI = {
     dataType: "Boolean",
     message: "Anyone can collect your post",
     dataValue: true,
+    userMessage: "You can freely collect this post",
   },
 };
 
 export const REFERENCE_MODULES: ModulesI = {
-  null: {
+  none: {
     type: "followerOnlyReferenceModule",
     name: "No Reference Module",
     address: ZERO_ADDRESS,
     dataType: "Boolean",
     message: "Anyone can reference you post",
     dataValue: false,
+    userMessage: "You can freely reference this post",
   },
-  FollowerOnlyReferenceModuleSettings: {
+  FollowOnlyReferenceModuleSettings: {
     type: "followerOnlyReferenceModule",
     name: "Follower only Reference",
     address: "0x8cc1F4C7D3aFf9053eA2d840EAd31f5B68541A38",
     dataType: "Boolean",
     message: "Users have to be a follower to reference your post",
     dataValue: true,
+    userMessage:
+      "Creater of the post has only allowed his followers to reference this post",
   },
 };

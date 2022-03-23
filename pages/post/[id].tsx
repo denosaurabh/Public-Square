@@ -26,6 +26,13 @@ import useMirrorPost from "@/hooks/useMirrorPost";
 import useCollectPost from "@/hooks/useCollectPost";
 import CommentsContainer from "@/components/CommentsContainer";
 import { H5 } from "@/components/Heading";
+import {
+  Tooltip,
+  TooltipArrow,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/Tooltip";
+import { COLLECT_MODULES, REFERENCE_MODULES } from "@/contratcts";
 
 const PostPage: NextPage = () => {
   const router = useRouter();
@@ -76,17 +83,39 @@ const PostPage: NextPage = () => {
               {pub.stats.totalAmountOfComments || "no"} comment
               {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
             </StatsItem>
-            <StatsItem onClick={collectPost}>
-              <CollectSvg />
-              {pub.stats.totalAmountOfCollects || "no"} collect
-              {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
-            </StatsItem>
 
-            <StatsItem onClick={mirrorPost}>
-              <MirrorSvg />
-              {pub.stats.totalAmountOfMirrors || "no"} mirror
-              {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
-            </StatsItem>
+            <Tooltip>
+              <TooltipTrigger>
+                <StatsItem onClick={collectPost}>
+                  <CollectSvg />
+                  {pub.stats.totalAmountOfCollects || "no"} collect
+                  {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
+                </StatsItem>
+              </TooltipTrigger>
+
+              <TooltipContent>
+                {pub.collectModule
+                  ? COLLECT_MODULES[pub.collectModule.__typename].userMessage
+                  : COLLECT_MODULES["EmptyCollectModuleSettings"].userMessage}
+              </TooltipContent>
+            </Tooltip>
+
+            <Tooltip>
+              <TooltipTrigger>
+                <StatsItem onClick={mirrorPost}>
+                  <MirrorSvg />
+                  {pub.stats.totalAmountOfMirrors || "no"} mirror
+                  {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
+                </StatsItem>
+              </TooltipTrigger>
+
+              <TooltipContent>
+                {pub.referenceModule
+                  ? REFERENCE_MODULES[pub.referenceModule.__typename]
+                      .userMessage
+                  : REFERENCE_MODULES["none"].userMessage}
+              </TooltipContent>
+            </Tooltip>
           </ColumnStatsBox>
 
           {openCreateComment ? <CreateComment publicationId={pub.id} /> : null}
