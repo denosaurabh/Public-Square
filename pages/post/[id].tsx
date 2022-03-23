@@ -59,6 +59,8 @@ const PostPage: NextPage = () => {
 
   if (!pub) return <></>;
 
+  console.log(pub);
+
   return (
     <Container>
       {pub.metadata ? (
@@ -79,6 +81,7 @@ const PostPage: NextPage = () => {
               {pub.stats.totalAmountOfCollects || "no"} collect
               {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
             </StatsItem>
+
             <StatsItem onClick={mirrorPost}>
               <MirrorSvg />
               {pub.stats.totalAmountOfMirrors || "no"} mirror

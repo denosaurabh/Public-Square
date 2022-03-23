@@ -4,6 +4,7 @@ import Publications from "./SocialDAO/publications";
 import Subjects from "./SocialDAO/Subject";
 import Discussions from "./SocialDAO/Discussions";
 import Transactions from "./SocialDAO/transactions";
+import Settings from "./SocialDAO/settings";
 
 const SocialDAOTab: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const SocialDAOTab: React.FC = () => {
         <TabsTrigger value="subjects">Subjects</TabsTrigger>
         <TabsTrigger value="discussion">Discussions</TabsTrigger>
         <TabsTrigger value="transactions">Proposals</TabsTrigger>
+        <TabsTrigger value="settings">Settings</TabsTrigger>
       </TabsList>
       <TabsContent value="posts">
         <Publications />
@@ -25,6 +27,9 @@ const SocialDAOTab: React.FC = () => {
       </TabsContent>
       <TabsContent value="transactions">
         <Transactions />
+      </TabsContent>
+      <TabsContent value="settings">
+        <Settings />
       </TabsContent>
     </Tabs>
   );

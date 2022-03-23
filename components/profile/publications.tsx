@@ -20,6 +20,8 @@ const Publications: React.FC = () => {
     },
   ]);
 
+  console.log(id, pubsDataRes);
+
   if (!pubsDataRes) return <LightSansSerifText>loading....</LightSansSerifText>;
 
   const posts = pubsDataRes?.data.publications.items;

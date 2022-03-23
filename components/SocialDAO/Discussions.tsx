@@ -2,6 +2,7 @@ import { bee } from "@/bee";
 import { styled } from "@/stitches.config";
 import { useStore, useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
+import Link from "next/link";
 import { Avatar, AvatarGroup, AvatarImage } from "../Avatar";
 import { H3, H6 } from "../Heading";
 import { LightSansSerifText } from "../Text";
@@ -36,25 +37,27 @@ interface DiscussionProps {
 
 export const Discussion: React.FC<DiscussionProps> = ({ id, metadata }) => {
   return (
-    <DiscussionBox as="a" href={`/post/${id}`}>
-      <LightSansSerifText>1.</LightSansSerifText>
-      <H3 font="serif" italic>
-        {metadata.name}
-      </H3>
+    <Link href={`/post/${id}`} passHref>
+      <DiscussionBox>
+        <LightSansSerifText>1.</LightSansSerifText>
+        <H3 font="serif" italic>
+          {metadata.name}
+        </H3>
 
-      <AvatarGroup gap="-0.5rem">
-        {[...Array(Math.round(Math.random() * 10))].map((v, i) => (
-          <Avatar key={i}>
-            <AvatarImage
-              src={`https://source.boringavatars.com/marble/25/${i}`}
-              alt="deno"
-            />
-          </Avatar>
-        ))}
-      </AvatarGroup>
+        <AvatarGroup gap="-0.5rem">
+          {[...Array(Math.round(Math.random() * 10))].map((v, i) => (
+            <Avatar key={i}>
+              <AvatarImage
+                src={`https://source.boringavatars.com/marble/25/${i}`}
+                alt="deno"
+              />
+            </Avatar>
+          ))}
+        </AvatarGroup>
 
-      <LightSansSerifText>+10 members</LightSansSerifText>
-    </DiscussionBox>
+        <LightSansSerifText>+10 members</LightSansSerifText>
+      </DiscussionBox>
+    </Link>
   );
 };
 
@@ -80,6 +83,8 @@ const DiscussionBox = styled("div", {
   gap: "0.5rem",
 
   textAlign: "center",
+
+  textDecoration: "none",
 
   h3: {
     marginRight: "auto",

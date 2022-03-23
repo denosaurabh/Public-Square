@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           }}>
           <PageContainer>
             <Component {...pageProps} />
-            <ToastContainer autoClose={3000} position="bottom-right" />
+            <ToastContainer />
           </PageContainer>
         </SWRConfig>
       </Provider>

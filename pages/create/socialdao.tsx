@@ -34,7 +34,7 @@ const CreateSocialDAO = () => {
 
     if (name === "name") {
       setUploadedImg(
-        `https://source.boringavatars.com/marble/25/${name || "deno"}`
+        `https://source.boringavatars.com/marble/25/${value || "deno"}`
       );
     }
 

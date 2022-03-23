@@ -1,5 +1,5 @@
 import { styled } from "@/stitches.config";
-import { H3 } from "@/components/Heading";
+import { H1, H3 } from "@/components/Heading";
 import { SuperDenoDAOStore } from "@/stores/SuperDenoDAOStore";
 import { useStore, useObservable } from "@/stores";
 import { useEffect, useState } from "react";
@@ -7,11 +7,11 @@ import { SUPER_DENO_DAO } from "@/contratcts";
 import SuperDeno from "@/artifacts/contracts/SocialDao.sol/SuperDeno.json";
 import { useContract, useSigner } from "wagmi";
 import Link from "next/link";
+import Profile from "@/components/Profile";
+import { LightSansSerifText, Text } from "@/components/Text";
 
 const SocialDaos = () => {
   const [{ data: signer, error, loading }, getSigner] = useSigner();
-
-  const [names, setNames] = useState<string[]>([]);
 
   const contract = useContract({
     addressOrName: SUPER_DENO_DAO,
@@ -20,19 +20,17 @@ const SocialDaos = () => {
   });
 
   const socialDaoStore = useStore(SuperDenoDAOStore);
-  const daosNames = useObservable(socialDaoStore.daoNames);
+  const allDaos = useObservable(socialDaoStore.allDaos);
 
   useEffect(() => {
     if (!window) return;
 
     const getNames = async () => {
       if (!contract || !signer) return;
-      if (names.length) return;
 
-      const allNames = await contract.allDaoNames();
-      setNames(allNames);
+      const allNames = await socialDaoStore.getAllDaosNames(contract);
+      await socialDaoStore.fetchDaosByNames(allNames);
       //   await socialDaoStore.getContract();
-      //   await socialDaoStore.getAllDaosNames(contract);
     };
 
     // if (!daosNames.length) {
@@ -41,16 +39,36 @@ const SocialDaos = () => {
     // }
   }, [, contract, signer]);
 
+  console.log("allDaos", allDaos);
+
   return (
-    <DaosContainer>
-      {names.map((name, i) => {
-        return (
-          <Link href={`/social/${name}`} passHref key={i}>
-            <H3>{name}</H3>
-          </Link>
-        );
-      })}
-    </DaosContainer>
+    <>
+      <H1 italic font="serif">
+        Social Daos
+      </H1>
+      <Text
+        italic
+        font="sansSerif"
+        css={{ padding: 0, margin: 0, marginBottom: "4rem" }}>
+        There Social Daos are special. There are simply lens profiles controlled
+        by multiple accounts, proposing propsals for anything and so opening
+        many possibilies. More about this soon....
+      </Text>
+
+      <DaosContainer>
+        {allDaos ? (
+          allDaos.map((dao, i) => {
+            return <Profile {...dao} key={i} />;
+          })
+        ) : (
+          <LightSansSerifText>Loading....</LightSansSerifText>
+        )}
+
+        {/* {!allDaos.length ? (
+        <LightSansSerifText>No Daos</LightSansSerifText>
+      ) : null} */}
+      </DaosContainer>
+    </>
   );
 };
 
@@ -58,6 +76,7 @@ export default SocialDaos;
 
 const DaosContainer = styled("div", {
   display: "flex",
-  flexDirection: "column",
+  flexWrap: "wrap",
+  // flexDirection: "column",
   gap: "1.5rem",
 });

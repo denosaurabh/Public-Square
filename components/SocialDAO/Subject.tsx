@@ -1,6 +1,7 @@
 import { styled } from "@/stitches.config";
 import { useStore, useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
+import Link from "next/link";
 import { H3 } from "../Heading";
 import { LightSansSerifText, Text } from "../Text";
 
@@ -12,12 +13,14 @@ const Subjects: React.FC = () => {
     <SubjectsContainer>
       {subjects ? (
         subjects.map((subject, i) => (
-          <SubjectBox key={i} as="a" href={`/post/${subject.id}`}>
-            <H3 font="serif" italic>
-              {subject.metadata.name}
-            </H3>
-            <Text>{subject.metadata.description}</Text>
-          </SubjectBox>
+          <Link href={`/post/${subject.id}`} key={i} passHref>
+            <SubjectBox>
+              <H3 font="serif" italic>
+                {subject.metadata.name}
+              </H3>
+              <Text>{subject.metadata.description}</Text>
+            </SubjectBox>
+          </Link>
         ))
       ) : (
         <LightSansSerifText>loading....</LightSansSerifText>

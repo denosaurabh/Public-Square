@@ -9,6 +9,7 @@ import { SUPER_DENO_DAO } from "@/contratcts";
 import {
   createProfile,
   QUERY_PROFILES_OWNED_BY_ADDRESS,
+  QUERY_PROFILE_BY_ID,
   UPDATE_PROFILE,
 } from "@/graphql/PROFILE";
 import {
@@ -34,6 +35,7 @@ export class SuperDenoDAOStore {
   superDenoDaoAddress: string = SUPER_DENO_DAO;
   superDenoDao: ethers.Contract | null = null;
   daoNames = observable<string[]>([]);
+  allDaos = observable<object[]>([]);
 
   constructor(private store: Store) {}
 
@@ -54,6 +56,28 @@ export class SuperDenoDAOStore {
 
       return this.superDenoDao;
     }
+  }
+
+  async fetchDaosByNames(names: string[]) {
+    if (!names.length) {
+      return;
+    }
+
+    const daosRes = await apolloClient.query({
+      query: gql(QUERY_PROFILE_BY_ID),
+      variables: {
+        request: {
+          handles: names,
+          limit: 30,
+        },
+      },
+    });
+
+    if (!daosRes.data.profiles.items.length) {
+      return;
+    }
+
+    this.allDaos.set(daosRes.data.profiles.items);
   }
 
   async createSocialDAO(input: CreateDaoInput) {
@@ -162,16 +186,16 @@ export class SuperDenoDAOStore {
 
     console.log(profileData, id);
 
-    await apolloClient.mutate({
-      mutation: gql(UPDATE_PROFILE),
-      variables: {
-        request: {
-          profileId: id,
-          name,
-          bio: about,
-        },
-      },
-    });
+    // await apolloClient.mutate({
+    //   mutation: gql(UPDATE_PROFILE),
+    //   variables: {
+    //     request: {
+    //       profileId: id,
+    //       name,
+    //       bio: about,
+    //     },
+    //   },
+    // });
 
     const socialDAO = new ethers.Contract(
       socialDaoAddress,
@@ -200,8 +224,7 @@ export class SuperDenoDAOStore {
   }
 
   async getAllDaosNames(superDeno: ethers.Contract) {
-    // const superDeno = this.getContract();
-    // if (!superDeno) return;
+    if (!superDeno) return;
 
     console.log("getAllDaosNames");
 
@@ -209,6 +232,8 @@ export class SuperDenoDAOStore {
     console.log(daos);
 
     this.daoNames.set(daos);
+
+    await this.fetchDaosByNames(daos);
 
     return daos;
   }

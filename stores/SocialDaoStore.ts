@@ -11,6 +11,7 @@ import { LensHub, LensHub__factory } from "@/typechain-types";
 import { nanoid } from "nanoid";
 import { IPFSClient } from "@/utils/ipfs";
 import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
+import { toast } from "react-toastify";
 
 export type DaoPostType = "POST" | "SUBJECT" | "DISCUSSION";
 
@@ -299,6 +300,46 @@ export class SocialDAOStore {
     });
 
     this.transactions.set(transactionsData);
+  }
+
+  async updateProfile() {
+    try {
+      const socialDao = this.currentSocialDAOContract.get();
+
+      if (!socialDao) {
+        console.log("socialDao is null");
+        return;
+      }
+
+      let lensHub = new ethers.utils.Interface(LensHub__factory.abi);
+
+      const profileInt = parseInt(this.currentDaoProfileInfo.get().id, 16);
+
+      if (!profileInt) return;
+
+      // const encodedData = lensHub.encodeFunctionData("post", [
+      //   {
+      //     profileId: profileInt,
+      //     contentURI: "ipfs://" + ipfsResult.path,
+      //     collectModule: "0xb96e42b5579e76197b4d2ea710ff50e037881253",
+      //     collectModuleData: "0x",
+      //     referenceModule: EMPTY_ADDRESS,
+      //     referenceModuleData: "0x",
+      //   },
+      // ]);
+
+      // const tx = await socialDao.submitTransaction(
+      //   LENSHUB_PROXY,
+      //   "0",
+      //   encodedData
+      // );
+
+      // console.log(tx);
+
+      toast.success("Proposal for Updaing DAO has been created");
+    } catch (err) {
+      toast.error("Error updating DAO");
+    }
   }
 
   setCurrentSocialDAOContract(contract: ethers.Contract) {
