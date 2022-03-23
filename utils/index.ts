@@ -53,3 +53,10 @@ export const decodeTxEncodedData = (data: string) => {
     };
   }
 };
+
+export const compareAddress = (
+  a: string | undefined,
+  b: string | undefined
+): boolean => {
+  return !!a && !!b && a.toLowerCase() === b.toLowerCase();
+};
