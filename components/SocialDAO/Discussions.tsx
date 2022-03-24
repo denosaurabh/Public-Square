@@ -3,7 +3,7 @@ import { useStore, useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import Link from "next/link";
 import { Avatar, AvatarGroup, AvatarImage } from "../Avatar";
-import { H3, H6 } from "../Heading";
+import { H3, H6, Heading } from "../Heading";
 import { LightSansSerifText } from "../Text";
 
 const Discussions: React.FC = () => {
@@ -40,9 +40,9 @@ export const Discussion: React.FC<DiscussionProps> = ({ id, metadata, no }) => {
     <Link href={`/post/${id}`} passHref>
       <DiscussionBox>
         <LightSansSerifText>{no}.</LightSansSerifText>
-        <H3 font="serif" italic>
+        <Heading as="h3" size="h1" sansSerif italic>
           {metadata.name}
-        </H3>
+        </Heading>
 
         <AvatarGroup gap="-0.5rem">
           {[...Array(Math.round(Math.random() * 10))].map((v, i) => (

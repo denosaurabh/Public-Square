@@ -2,7 +2,7 @@ import { styled } from "@/stitches.config";
 import { useStore, useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import Link from "next/link";
-import { H3 } from "../Heading";
+import { H3, Heading } from "../Heading";
 import { LightSansSerifText, TextDefault } from "../Text";
 
 const Subjects: React.FC = () => {
@@ -15,9 +15,9 @@ const Subjects: React.FC = () => {
         subjects.map((subject, i) => (
           <Link href={`/post/${subject.id}`} key={i} passHref>
             <SubjectBox>
-              <H3 font="serif" italic>
+              <Heading as="h3" size="h1" sansSerif italic>
                 {subject.metadata.name}
-              </H3>
+              </Heading>
               <TextDefault>{subject.metadata.description}</TextDefault>
             </SubjectBox>
           </Link>

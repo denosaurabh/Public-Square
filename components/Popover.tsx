@@ -10,7 +10,7 @@ const StyledContent = styled(PopoverPrimitive.Content, {
 
   textAlign: "center",
 
-  backgroundColor: "#E7EBF9",
+  backgroundColor: "$grey600",
   boxShadow:
     "hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
 });
@@ -36,11 +36,12 @@ const StyledText = styled(TextDefault, {
   fontSize: "1.8rem",
   fontWeight: "500",
   fontStyle: "italic",
+  color: "$grey200",
 
   padding: "1.4rem 2.5rem",
   margin: 0,
 
-  borderBottom: "1px solid #D3D3D3",
+  borderBottom: "1px solid $grey300",
 
   "&:last-child": {
     borderBottom: 0,

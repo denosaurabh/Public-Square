@@ -53,19 +53,19 @@ const Content: React.FC = ({ children, ...props }) => {
 const StyledTitle = styled(DialogPrimitive.Title, {
   // margin: 0,
   fontWeight: 600,
-  color: "dark-grey",
+  color: "$grey100",
   fontFamily: "$sansSerif",
   fontSize: "$xl",
 
   width: "100%",
   padding: "2rem",
 
-  borderBottom: "1px solid gray",
+  borderBottom: "1px solid $grey200",
 });
 
 const StyledDescription = styled(DialogPrimitive.Description, {
   // margin: '10px 0 20px',
-  color: mauve.mauve11,
+  color: "$grey200",
   fontSize: 15,
   lineHeight: 1.5,
 });

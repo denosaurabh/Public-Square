@@ -50,11 +50,12 @@ const ConstitutionText = styled(TextDefault, {
   fontFamily: "$sansSerif",
   fontWeight: "500",
   fontSize: "1.9rem",
+  color: "$grey200",
 
   padding: "1.5rem",
   margin: 0,
 
-  border: "1px solid $grey300",
+  borderRight: "1px solid $grey300",
 });
 
 const ConstitutionTriggerText = styled(TextDefault, {
