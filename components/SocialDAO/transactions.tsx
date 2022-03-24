@@ -167,7 +167,9 @@ const Transactions = () => {
         )}
       </TransactionsBoxContainer>
 
-      <TextDefault>transactions controlled by: {info.owners.join(", ")}</TextDefault>
+      <TextDefault>
+        transactions controlled by: {info.owners.join(", ")}
+      </TextDefault>
     </TransactionContainer>
   );
 };
@@ -301,7 +303,7 @@ const TransactionBox = styled("div", {
   width: "30rem",
   height: "fit-content",
 
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderRadius: "14px",
 
   p: {
@@ -346,7 +348,7 @@ const StyledDialogContent = styled(DialogContent, {
   width: "70rem",
   height: "fit-content",
 
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderRadius: "14px",
 
   p: {

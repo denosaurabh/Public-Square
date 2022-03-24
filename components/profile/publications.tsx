@@ -1,8 +1,8 @@
 import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
-import { PostsContainer } from "@/style/post";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import Post from "../Post";
+import PostsContainer from "../PostsContainer";
 import { LightSansSerifText } from "../Text";
 
 const Publications: React.FC = () => {
@@ -27,19 +27,11 @@ const Publications: React.FC = () => {
   const posts = pubsDataRes?.data.publications.items;
 
   return (
-    <PostsContainer>
-      {posts ? (
-        posts.map((post: any) => {
-          if (post.__typename === "Post") {
-            return <Post {...post} key={post.id} />;
-          }
-        })
-      ) : (
-        <LightSansSerifText>loading....</LightSansSerifText>
-      )}
+    <>
+      <PostsContainer publications={posts} noHeader showStats />
 
       {!posts.length ? <LightSansSerifText>No Posts</LightSansSerifText> : null}
-    </PostsContainer>
+    </>
   );
 };
 

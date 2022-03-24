@@ -16,30 +16,53 @@ const StyledList = styled(TabsPrimitive.List, {
   flexShrink: 0,
   display: "flex",
 
-  width: "50%",
+  width: "fit-content",
 
-  borderBottom: `1px solid ${mauve.mauve6}`,
+  padding: "0.8rem",
+
+  border: `1px solid $grey300`,
+  borderRadius: "$500",
+
+  marginBottom: "4rem",
 });
 
 const StyledTrigger = styled(TabsPrimitive.Trigger, {
   all: "unset",
   fontFamily: "inherit",
-  padding: "0 20px",
-  height: 45,
+
+  padding: "1rem 2rem",
+
+  height: "fit-content",
   flex: 1,
+
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: 15,
+
+  fontSize: "$md",
   lineHeight: 1,
-  color: mauve.mauve11,
+
   userSelect: "none",
+
+  transition: "all 100ms",
+
   "&:first-child": { borderTopLeftRadius: 6 },
   "&:last-child": { borderTopRightRadius: 6 },
-  "&:hover": { color: violet.violet11 },
+  "&:hover": {
+    color: "$grey400",
+
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
   '&[data-state="active"]': {
-    color: violet.violet11,
-    boxShadow: "inset 0 -1px 0 0 currentColor, 0 1px 0 0 currentColor",
+    color: "$grey600",
+    // fontWeight: "500",
+
+    backgroundColor: "$grey100",
+    borderRadius: "$500",
+
+    // boxShadow: "inset 0 -1px 0 0 currentColor, 0 1px 0 0 currentColor",
   },
   "&:focus": {
     position: "relative",

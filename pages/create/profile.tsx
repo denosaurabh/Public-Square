@@ -100,7 +100,7 @@ const CreateProfile = () => {
                   width: "100px",
                   height: "100px",
                   margin: "2rem auto",
-                  border: "1px solid #D3D3D3",
+                  border: "1px solid $grey300",
                 }}>
                 <AvatarImage
                   as="div"
@@ -168,7 +168,7 @@ const Container = styled("form", {
   display: "flex",
   flexDirection: "column",
 
-  outline: "1px solid grey",
+  outline: "1px solid $grey300",
   borderRadius: "20px",
 
   width: "fit-content",
@@ -191,7 +191,7 @@ const AvatarBox = styled("div", {
 });
 
 const UploadInputContainer = styled("div", {
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderBottom: 0,
   borderLeft: 0,
   borderRight: 0,
@@ -211,7 +211,7 @@ const UploadInputContainer = styled("div", {
 const UploadInput = styled(Input, {
   backgroundColor: "transparent",
 
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderRadius: "0 0 20px 20px",
 });
 
@@ -243,14 +243,14 @@ const Box = styled("div", {
 });
 
 const LineInput = styled(Input, {
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderRadius: 0,
   backgroundColor: "transparent",
 });
 
 const UpdateButton = styled("button", {
   backgroundColor: "transparent",
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
 
   borderLeft: 0,
   borderRight: 0,

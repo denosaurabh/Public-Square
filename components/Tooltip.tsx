@@ -8,7 +8,7 @@ const StyledContent = styled(TooltipPrimitive.Content, {
   fontSize: "1.6rem",
   color: "#000",
 
-  border: "1px solid grey",
+  border: "1px solid $grey300",
 
   borderRadius: "14px",
 

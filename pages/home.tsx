@@ -1,8 +1,9 @@
 import { apolloClientWithoutAuth } from "@/apollo/client";
 import Post from "@/components/Post";
-import { TextDefault } from "@/components/Text";
+import PostsContainer from "@/components/PostsContainer";
+import { LightSansSerifText, TextDefault } from "@/components/Text";
 import { EXPLORE_PUBLICATIONS } from "@/graphql/DISCOVERY";
-import { PostsContainer } from "@/style/post";
+// import { PostsContainer } from "@/components/PostsContainer";
 import { gql } from "@apollo/client";
 import type { NextPage } from "next";
 import useSWR from "swr";
@@ -24,19 +25,14 @@ const Home: NextPage = ({ publications }) => {
     }
   );
 
+  console.log(data);
+
+  if (!data?.data.explorePublications?.items) {
+    return <LightSansSerifText>loading....</LightSansSerifText>;
+  }
+
   return (
-    <PostsContainer>
-      {/* <Post />; */}
-      {data ? (
-        data?.data.explorePublications?.items.map((post: any) => {
-          if (post.__typename === "Post") {
-            return <Post {...post} key={post.id} />;
-          }
-        })
-      ) : (
-        <TextDefault>loading....</TextDefault>
-      )}
-    </PostsContainer>
+    <PostsContainer publications={data?.data.explorePublications?.items} />
   );
 };
 

@@ -35,4 +35,6 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({
 
 export default CommentsContainer;
 
-const Container = styled("div", {});
+const Container = styled("div", {
+  width: "100%",
+});

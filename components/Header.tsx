@@ -25,7 +25,7 @@ const Header = () => {
       <HeaderHomeLink />
 
       <HeaderCenterBox>
-        <Link href="/socialDaos" passHref>
+        <Link href="/social" passHref>
           <LinkText>Daos</LinkText>
         </Link>
 

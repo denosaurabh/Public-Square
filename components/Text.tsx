@@ -59,6 +59,12 @@ export const Text = styled("p", {
         fontStyle: "italic",
       },
     },
+
+    undeline: {
+      true: {
+        textDecoration: "underline",
+      },
+    },
   },
 });
 

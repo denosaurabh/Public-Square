@@ -133,6 +133,8 @@ export class SocialDAOStore {
 
     // console.log(infoObj);
 
+    if (!infoObj) return;
+
     this.currentDaoContractInfo.set(infoObj);
     this.currentDaoProfileInfo.set(profileRes.data.profiles.items[0]);
 

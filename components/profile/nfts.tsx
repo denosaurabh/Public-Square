@@ -1,6 +1,6 @@
 import { QUERY_NFTS } from "@/graphql/NFTs";
 import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
-import { PostsContainer } from "@/style/post";
+import { PostsContainer } from "@/style/posts";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import NFT from "../NFT";

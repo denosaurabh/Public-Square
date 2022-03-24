@@ -85,7 +85,7 @@ const ProfileBox = styled("div", {
   display: "flex",
   flexDirection: "column",
 
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderRadius: "14px",
 
   width: "30rem",

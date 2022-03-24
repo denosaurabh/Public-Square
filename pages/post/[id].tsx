@@ -26,7 +26,7 @@ import { useState } from "react";
 import useMirrorPost from "@/hooks/useMirrorPost";
 import useCollectPost from "@/hooks/useCollectPost";
 import CommentsContainer from "@/components/CommentsContainer";
-import { H5 } from "@/components/Heading";
+import { H3, H5, H6 } from "@/components/Heading";
 import {
   Tooltip,
   TooltipArrow,
@@ -36,6 +36,8 @@ import {
 import { COLLECT_MODULES, REFERENCE_MODULES } from "@/contratcts";
 import { gql, useQuery } from "@apollo/client";
 import { apolloClientWithoutAuth } from "@/apollo/client";
+import { LineBox } from "@/components/LineBox";
+import { Separator } from "@/components/Seperator";
 
 const PostPage: NextPage = () => {
   const router = useRouter();
@@ -67,15 +69,15 @@ const PostPage: NextPage = () => {
 
   console.log(data);
 
-  // const { data: commentsData } = useSWR([
-  //   QUERY_PUBLICATIONS,
-  //   {
-  //     request: {
-  //       commentsOf: id,
-  //       limit: 30,
-  //     },
-  //   },
-  // ]);
+  const { data: commentsData } = useSWR([
+    QUERY_PUBLICATIONS,
+    {
+      request: {
+        commentsOf: id,
+        limit: 30,
+      },
+    },
+  ]);
 
   if (loading) return <LightSansSerifText>Loading....</LightSansSerifText>;
 
@@ -87,6 +89,7 @@ const PostPage: NextPage = () => {
         <LeftBox>
           <div>
             <H5>{pub.metadata.name}</H5>
+            <H6 css={{ margin: "3rem 0" }}>{pub.metadata.description}</H6>
             <MarkDownBox content={pub.metadata.content} />
           </div>
 
@@ -147,23 +150,29 @@ const PostPage: NextPage = () => {
         <TextDefault>loading....</TextDefault>
       )}
 
-      <RightBox>{/* <CommentsContainer data={commentsData} /> */}</RightBox>
+      <Separator orientation="vertical" css={{ height: "100vh !important" }} />
+
+      <RightBox>
+        <CommentsContainer data={commentsData} />
+      </RightBox>
     </Container>
   );
 };
 
 export default PostPage;
 
-const Container = styled("div", {
+const Container = styled(LineBox, {
   display: "flex",
   justifyContent: "space-between",
-  // flexWrap: "wrap",
 
-  gap: "3rem",
+  // flexWrap: "wrap",
+  padding: "1rem 2rem",
+
+  borderRadius: "$500",
 });
 
 const LeftBox = styled("div", {
-  width: "60%",
+  flexBasis: "66%",
 
   display: "flex",
   flexDirection: "column",
@@ -171,7 +180,7 @@ const LeftBox = styled("div", {
 });
 
 const RightBox = styled("div", {
-  // width: "40%",
+  flex: 1,
 
   display: "flex",
   flexDirection: "column",

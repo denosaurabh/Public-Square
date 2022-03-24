@@ -23,6 +23,8 @@ export const {
       grey200: "#EEEEEE",
       grey300: "#DDDDDD",
       grey400: "#323232",
+      grey500: "#222222",
+      grey600: "#111111",
 
       // bg: "#d4d6d4",
       // textColor: "#2d2d2d",

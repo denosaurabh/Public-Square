@@ -54,7 +54,7 @@ const ConstitutionText = styled(TextDefault, {
   padding: "1.5rem",
   margin: 0,
 
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
 });
 
 const ConstitutionTriggerText = styled(TextDefault, {

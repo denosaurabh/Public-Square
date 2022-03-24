@@ -48,7 +48,7 @@ const SubjectBox = styled("div", {
 
   padding: "2rem",
 
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
 
   display: "flex",
   flexDirection: "column",

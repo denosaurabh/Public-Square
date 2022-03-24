@@ -15,7 +15,7 @@ import {
 import { SUPER_DENO_DAO } from "@/contratcts";
 import { EXPLORE_PUBLICATIONS } from "@/graphql/DISCOVERY";
 import { styled } from "@/stitches.config";
-import { PostsContainer } from "@/style/post";
+import { PostsContainer } from "@/components/PostsContainer";
 import { cleanUrl, EMPTY_ADDRESS } from "@/utils";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -29,6 +29,7 @@ import { ethers } from "ethers";
 import Constitution from "@/components/SocialDAO/constitution";
 import { useStore, useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
+import { LineBox } from "@/components/LineBox";
 
 const SocialDAO = () => {
   const router = useRouter();
@@ -210,12 +211,16 @@ export default SocialDAO;
 
 const Container = styled("div", { marginTop: "5rem" });
 
-const TopContainer = styled("div", {
+const TopContainer = styled(LineBox, {
   display: "flex",
-  gap: "4rem",
+  gap: "2rem",
 
-  width: "80%",
+  width: "100%",
+
+  padding: "2rem",
   margin: "0 auto",
+
+  borderRadius: "$500",
 });
 
 const LeftBox = styled("div", {});

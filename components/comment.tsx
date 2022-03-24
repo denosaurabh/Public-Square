@@ -43,7 +43,9 @@ const Comment: React.FC = (props: any) => {
             />
           </Avatar>
 
-          <TextDefault>{handle}</TextDefault>
+          <TextDefault>
+            {handle.length > 8 ? `${handle.slice(0, 8)}...` : handle}
+          </TextDefault>
           <SmallText css={{ marginLeft: "auto" }}>commented</SmallText>
         </Profile>
       </Link>
@@ -54,12 +56,15 @@ const Comment: React.FC = (props: any) => {
 export default Comment;
 
 const CommentContainer = styled("div", {
-  width: "250px",
+  width: "100%",
   height: "fit-content",
+
+  padding: "1rem 0",
+  borderBottom: "1px solid $grey300",
 });
 
 const ContentContainer = styled("div", {
-  borderRadius: "10px",
+  borderRadius: "$500",
 
   padding: "1rem",
 
@@ -77,11 +82,8 @@ const ContentContainer = styled("div", {
 });
 
 const MarkdownContent = styled("div", {
-  border: "1px solid #D3D3D3",
-  backgroundColor: "#E7EBF9",
   borderRadius: "10px",
 
-  padding: "1rem",
   width: "100%",
 });
 

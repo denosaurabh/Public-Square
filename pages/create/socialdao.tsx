@@ -91,7 +91,7 @@ const CreateSocialDAO = () => {
                     width: "100px",
                     height: "100px",
                     margin: "2rem auto",
-                    border: "1px solid #D3D3D3",
+                    border: "1px solid $grey300",
                   }}>
                   <AvatarImage
                     // as="div"
@@ -192,7 +192,7 @@ const Container = styled("form", {
   display: "flex",
   flexDirection: "column",
 
-  outline: "1px solid grey",
+  outline: "1px solid $grey300",
   borderRadius: "20px",
 
   height: "70rem",
@@ -209,7 +209,7 @@ const TopContainer = styled("div", {
 });
 
 const LeftBox = styled("div", {
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderTopLeftRadius: "20px",
 
   borderTop: 0,
@@ -219,7 +219,7 @@ const LeftBox = styled("div", {
   width: "25%",
 });
 const RightBox = styled("div", {
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderTop: 0,
   borderRight: 0,
 
@@ -241,7 +241,7 @@ const AvatarBox = styled("div", {
 });
 
 const UploadInputContainer = styled("div", {
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderBottom: 0,
   borderLeft: 0,
   borderRight: 0,
@@ -261,14 +261,14 @@ const UploadInputContainer = styled("div", {
 const UploadInput = styled(Input, {
   backgroundColor: "transparent",
 
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderRadius: "0 0 20px 20px",
 });
 
 const Box = styled("div", {
   display: "flex",
   justifyContent: "space-between",
-  borderBottom: "1px solid #D3D3D3",
+  borderBottom: "1px solid $grey300",
 
   div: {
     flex: 1,
@@ -282,18 +282,18 @@ const Box = styled("div", {
 
     "&:first-child": {
       borderLeft: 0,
-      borderRight: "1px solid grey !important",
+      borderRight: "1px solid $grey300 !important",
     },
 
     "&:last-child": {
       borderRight: 0,
-      borderLeft: "1px solid grey !important",
+      borderLeft: "1px solid $grey300 !important",
     },
   },
 });
 
 const LineInput = styled(Input, {
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderRadius: 0,
   backgroundColor: "transparent",
 
@@ -313,12 +313,12 @@ const LineTextArea = styled(TextArea, {
 
   "&:first-child": {
     borderLeft: 0,
-    borderRight: "1px solid grey !important",
+    borderRight: "1px solid $grey300 !important",
   },
 
   "&:last-child": {
     borderRight: 0,
-    borderLeft: "1px solid grey !important",
+    borderLeft: "1px solid $grey300 !important",
   },
 
   height: "100%",
@@ -326,7 +326,7 @@ const LineTextArea = styled(TextArea, {
 
 const SubmitButton = styled("button", {
   backgroundColor: "transparent",
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
 
   borderLeft: 0,
   borderRight: 0,

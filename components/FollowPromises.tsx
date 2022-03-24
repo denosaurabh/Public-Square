@@ -74,7 +74,7 @@ const PromisesContainer = styled("div", {
   display: "flex",
   justifyContent: "space-between",
 
-  border: "1px solid #D3D3D3",
+  border: "1px solid $grey300",
   borderRadius: "14px",
 
   margin: "5rem 0",

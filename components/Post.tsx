@@ -14,6 +14,8 @@ import { useState } from "react";
 const Post: React.FC = (props: any) => {
   const [hover, SetHover] = useState(false);
 
+  console.log(props);
+
   const { profile, stats, metadata, createdAt, id: postId } = props;
   const { id, handle, picture } = profile;
 
@@ -31,12 +33,12 @@ const Post: React.FC = (props: any) => {
         </ContentContainer>
       </Link>
 
-      <Stats
+      {/* <Stats
         stats={stats}
         css={{
           opacity: hover ? "1" : "0",
         }}
-      />
+      /> */}
 
       <Link href={`/profile/${id}`} passHref>
         <Profile>
@@ -91,13 +93,11 @@ export const Stats: React.FC<StatsProps> = ({ stats, withText, css }) => {
 };
 
 const PostContainer = styled("div", {
-  width: "250px",
   height: "fit-content",
   maxHeight: "30rem",
 
-  backgroundColor: "#E7EBF9",
-  border: "1px solid grey",
-  borderRadius: "10px",
+  borderBottom: "1px solid $grey300",
+  paddingBottom: "1rem",
 
   transition: "all 0.3s ease-in-out",
 });

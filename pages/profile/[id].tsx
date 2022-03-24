@@ -1,6 +1,7 @@
 import { Avatar, AvatarImage } from "@/components/Avatar";
 import Follow from "@/components/follow";
 import FollowPromises from "@/components/FollowPromises";
+import { LineBox } from "@/components/LineBox";
 import Post from "@/components/Post";
 import ProfileTabs from "@/components/profile/ProfileTabs";
 import {
@@ -12,7 +13,7 @@ import {
 import { QUERY_PROFILE_BY_ID } from "@/graphql/PROFILE";
 import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
 import { styled } from "@/stitches.config";
-import { PostsContainer } from "@/style/post";
+import { PostsContainer } from "@/components/PostsContainer";
 import { cleanUrl } from "@/utils";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -66,7 +67,11 @@ const Profile = () => {
         <CenterBox>
           <SemiBoldText>@{handle}</SemiBoldText>
 
-          {bio ? <TextDefault>{bio}</TextDefault> : <TextDefault font="sansSerif">no bio....</TextDefault>}
+          {bio ? (
+            <TextDefault>{bio}</TextDefault>
+          ) : (
+            <TextDefault font="sansSerif">no bio....</TextDefault>
+          )}
 
           <Follow
             profileId={profileId}
@@ -107,12 +112,16 @@ export default Profile;
 
 const Container = styled("div", { marginTop: "5rem" });
 
-const TopContainer = styled("div", {
+const TopContainer = styled(LineBox, {
   display: "flex",
   gap: "2rem",
 
-  width: "80%",
+  width: "100%",
+
+  padding: "2rem",
   margin: "0 auto",
+
+  borderRadius: "$500",
 });
 
 const LeftBox = styled("div", {});
@@ -122,9 +131,6 @@ const CenterBox = styled("div", {
 });
 
 const RightBox = styled("div", {
-  marginLeft: "6rem",
-  width: "10rem",
-
   display: "flex",
   flexDirection: "column",
   gap: "0.5rem",

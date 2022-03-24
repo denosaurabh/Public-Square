@@ -36,6 +36,8 @@ const ActionBoxContainer = styled(LineBox, {
   alignItems: "center",
   justifyContent: "space-between",
 
+  marginBottom: "4rem",
+
   width: "100%",
 });
 
