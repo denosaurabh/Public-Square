@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import "micro-observables/batchingForReactDom";
 import { SWRConfig } from "swr";
 import { apolloClient } from "@/apollo/client";
-import { gql } from "@apollo/client";
+import { ApolloProvider, gql } from "@apollo/client";
 import PageContainer from "@/layouts/PageContainer";
 import { ToastContainer } from "@/components/ToastContainer";
 
@@ -31,10 +31,13 @@ function MyApp({ Component, pageProps }: AppProps) {
                 variables,
               }),
           }}>
-          <PageContainer>
-            <Component {...pageProps} />
-            <ToastContainer />
-          </PageContainer>
+          <ApolloProvider client={apolloClient}>
+            <PageContainer>
+              <Component {...pageProps} />
+              <ToastContainer />
+            </PageContainer>
+          </ApolloProvider>
+          ,
         </SWRConfig>
       </Provider>
     </StoreProvider>

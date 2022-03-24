@@ -8,7 +8,7 @@ import { H3, H5, H6 } from "../Heading";
 import Input from "../Input";
 import { TextArea } from "../TextArea";
 import "draft-js/dist/Draft.css";
-import { LightSansSerifText, Text } from "../Text";
+import { LightSansSerifText, TextDefault } from "../Text";
 import { smallAddress } from "@/utils";
 import { Dialog, DialogContent, DialogTrigger } from "../Dialog";
 import {
@@ -167,7 +167,7 @@ const Transactions = () => {
         )}
       </TransactionsBoxContainer>
 
-      <Text>transactions controlled by: {info.owners.join(", ")}</Text>
+      <TextDefault>transactions controlled by: {info.owners.join(", ")}</TextDefault>
     </TransactionContainer>
   );
 };
@@ -211,27 +211,27 @@ const Transaction: React.FC<TransactionProps> = ({
 
   return (
     <TransactionBox>
-      <Text>
+      <TextDefault>
         <span>TX No: </span> {txNo}
-      </Text>
-      <Text>
+      </TextDefault>
+      <TextDefault>
         <span>amount: </span> {value}
-      </Text>
-      <Text>
+      </TextDefault>
+      <TextDefault>
         <span>executed: </span> {executed ? "yes" : "no"}
-      </Text>
-      <Text>
+      </TextDefault>
+      <TextDefault>
         <span>confirmations: </span> {numConfirmations} /{" "}
         {totalNoOfConfirmations}
-      </Text>
-      <Text>
+      </TextDefault>
+      <TextDefault>
         <span>data: </span> <TransactionData data={data} />
-      </Text>
+      </TextDefault>
 
       {numConfirmations === totalNoOfConfirmations && (
-        <Text>Transaction has been confirmed</Text>
+        <TextDefault>Transaction has been confirmed</TextDefault>
       )}
-      {executed && <Text>Transaction has been executed</Text>}
+      {executed && <TextDefault>Transaction has been executed</TextDefault>}
 
       <ActionBox>
         <Button
@@ -260,9 +260,9 @@ const TransactionData: React.FC<TransactionDataProps> = ({ data }) => {
       </DialogTrigger>
       <StyledDialogContent>
         {Object.keys(data).map((key, i) => (
-          <Text key={i}>
+          <TextDefault key={i}>
             <span>{key}: </span> {data[key]}
-          </Text>
+          </TextDefault>
         ))}
       </StyledDialogContent>
     </Dialog>

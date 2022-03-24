@@ -3,7 +3,7 @@ import { H1 } from "@/components/Heading";
 import { Avatar, AvatarImage } from "@/components/Avatar";
 import { Button } from "@/components/Button";
 import Input from "@/components/Input";
-import { Text } from "@/components/Text";
+import { TextDefault } from "@/components/Text";
 import { TextArea } from "@/components/TextArea";
 import { createProfile } from "@/graphql/PROFILE";
 import { styled } from "@/stitches.config";
@@ -118,7 +118,7 @@ const CreateSocialDAO = () => {
                     onChange={onFileUpload}
                   />
 
-                  <Text>Upload DAO Avatar</Text>
+                  <TextDefault>Upload DAO Avatar</TextDefault>
                 </UploadInputContainer>
               </label>
             </AvatarBox>

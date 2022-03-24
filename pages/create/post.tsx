@@ -6,7 +6,7 @@ import {
   BoldText,
   LightSansSerifText,
   SemiBoldText,
-  Text,
+  TextDefault,
 } from "@/components/Text";
 import { createPostTypedData } from "@/graphql/POST";
 import useLensHub from "@/hooks/useLensHub";

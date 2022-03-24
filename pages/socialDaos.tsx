@@ -8,7 +8,7 @@ import SuperDeno from "@/artifacts/contracts/SocialDao.sol/SuperDeno.json";
 import { useContract, useSigner } from "wagmi";
 import Link from "next/link";
 import Profile from "@/components/Profile";
-import { LightSansSerifText, Text } from "@/components/Text";
+import { LightSansSerifText, TextDefault } from "@/components/Text";
 
 const SocialDaos = () => {
   const [{ data: signer, error, loading }, getSigner] = useSigner();
@@ -46,14 +46,14 @@ const SocialDaos = () => {
       <H1 italic font="serif">
         Social Daos
       </H1>
-      <Text
+      <TextDefault
         italic
         font="sansSerif"
         css={{ padding: 0, margin: 0, marginBottom: "4rem" }}>
         There Social Daos are special. There are simply lens profiles controlled
         by multiple accounts, proposing propsals for anything and so opening
         many possibilies. More about this soon....
-      </Text>
+      </TextDefault>
 
       <DaosContainer>
         {allDaos ? (

@@ -1,13 +1,23 @@
 import { styled } from "@/stitches.config";
 
 import Header from "@/components/Header";
+import ActionBox from "@/components/ActionBox";
+
+// import dynamic from "next/dynamic";
+// const Header = dynamic(() => import("@/components/Header"), {
+//   ssr: false,
+// });
+
 // import ListenAccount from "@/components/ListenAccount";
 
 const PageContainer: React.FC = ({ children }) => {
   return (
     <Container>
       <Header />
-      <Main>{children}</Main>
+      <Main>
+        <ActionBox />
+        {children}
+      </Main>
 
       {/* <ListenAccount /> */}
     </Container>

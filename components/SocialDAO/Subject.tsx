@@ -3,7 +3,7 @@ import { useStore, useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import Link from "next/link";
 import { H3 } from "../Heading";
-import { LightSansSerifText, Text } from "../Text";
+import { LightSansSerifText, TextDefault } from "../Text";
 
 const Subjects: React.FC = () => {
   const socialDao = useStore(SocialDAOStore);
@@ -18,7 +18,7 @@ const Subjects: React.FC = () => {
               <H3 font="serif" italic>
                 {subject.metadata.name}
               </H3>
-              <Text>{subject.metadata.description}</Text>
+              <TextDefault>{subject.metadata.description}</TextDefault>
             </SubjectBox>
           </Link>
         ))

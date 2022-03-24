@@ -95,10 +95,12 @@ export const Button = styled("button", {
 
 export const TextButton = styled(Button, {
   backgroundColor: "transparent !important",
-  color: "inherit",
   boxShadow: "none !important",
 
-  transition: "all 200ms",
+  border: "1px solid $grey200",
+  color: "$grey400",
+
+  transition: "all 150ms",
 
   "&:hover": {
     // backgroundColor: "#E7EBF9 !important",

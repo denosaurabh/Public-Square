@@ -78,7 +78,8 @@ const Accounts = () => {
             dataRes?.data?.profiles.items.filter(
               (a) => a.handle === activeAccount
             )[0].handle} */}
-          {activeProfile?.handle} {activeProfileId}
+          {activeProfile?.handle}
+          {/* {activeProfileId} */}
         </SelectValue>
       </SelectTrigger>
 

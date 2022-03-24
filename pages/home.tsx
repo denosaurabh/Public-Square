@@ -1,11 +1,13 @@
+import { apolloClientWithoutAuth } from "@/apollo/client";
 import Post from "@/components/Post";
-import { Text } from "@/components/Text";
+import { TextDefault } from "@/components/Text";
 import { EXPLORE_PUBLICATIONS } from "@/graphql/DISCOVERY";
 import { PostsContainer } from "@/style/post";
+import { gql } from "@apollo/client";
 import type { NextPage } from "next";
 import useSWR from "swr";
 
-const Home: NextPage = () => {
+const Home: NextPage = ({ publications }) => {
   const { data } = useSWR(
     [
       EXPLORE_PUBLICATIONS,
@@ -17,7 +19,9 @@ const Home: NextPage = () => {
         },
       },
     ],
-    {}
+    {
+      fallbackData: publications,
+    }
   );
 
   return (
@@ -30,10 +34,29 @@ const Home: NextPage = () => {
           }
         })
       ) : (
-        <Text>loading....</Text>
+        <TextDefault>loading....</TextDefault>
       )}
     </PostsContainer>
   );
 };
 
 export default Home;
+
+// export async function getStaticProps() {
+//   const res = await apolloClientWithoutAuth.query({
+//     query: gql(EXPLORE_PUBLICATIONS),
+//     variables: {
+//       request: {
+//         limit: 40,
+//         sortCriteria: "TOP_COMMENTED",
+//       },
+//     },
+//   });
+
+//   return {
+//     props: {
+//       publications: res,
+//     },
+//     revalidate: 20,
+//   };
+// }

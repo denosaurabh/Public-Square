@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Avatar, AvatarImage } from "./Avatar";
 import { MarkDownContainer } from "@/style/markdown";
-import { SmallText, Text } from "./Text";
+import { SmallText, TextDefault } from "./Text";
 
 import CommentSvg from "@/icons/comment.svg";
 import CollectSvg from "@/icons/collect.svg";
@@ -49,7 +49,7 @@ const Post: React.FC = (props: any) => {
               alt="deno"
             />
           </Avatar>
-          ;<Text>{handle}</Text>
+          ;<TextDefault>{handle}</TextDefault>
           <SmallText css={{ marginLeft: "auto" }}>
             {new Date(createdAt).toLocaleTimeString()}
           </SmallText>
@@ -93,6 +93,7 @@ export const Stats: React.FC<StatsProps> = ({ stats, withText, css }) => {
 const PostContainer = styled("div", {
   width: "250px",
   height: "fit-content",
+  maxHeight: "30rem",
 
   backgroundColor: "#E7EBF9",
   border: "1px solid grey",
@@ -104,6 +105,11 @@ const PostContainer = styled("div", {
 const ContentContainer = styled(MarkDownContainer, {
   padding: "1.5rem",
   margin: "0",
+
+  maxHeight: "20rem",
+  overflowY: "hidden",
+  overflowX: "hidden",
+  textOverflow: "ellipsis",
 
   "& .post-content-markdown": {
     fontSize: "1.5rem",
@@ -135,7 +141,7 @@ export const StatsBox = styled("div", {
   justifyContent: "space-between",
 });
 
-export const StatsItem = styled(Text, {
+export const StatsItem = styled(TextDefault, {
   display: "flex",
   alignItems: "center",
   gap: "0.5rem",

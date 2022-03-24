@@ -1,4 +1,3 @@
-import { bee } from "@/bee";
 import { styled } from "@/stitches.config";
 import { useStore, useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";

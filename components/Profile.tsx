@@ -4,7 +4,7 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import Link from "next/link";
 import { Avatar, AvatarGroup } from "./Avatar";
 import { H6 } from "./Heading";
-import { LightSansSerifText, Text } from "./Text";
+import { LightSansSerifText, TextDefault } from "./Text";
 
 interface ProfileProps {
   handle: string;
@@ -46,7 +46,7 @@ const Profile: React.FC<ProfileProps> = ({
           <RightBox>
             {/* <AvatarGroup>{}</AvatarGroup> */}
             <H6>{handle}</H6>
-            <Text>{id}</Text>
+            <TextDefault>{id}</TextDefault>
           </RightBox>
         </TopContainer>
         <LineText>
@@ -149,7 +149,7 @@ const Box = styled("div", {
   },
 });
 
-const LineText = styled(Text, {
+const LineText = styled(TextDefault, {
   margin: 0,
   padding: "0.8rem 2rem",
 

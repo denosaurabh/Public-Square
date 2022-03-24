@@ -3,7 +3,7 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Avatar, AvatarImage } from "./Avatar";
-import { SmallText, Text } from "./Text";
+import { SmallText, TextDefault } from "./Text";
 
 const Comment: React.FC = (props: any) => {
   const { profile, stats, metadata, id: postId } = props;
@@ -43,7 +43,7 @@ const Comment: React.FC = (props: any) => {
             />
           </Avatar>
 
-          <Text>{handle}</Text>
+          <TextDefault>{handle}</TextDefault>
           <SmallText css={{ marginLeft: "auto" }}>commented</SmallText>
         </Profile>
       </Link>

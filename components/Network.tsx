@@ -4,7 +4,7 @@ import { LightSansSerifText } from "./Text";
 const Network = () => {
   const [{ data, error, loading }, switchNetwork] = useNetwork();
 
-  if (loading) return <></>;
+  if (loading || !data) return <></>;
 
   return <LightSansSerifText> {data.chain?.name}</LightSansSerifText>;
 };

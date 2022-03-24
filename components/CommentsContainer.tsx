@@ -1,6 +1,6 @@
 import { styled } from "@/stitches.config";
 import Comment from "./comment";
-import { LightSansSerifText, SemiBoldText, Text } from "./Text";
+import { LightSansSerifText, SemiBoldText, TextDefault } from "./Text";
 
 interface CommentsContainerProps {
   data: any;
@@ -23,7 +23,7 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({
           <Comment {...comment} key={comment.id} />
         ))
       ) : (
-        <Text>loading....</Text>
+        <TextDefault>loading....</TextDefault>
       )}
 
       {commentsData?.data.publications.items.length === 0 ? (

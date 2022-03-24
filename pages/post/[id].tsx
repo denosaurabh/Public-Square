@@ -3,10 +3,11 @@ import CreateComment from "@/components/createComment";
 import MarkDownBox from "@/components/MarkdownBox";
 import { StatsBox, StatsItem } from "@/components/Post";
 import {
+  LightSansSerifText,
   LinkSmallText,
   SemiBoldText,
   SmallText,
-  Text,
+  TextDefault,
 } from "@/components/Text";
 import {
   QUERY_PUBLICATIONS,
@@ -33,6 +34,8 @@ import {
   TooltipTrigger,
 } from "@/components/Tooltip";
 import { COLLECT_MODULES, REFERENCE_MODULES } from "@/contratcts";
+import { gql, useQuery } from "@apollo/client";
+import { apolloClientWithoutAuth } from "@/apollo/client";
 
 const PostPage: NextPage = () => {
   const router = useRouter();
@@ -43,30 +46,40 @@ const PostPage: NextPage = () => {
   const [mirrorPost] = useMirrorPost(`${id}`);
   const [collectPost] = useCollectPost(`${id}`);
 
-  const { data } = useSWR([
-    QUERY_PUBLICATION_BY_ID,
-    {
+  // const { data } = useSWR([
+  //   QUERY_PUBLICATION_BY_ID,
+  //   {
+  //     request: {
+  //       publicationId: id,
+  //     },
+  //   },
+  // ]);
+
+  const { loading, error, data } = useQuery(gql(QUERY_PUBLICATION_BY_ID), {
+    variables: {
       request: {
         publicationId: id,
       },
     },
-  ]);
 
-  const { data: commentsData } = useSWR([
-    QUERY_PUBLICATIONS,
-    {
-      request: {
-        commentsOf: id,
-        limit: 30,
-      },
-    },
-  ]);
+    ssr: true,
+  });
 
-  const pub = data?.data.publication;
+  console.log(data);
 
-  if (!pub) return <></>;
+  // const { data: commentsData } = useSWR([
+  //   QUERY_PUBLICATIONS,
+  //   {
+  //     request: {
+  //       commentsOf: id,
+  //       limit: 30,
+  //     },
+  //   },
+  // ]);
 
-  console.log(pub);
+  if (loading) return <LightSansSerifText>Loading....</LightSansSerifText>;
+
+  const pub = data?.publication;
 
   return (
     <Container>
@@ -131,12 +144,10 @@ const PostPage: NextPage = () => {
           </div>
         </LeftBox>
       ) : (
-        <Text>loading....</Text>
+        <TextDefault>loading....</TextDefault>
       )}
 
-      <RightBox>
-        <CommentsContainer data={commentsData} />
-      </RightBox>
+      <RightBox>{/* <CommentsContainer data={commentsData} /> */}</RightBox>
     </Container>
   );
 };

@@ -10,7 +10,7 @@ import {
   LinkSmallText,
   SemiBoldText,
   SmallText,
-  Text,
+  TextDefault,
 } from "@/components/Text";
 import { SUPER_DENO_DAO } from "@/contratcts";
 import { EXPLORE_PUBLICATIONS } from "@/graphql/DISCOVERY";
@@ -184,9 +184,9 @@ const SocialDAO = () => {
           <H1>{info.name}</H1>
 
           {info.bio ? (
-            <Text css={{ margin: 0 }}>{info.bio}</Text>
+            <TextDefault css={{ margin: 0 }}>{info.bio}</TextDefault>
           ) : (
-            <Text font="sansSerif">no bio....</Text>
+            <TextDefault font="sansSerif">no bio....</TextDefault>
           )}
 
           <ButtonsContainer>

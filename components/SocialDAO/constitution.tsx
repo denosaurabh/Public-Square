@@ -6,7 +6,7 @@ import {
   DialogTrigger,
 } from "@/components/Dialog";
 import { styled } from "@/stitches.config";
-import { Text } from "../Text";
+import { TextDefault } from "../Text";
 
 interface ConstitutionProps {
   constitutions: string[];
@@ -44,7 +44,7 @@ const FlexDialogDescription = styled(DialogDescription, {
   display: "flex",
 });
 
-const ConstitutionText = styled(Text, {
+const ConstitutionText = styled(TextDefault, {
   flex: 1,
 
   fontFamily: "$sansSerif",
@@ -57,7 +57,7 @@ const ConstitutionText = styled(Text, {
   border: "1px solid #D3D3D3",
 });
 
-const ConstitutionTriggerText = styled(Text, {
+const ConstitutionTriggerText = styled(TextDefault, {
   fontFamily: "$sansSerif",
   fontWeight: "700",
   fontStyle: "italic",

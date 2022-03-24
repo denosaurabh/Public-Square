@@ -1,12 +1,12 @@
 import { styled } from "@/stitches.config";
 import { Button } from "./Button";
-import { Text } from "./Text";
+import { TextDefault } from "./Text";
 
 const FollowPromises = (props: any) => {
   return (
     <PromisesContainer>
       <PromiseBox>
-        <Text font="sansSerif">
+        <TextDefault font="sansSerif">
           World War II is generally considered to have begun on 1 September
           1939, when Nazi Germany, under Adolf Hitler, invaded Poland. The
           United Kingdom and France subsequently declared war on Germany on 3
@@ -18,12 +18,12 @@ const FollowPromises = (props: any) => {
           and formed the Axis alliance with Italy and Japan (along with other
           countries later on). Following the onset of campaigns in North Africa
           and East Africa, and the fall of France in mid-1940.
-        </Text>
+        </TextDefault>
 
         <FollowButton>Follow</FollowButton>
       </PromiseBox>
       <PromiseBox>
-        <Text font="sansSerif">
+        <TextDefault font="sansSerif">
           World War II or the Second World War, often abbreviated as WWII or
           WW2, was a global war that lasted from 1939 to 1945. It involved the
           vast majority of the worlds countries—including all of the great
@@ -41,12 +41,12 @@ const FollowPromises = (props: any) => {
           disease. In the wake of the Axis defeat, Germany and Japan were
           occupied, and war crimes tribunals were conducted against German and
           Japanese leaders.{" "}
-        </Text>
+        </TextDefault>
 
         <FollowButton>Follow</FollowButton>
       </PromiseBox>
       <PromiseBox>
-        <Text font="sansSerif">
+        <TextDefault font="sansSerif">
           The war in Europe concluded with the liberation of German-occupied
           territories, and the invasion of Germany by the Western Allies and the
           Soviet Union, culminating in the fall of Berlin to Soviet troops,
@@ -60,7 +60,7 @@ const FollowPromises = (props: any) => {
           the eve of invading Manchuria, Japan announced on 15 August its
           intention to surrender, then signed the surrender document on 2
           September 1945, cementing total victory in Asia for the Allies.
-        </Text>
+        </TextDefault>
 
         <FollowButton>Follow</FollowButton>
       </PromiseBox>

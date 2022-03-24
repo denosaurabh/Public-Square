@@ -19,10 +19,15 @@ export const {
       websafe: `-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif`,
     },
     colors: {
-      bg: "#d4d6d4",
-      textColor: "#2d2d2d",
-      textColorDark: "#2e2e2e",
-      alertBg: "#DEDEDE",
+      grey100: "#FFFFFF",
+      grey200: "#EEEEEE",
+      grey300: "#DDDDDD",
+      grey400: "#323232",
+
+      // bg: "#d4d6d4",
+      // textColor: "#2d2d2d",
+      // textColorDark: "#2e2e2e",
+      // alertBg: "#DEDEDE",
     },
 
     fontSizes: {
@@ -32,6 +37,10 @@ export const {
       lg: "19px",
       xl: "24px",
       xxl: "35px",
+    },
+    radii: {
+      900: "20px",
+      500: "14px",
     },
   },
   media: {

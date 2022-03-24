@@ -1,6 +1,6 @@
 import { styled } from "@/stitches.config";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
-import { Text } from "./Text";
+import { TextDefault } from "./Text";
 
 const StyledContent = styled(PopoverPrimitive.Content, {
   marginTop: "10px",
@@ -18,6 +18,7 @@ const StyledContent = styled(PopoverPrimitive.Content, {
 const StyledTrigger = styled(PopoverPrimitive.Trigger, {
   padding: "0.5rem 0.5rem",
 
+  backgroundColor: "transparent",
   border: "1px solid #D3D3D3",
   borderRadius: "100px",
 
@@ -28,7 +29,7 @@ const StyledTrigger = styled(PopoverPrimitive.Trigger, {
   },
 });
 
-const StyledText = styled(Text, {
+const StyledText = styled(TextDefault, {
   fontFamily: "$sansSerif",
   fontSize: "1.8rem",
   fontWeight: "500",

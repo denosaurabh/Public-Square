@@ -13,26 +13,34 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
   padding: "12px 16px",
   margin: "0 1rem",
 
-  fontFamily: "inherit",
-  fontSize: "14px",
-  color: "$tint12",
+  fontFamily: "$main",
+  fontSize: "15px",
+  fontWeight: 470,
+  color: "$grey400",
 
   width: "fit-content",
   backgroundColor: "$tint3",
 
   border: "1px solid #D3D3D3",
-  borderRadius: "10px",
+  borderRadius: "$900",
+
+  transition: "all 150ms",
+
+  "&:hover": {
+    // backgroundColor: "#E7EBF9 !important",
+    cursor: "pointer",
+
+    color: "black",
+    boxShadow: "0px 0.2rem 1rem rgba(0, 0, 0, 0.25) !important",
+    outline: "1px solid grey",
+    transform: "translateY(-4px) !important",
+  },
 
   "& > span": {
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
     gap: "0.8rem",
-  },
-
-  "&:hover": {
-    cursor: "pointer",
-    // backgroundColor: "$tint4",
   },
 });
 

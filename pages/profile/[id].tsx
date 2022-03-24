@@ -7,7 +7,7 @@ import {
   LinkSmallText,
   SemiBoldText,
   SmallText,
-  Text,
+  TextDefault,
 } from "@/components/Text";
 import { QUERY_PROFILE_BY_ID } from "@/graphql/PROFILE";
 import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
@@ -66,7 +66,7 @@ const Profile = () => {
         <CenterBox>
           <SemiBoldText>@{handle}</SemiBoldText>
 
-          {bio ? <Text>{bio}</Text> : <Text font="sansSerif">no bio....</Text>}
+          {bio ? <TextDefault>{bio}</TextDefault> : <TextDefault font="sansSerif">no bio....</TextDefault>}
 
           <Follow
             profileId={profileId}

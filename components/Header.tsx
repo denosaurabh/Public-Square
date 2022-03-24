@@ -16,21 +16,13 @@ import {
   PopoverText,
   PopoverTrigger,
 } from "./Popover";
-import { LinkText, Text } from "./Text";
+import { LinkText, TextDefault } from "./Text";
+import HeaderHomeLink from "./HeaderHomeLink";
 
 const Header = () => {
-  const router = useRouter();
-
-  const accountStore = useStore(AccountStore);
-  const activeAccount = useObservable(accountStore.activeProfile);
-
   return (
     <HeaderContainer>
-      <HeaderHomeLink>
-        <Link href={router.pathname === "/" ? "/me" : "/"} passHref>
-          <a>@{activeAccount?.handle || ""}</a>
-        </Link>
-      </HeaderHomeLink>
+      <HeaderHomeLink />
 
       <HeaderCenterBox>
         <Link href="/socialDaos" passHref>
@@ -77,17 +69,13 @@ const HeaderContainer = styled("header", {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-});
 
-const HeaderHomeLink = styled("div", {
-  flex: 1,
+  backgroundColor: "$grey100",
+  borderRadius: "$900",
 
-  display: "flex",
-  alignItems: "center",
-  gap: "1.5rem",
+  padding: "0.5rem 2rem",
 
-  fontFamily: "$sansSerif",
-  fontSize: "1.8rem",
+  boxShadow: "0px 8px 20px rgba(94, 94, 94, 0.1)",
 });
 
 const HeaderCenterBox = styled("div", {

@@ -1,5 +1,5 @@
 import { styled } from "@/stitches.config";
-import { Text } from "./Text";
+import { TextDefault } from "./Text";
 
 interface NFTProps {
   contractName: string;
@@ -33,19 +33,19 @@ const NFT: React.FC<NFTProps> = ({
 }) => {
   return (
     <NFTBox>
-      <Text>
+      <TextDefault>
         <h6>{name}</h6>
-      </Text>
-      <Text>
+      </TextDefault>
+      <TextDefault>
         <span>chainId: </span>
         {chainId}
-      </Text>
-      <Text>CollectionName: {collectionName}</Text>
-      <Text>ERCType: {ercType}</Text>
+      </TextDefault>
+      <TextDefault>CollectionName: {collectionName}</TextDefault>
+      <TextDefault>ERCType: {ercType}</TextDefault>
 
-      <Text as="a" href={contentURI}>
+      <TextDefault as="a" href={contentURI}>
         Raw Data Link
-      </Text>
+      </TextDefault>
       {/* <Text>{name}</Text> */}
     </NFTBox>
   );

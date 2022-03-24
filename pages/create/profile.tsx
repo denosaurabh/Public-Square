@@ -2,7 +2,7 @@ import { apolloClient } from "@/apollo/client";
 import { Avatar, AvatarImage } from "@/components/Avatar";
 import { H1 } from "@/components/Heading";
 import Input from "@/components/Input";
-import { Text } from "@/components/Text";
+import { TextDefault } from "@/components/Text";
 import { TextArea } from "@/components/TextArea";
 import { MUTATE_PROFILE } from "@/graphql/PROFILE";
 import { styled } from "@/stitches.config";
@@ -124,7 +124,7 @@ const CreateProfile = () => {
                   onChange={onFileUpload}
                 />
 
-                <Text>Upload Avatar</Text>
+                <TextDefault>Upload Avatar</TextDefault>
               </UploadInputContainer>
             </label>
 
