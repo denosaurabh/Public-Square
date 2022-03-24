@@ -55,6 +55,17 @@ export const {
   },
 });
 
+export const darkTheme = createTheme("dark-theme", {
+  colors: {
+    grey600: "#FFFFFF",
+    grey500: "#EEEEEE",
+    grey400: "#DDDDDD",
+    grey300: "#323232",
+    grey200: "#222222",
+    grey100: "#111111",
+  },
+});
+
 export const globalStyles = globalCss({
   "*": {
     margin: 0,
@@ -66,7 +77,7 @@ export const globalStyles = globalCss({
     minHeight: "100vh",
     height: "fit-content",
 
-    backgroundColor: "#EEF1FB",
+    backgroundColor: "$grey100",
 
     fontSize: "62.5%",
     fontFamily: "$main",
@@ -89,13 +100,14 @@ export const globalStyles = globalCss({
   },
 
   html: {
-    backgroundColor: "$bg",
     overflowY: "scroll",
+    backgroundColor: "$grey100",
   },
   body: {
     margin: "0 auto",
     fontFamily: "$main",
     lineHeight: "20px",
+    backgroundColor: "$grey100",
   },
   a: {
     textDecoration: "underline",

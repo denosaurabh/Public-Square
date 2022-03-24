@@ -22,6 +22,8 @@ const StyledTrigger = styled(PopoverPrimitive.Trigger, {
   border: "1px solid $grey300",
   borderRadius: "100px",
 
+  color: "$grey400",
+
   transition: "all 0.1s ease-in-out",
 
   "&:hover": {

@@ -83,7 +83,7 @@ const Accounts = () => {
         </SelectValue>
       </SelectTrigger>
 
-      <SelectContent>
+      <SelectContent css={{ backgroundColor: "$grey200" }}>
         <SelectViewport>
           {allProfiles ? (
             allProfiles.map((profile) => {

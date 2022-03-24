@@ -104,7 +104,7 @@ const DiscussionBox = styled("div", {
 
   "&:hover": {
     cursor: "pointer",
-    backgroundColor: "#E7EBF9",
+    backgroundColor: "$grey300",
   },
 });
 

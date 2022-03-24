@@ -29,8 +29,6 @@ const UpdateProfile = () => {
   const accountStore = useStore(AccountStore);
   const activeAccount = useObservable(accountStore.activeProfile);
 
-  console.log(activeAccount);
-
   const [formInput, setFormInput] = useState({
     handle: "",
     bio: "",
@@ -93,7 +91,12 @@ const UpdateProfile = () => {
 
     // console.log(res);
 
-    if (formInput.location || formInput.twitterUrl || formInput.website) {
+    if (
+      formInput.location ||
+      formInput.twitterUrl ||
+      formInput.website ||
+      formInput.bio
+    ) {
       // toast.loading("Updating profile ...");
 
       try {
@@ -264,7 +267,7 @@ const AddFollowModule = () => {
   const [moduleInputValues, setModuleInputValues] = useState({
     Follow: {
       amount: {
-        currency: "",
+        currency: "0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e",
         value: "",
       },
       recipient: "",
@@ -535,6 +538,7 @@ const LineInput = styled(Input, {
   border: "1px solid $grey300",
   borderRadius: 0,
   backgroundColor: "transparent",
+  color: "$grey500",
 });
 
 const UpdateButton = styled("button", {
@@ -549,6 +553,8 @@ const UpdateButton = styled("button", {
 
   height: "5rem",
   width: "100%",
+
+  color: "$grey600",
 
   fontFamily: "$sansSerif",
   fontSize: "1.8rem",

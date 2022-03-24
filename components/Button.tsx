@@ -4,6 +4,8 @@ export const Button = styled("button", {
   fontFamily: "$main",
   fontSize: "1.6rem",
   fontWeight: "500",
+  color: "$grey400",
+
   // textTransform: "uppercase",
 
   display: "flex",
@@ -19,7 +21,8 @@ export const Button = styled("button", {
     color: {
       dark: {
         backgroundColor: "$grey-800",
-        color: "#181818",
+        color: "$grey400",
+
         boxShadow: "0px 1rem 2rem rgba(0, 0, 0, 0.15)",
 
         svg: {
@@ -104,7 +107,8 @@ export const TextButton = styled(Button, {
 
   "&:hover": {
     // backgroundColor: "#E7EBF9 !important",
-    color: "black",
+    color: "$grey600",
+
     boxShadow: "0px 0.2rem 1rem rgba(0, 0, 0, 0.25) !important",
     outline: "1px solid grey",
     transform: "translateY(-4px) !important",

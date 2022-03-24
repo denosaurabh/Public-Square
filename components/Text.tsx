@@ -4,6 +4,7 @@ export const Text = styled("p", {
   fontFamily: "$main",
   fontSize: "$sm",
   fontWeight: 400,
+  color: "$grey400",
 
   variants: {
     size: {
@@ -71,7 +72,6 @@ export const Text = styled("p", {
 export const TextDefault = styled(Text, {
   fontSize: "$md",
   margin: "1rem",
-  color: "$textColorDark",
 });
 
 export const SemiBoldText = styled(TextDefault, {
@@ -83,7 +83,6 @@ export const BoldText = styled(TextDefault, {
 });
 
 export const SmallText = styled(TextDefault, {
-  color: "light-grey",
   fontWeight: "400",
   fontSize: "$sm",
 });
@@ -99,7 +98,6 @@ export const LinkSmallText = styled(SmallText, "a", {
 export const LightSansSerifText = styled(TextDefault, {
   fontFamily: "$sansSerif",
   fontStyle: "italic",
-  color: "light-grey",
 });
 
 export const LinkText = styled(TextDefault, {

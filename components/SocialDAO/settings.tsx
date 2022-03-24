@@ -321,7 +321,7 @@ const UploadInput = styled(Input, {
 const Box = styled("div", {
   display: "flex",
   justifyContent: "space-between",
-  borderBottom: "1px solid #D3D3D3",
+  borderBottom: "1px solid $grey300",
 
   div: {
     flex: 1,
@@ -335,12 +335,12 @@ const Box = styled("div", {
 
     "&:first-child": {
       borderLeft: 0,
-      borderRight: "1px solid grey !important",
+      borderRight: "1px solid $grey300 !important",
     },
 
     "&:last-child": {
       borderRight: 0,
-      borderLeft: "1px solid grey !important",
+      borderLeft: "1px solid $grey300 !important",
     },
   },
 });
@@ -349,6 +349,7 @@ const LineInput = styled(Input, {
   border: "1px solid $grey300",
   borderRadius: 0,
   backgroundColor: "transparent",
+  color: "$grey600",
 });
 
 const UpdateButton = styled("button", {
@@ -358,6 +359,8 @@ const UpdateButton = styled("button", {
   borderLeft: 0,
   borderRight: 0,
   borderBottom: 0,
+
+  color: "$grey600",
 
   borderRadius: "0 0 20px 20px",
 

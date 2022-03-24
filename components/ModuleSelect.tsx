@@ -118,8 +118,9 @@ export const ModuleSelect: React.FC<ModuleSelectProps> = ({
 const ModuleBox = styled("div", {});
 
 const LineInput = styled(Input, {
-  border: "1px solid #ccc",
+  border: "1px solid $grey300",
   borderRadius: 0,
+  color: "$grey600",
 });
 
 const ModuleInputs = styled("form", {

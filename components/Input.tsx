@@ -12,7 +12,7 @@ const InputLabel = styled("label", {
   fontSize: "1.4rem",
   marginBottom: "0.8rem",
 
-  color: "$grey-800",
+  color: "$grey-600",
 
   svg: {
     fill: "$grey-800",
@@ -40,7 +40,7 @@ const StyledInput = styled("input", {
   padding: "1.6rem 1.5rem",
 
   backgroundColor: "transparent",
-  color: "$grey-800",
+  color: "$grey-600",
 
   border: "1px solid $grey-700",
   borderRadius: "0.8rem",

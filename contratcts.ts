@@ -49,8 +49,9 @@ export const FOLLOW_MODULES: ModulesI = {
       },
       recipient: "ADDRESS",
     },
-    message: "Users have to pay a specific amount to follow you",
-    userMessage: "You have to pay this specific amount to follow this person",
+    message: "Users have to pay a specific amount (in USD) to follow you",
+    userMessage:
+      "You have to pay this specific amount (in USD) to follow this person",
   },
   // ApprovalFollowModuleSettings: {
   //   type: "approvalFollowModule",

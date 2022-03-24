@@ -1,4 +1,4 @@
-import { styled } from "@/stitches.config";
+import { darkTheme, styled } from "@/stitches.config";
 
 import Header from "@/components/Header";
 import ActionBox from "@/components/ActionBox";
@@ -12,7 +12,7 @@ import ActionBox from "@/components/ActionBox";
 
 const PageContainer: React.FC = ({ children }) => {
   return (
-    <Container>
+    <Container className={darkTheme}>
       <Header />
       <Main>
         <ActionBox />
@@ -28,6 +28,7 @@ export default PageContainer;
 
 const Container = styled("div", {
   width: "100%",
+  minHeight: "100vh",
   height: "auto",
 
   padding: "2rem",
@@ -35,6 +36,8 @@ const Container = styled("div", {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+
+  backgroundColor: "$grey100",
 });
 
 const Main = styled("div", {

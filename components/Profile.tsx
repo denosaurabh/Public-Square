@@ -109,7 +109,7 @@ const TopContainer = styled("div", {
   width: "100%",
   margin: "0",
 
-  borderBottom: "1px solid #D3D3D3",
+  borderBottom: "1px solid $grey300",
 });
 
 const RightBox = styled("div", {
@@ -141,7 +141,7 @@ const Box = styled("div", {
 
   p: {
     fontSize: "1.5rem",
-    borderRight: "1px solid #D3D3D3",
+    borderRight: "1px solid $grey300",
 
     span: {
       fontSize: "1.3rem",
@@ -153,7 +153,7 @@ const LineText = styled(TextDefault, {
   margin: 0,
   padding: "0.8rem 2rem",
 
-  borderBottom: "1px solid #D3D3D3",
+  borderBottom: "1px solid $grey300",
 
   width: "100%",
 

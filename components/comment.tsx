@@ -59,6 +59,8 @@ const CommentContainer = styled("div", {
   width: "100%",
   height: "fit-content",
 
+  color: "$grey600",
+
   padding: "1rem 0",
   borderBottom: "1px solid $grey300",
 });

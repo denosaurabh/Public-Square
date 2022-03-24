@@ -10,15 +10,15 @@ const ActionBox = () => {
         <NextLink href="/home" passHref>
           <Link>Home</Link>
         </NextLink>
-        <NextLink href="/recommandations" passHref>
+        {/* <NextLink href="/recommandations" passHref>
           <Link>Recommandations</Link>
-        </NextLink>
+        </NextLink> */}
         <NextLink href="/social" passHref>
           <Link>Social Groups</Link>
         </NextLink>
       </Box>
       <Box>
-        <NextLink href="/superdeno" passHref>
+        <NextLink href="/social/superdeno" passHref>
           <Link>Super Deno</Link>
         </NextLink>
         <NextLink href="/settings" passHref>
@@ -45,6 +45,8 @@ const Link = styled(Text, {
   padding: "1rem 1.5rem",
 
   fontSize: "$md",
+
+  color: "$grey400",
 
   borderRight: "1px solid $grey300",
 

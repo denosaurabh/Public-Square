@@ -87,8 +87,10 @@ const HeaderCenterBox = styled("div", {
   display: "flex",
   justifyContent: "center",
 
+  color: "$grey400",
+
   svg: {
-    fill: "grey",
+    fill: "$grey400",
 
     display: "flex",
     justifyContent: "center",

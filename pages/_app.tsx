@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               }),
           }}>
           <ApolloProvider client={apolloClient}>
-            <PageContainer>
+            <PageContainer >
               <Component {...pageProps} />
               <ToastContainer />
             </PageContainer>

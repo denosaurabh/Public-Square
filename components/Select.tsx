@@ -1,7 +1,9 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { styled } from "@/stitches.config";
 
-export const Select = styled(SelectPrimitive.Root, {});
+export const Select = styled(SelectPrimitive.Root, {
+  backgroundColor: "$grey200",
+});
 
 const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
   display: "flex",
@@ -19,7 +21,7 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
   color: "$grey400",
 
   width: "fit-content",
-  backgroundColor: "$tint3",
+  backgroundColor: "$grey100",
 
   border: "1px solid $grey300",
   borderRadius: "$900",
@@ -30,7 +32,8 @@ const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
     // backgroundColor: "#E7EBF9 !important",
     cursor: "pointer",
 
-    color: "black",
+    color: "$grey600",
+
     boxShadow: "0px 0.2rem 1rem rgba(0, 0, 0, 0.25) !important",
     outline: "1px solid grey",
     transform: "translateY(-4px) !important",
@@ -57,8 +60,8 @@ const StyledSelectIcon = styled(SelectPrimitive.Icon, {
 
 const StyledContent = styled(SelectPrimitive.Content, {
   overflow: "hidden",
-  // backgroundColor: "$tint1",
 
+  background: "$grey600",
   border: "1px solid $grey300",
   borderRadius: "10px",
 
@@ -70,6 +73,7 @@ const StyledContent = styled(SelectPrimitive.Content, {
 
 const StyledViewport = styled(SelectPrimitive.Viewport, {
   // padding: '5px 6.5px'
+  backgroundColor: "$grey600",
 });
 
 const StyledItem = styled(SelectPrimitive.Item, {
@@ -86,10 +90,12 @@ const StyledItem = styled(SelectPrimitive.Item, {
 
   fontFamily: "inherit",
   fontSize: "14px",
-  color: "$tint12",
+  color: "$grey200",
 
-  backgroundColor: "#E7EBF9",
-  borderBottom: "1px solid #D3D3D3",
+  backgroundColor: "$grey600",
+
+  // backgroundColor: "#E7EBF9",
+  // borderBottom: "1px solid #D3D3D3",
 
   width: "100%",
 
@@ -122,10 +128,10 @@ const StyledItem = styled(SelectPrimitive.Item, {
 
 const StyledSelectItemText = styled(SelectPrimitive.ItemText, {
   fontSize: "$sm",
-  color: "$tint12",
+  color: "$grey500",
 
   "&:focus": {
-    color: "$tint1",
+    color: "$grey600",
   },
 });
 

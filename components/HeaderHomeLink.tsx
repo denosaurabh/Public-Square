@@ -26,4 +26,5 @@ const HeaderHomeLinkStyled = styled("div", {
 
   fontFamily: "$sansSerif",
   fontSize: "1.8rem",
+  color: '$grey600'
 });

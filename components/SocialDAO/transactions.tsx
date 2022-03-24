@@ -285,7 +285,7 @@ const TotalTxHeading = styled(H5, {
   margin: "6rem 0 !important",
 
   color: "grey",
-  span: { color: "black", fontSize: "150%" },
+  span: { color: "$grey400", fontSize: "150%" },
 });
 
 const TransactionsBoxContainer = styled("div", {
@@ -325,7 +325,7 @@ const TransactionBox = styled("div", {
       },
     },
 
-    borderBottom: "1px solid #D3D3D3",
+    borderBottom: "1px solid $grey300",
   },
 });
 
@@ -364,6 +364,6 @@ const StyledDialogContent = styled(DialogContent, {
       marginRight: "auto",
     },
 
-    borderBottom: "1px solid #D3D3D3",
+    borderBottom: "1px solid $grey300",
   },
 });

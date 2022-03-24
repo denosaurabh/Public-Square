@@ -2,6 +2,7 @@ import { styled } from "@/stitches.config";
 
 export const TextArea = styled("textarea", {
   backgroundColor: "transparent",
+  color: "$grey600",
 
   width: "40rem",
   height: "20rem",

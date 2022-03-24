@@ -100,6 +100,10 @@ const PostContainer = styled("div", {
   paddingBottom: "1rem",
 
   transition: "all 0.3s ease-in-out",
+
+  "&:last-child": {
+    borderBottom: "0",
+  },
 });
 
 const ContentContainer = styled(MarkDownContainer, {

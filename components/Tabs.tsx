@@ -35,6 +35,8 @@ const StyledTrigger = styled(TabsPrimitive.Trigger, {
   height: "fit-content",
   flex: 1,
 
+  color: "$grey400",
+
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -59,7 +61,7 @@ const StyledTrigger = styled(TabsPrimitive.Trigger, {
     color: "$grey600",
     // fontWeight: "500",
 
-    backgroundColor: "$grey100",
+    backgroundColor: "$grey200",
     borderRadius: "$500",
 
     // boxShadow: "inset 0 -1px 0 0 currentColor, 0 1px 0 0 currentColor",

@@ -23,7 +23,7 @@ const StyledOverlay = styled(DialogPrimitive.Overlay, {
 });
 
 const StyledContent = styled(DialogPrimitive.Content, {
-  backgroundColor: "#E7EBF9",
+  backgroundColor: "$grey600",
   borderRadius: 14,
   border: "1px solid $grey300",
   boxShadow:
