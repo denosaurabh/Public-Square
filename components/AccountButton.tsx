@@ -5,6 +5,17 @@ import { useAccount, useConnect, useSigner, useSignMessage } from "wagmi";
 import { Button, TextButton } from "./Button";
 import { useObservable } from "@/stores";
 import { smallAddress } from "@/utils";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectViewport,
+  SelectItem,
+  SelectItemText,
+} from "./Select";
+import { LightSansSerifText } from "./Text";
+import { toast } from "react-toastify";
 
 const AccountButton: React.FC = () => {
   const [{ data }, connect] = useConnect();
@@ -14,10 +25,16 @@ const AccountButton: React.FC = () => {
   const [, signMessage] = useSignMessage();
   const [{ data: signer, error, loading }, getSigner] = useSigner();
 
+  const [accountChoice, setAccountChoice] = useState("metamask");
+  const [open, setOpen] = useState(false);
+
   const authStore = useStore(AuthStore);
   const accessToken = useObservable(authStore.accessToken);
+  const authSigner = useObservable(authStore.signer);
 
-  const connector = data.connectors.filter((c) => c.name === "MetaMask")[0];
+  // const connector = data.connectors.filter((c) => c.name === "MetaMask")[0];
+
+  console.log("AccountButton", data);
 
   const [load, setLoad] = useState(false);
 
@@ -50,8 +67,28 @@ const AccountButton: React.FC = () => {
     }
   };
 
-  const onAuthClick = async () => {
-    connect(connector);
+  const onAuthClick = async (val: string) => {
+    try {
+      if (val === "metamask") {
+        await connect(data.connectors[0]);
+      } else if (val === "sequence") {
+        console.log("onAuthClick", val);
+
+        await connect(data.connectors[1]);
+      }
+
+      toast.success("Successfully connected to wallet");
+      setOpen(false);
+    } catch (err) {
+      toast.error("Could not connect to wallet! " + err);
+      setOpen(false);
+    }
+  };
+
+  const onSelectAccountConnectChange = (val: string) => {
+    if (val) {
+      setAccountChoice(val);
+    }
   };
 
   const disconnectAuth = async () => {
@@ -68,18 +105,51 @@ const AccountButton: React.FC = () => {
   }, [, accountData]);
 
   useEffect(() => {
-    if (signer) {
+    if (signer && !authSigner) {
       authStore.signer.set(signer);
     }
-  }, [signer]);
-
-  if (!connector) return <></>;
+  }, [signer, authSigner]);
 
   if (!accountData) {
     return (
-      <Button key={connector.id} onClick={onAuthClick} color="dark">
-        Connect
-      </Button>
+      <TextButton onClick={() => onAuthClick("metamask")}>Connect</TextButton>
+    );
+
+    return (
+      <Select
+        defaultValue={accountChoice}
+        value={accountChoice}
+        onValueChange={onSelectAccountConnectChange}
+        onOpenChange={(val) => setOpen(true)}
+        open={open}>
+        <SelectTrigger>
+          <SelectValue>Connect</SelectValue>
+        </SelectTrigger>
+
+        <SelectContent css={{ backgroundColor: "$grey200" }}>
+          <SelectViewport>
+            <SelectItem
+              value="metamask"
+              key="metamask"
+              onClick={(e) => {
+                e.preventDefault();
+                onAuthClick("metamask");
+              }}>
+              <SelectItemText>Metamask</SelectItemText>
+            </SelectItem>
+
+            {/* <SelectItem
+              value="sequence"
+              key="sequence"
+              onClick={(e) => {
+                e.preventDefault();
+                onAuthClick("sequence");
+              }}>
+              <SelectItemText>Sequence</SelectItemText>
+            </SelectItem> */}
+          </SelectViewport>
+        </SelectContent>
+      </Select>
     );
   }
 

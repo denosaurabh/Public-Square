@@ -120,6 +120,18 @@ export const globalStyles = globalCss({
     border: "none",
     outline: "none",
   },
+
+  "::-webkit-scrollbar": {
+    width: "3px",
+  },
+  "::-webkit-scrollbar-track": {
+    borderRadius: "10px",
+  },
+  "::-webkit-scrollbar-thumb": {
+    background: "$grey100",
+    borderRadius: "10px",
+  },
+
   "@font-face": [
     {
       fontFamily: "Satoshi-Variable",

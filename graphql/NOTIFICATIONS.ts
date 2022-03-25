@@ -1,4 +1,7 @@
-export const GET_NOTIFICATIONS = `
+import { apolloClient } from "@/apollo/client";
+import { gql } from "@apollo/client";
+
+export const MUTATE_NOTIFICATIONS = `
   mutation($request: NotificationRequest!) { 
     items {
       ... on NewFollowerNotification {
@@ -209,5 +212,16 @@ fragment Wallet on Wallet {
     ...CompactProfile
   }
   totalAmountOfProfiles
-}
-`;
+}`;
+
+export const getNotifications = (profileId: string) => {
+  return apolloClient.mutate({
+    mutation: gql(MUTATE_NOTIFICATIONS),
+    variables: {
+      request: {
+        profileId,
+        limit: 10,
+      },
+    },
+  });
+};

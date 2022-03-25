@@ -54,15 +54,15 @@ export class AccountStore {
 
       const localActiveAccountId =
         this.localStoreAccount.get()?.activeAccountAdr;
-      if (localActiveAccountId) {
-        this.setActiveAccountAdr(`${localActiveAccountId}` || profiles[0].id);
+      // if (localActiveAccountId) {
+      this.setActiveAccountAdr(`${localActiveAccountId}` || profiles[0].id);
 
-        this.setActiveAccount(
-          profiles.filter((p) => p.id === localActiveAccountId)[0]
-        );
+      this.setActiveAccount(
+        profiles.filter((p) => p.id === localActiveAccountId)[0]
+      );
 
-        return;
-      }
+      // return;
+      // }
 
       if (!this.activeProfile.get() || !this.activeProfileId.get()) {
         const currentProfile = profiles[0];

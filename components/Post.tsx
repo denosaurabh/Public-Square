@@ -1,7 +1,6 @@
 import { styled } from "@/stitches.config";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import dayjs from "dayjs";
 import { Avatar, AvatarImage } from "./Avatar";
 import { MarkDownContainer } from "@/style/markdown";
 import { SmallText, TextDefault } from "./Text";
@@ -10,6 +9,11 @@ import CommentSvg from "@/icons/comment.svg";
 import CollectSvg from "@/icons/collect.svg";
 import MirrorSvg from "@/icons/mirror.svg";
 import { useState } from "react";
+import Editor from "./Editor";
+
+import relativeTime from "dayjs/plugin/relativeTime";
+
+dayjs.extend(relativeTime);
 
 const Post: React.FC = (props: any) => {
   const [hover, SetHover] = useState(false);
@@ -24,13 +28,17 @@ const Post: React.FC = (props: any) => {
       onMouseEnter={() => SetHover(true)}
       onMouseLeave={() => SetHover(false)}>
       <Link href={`/post/${postId}`} passHref>
-        <ContentContainer>
-          <ReactMarkdown
-            className="post-content-markdown"
-            remarkPlugins={[remarkGfm]}>
-            {metadata.content || "*weirdly nothing...*"}
-          </ReactMarkdown>
-        </ContentContainer>
+        <a>
+          {/* <ContentContainer>
+            <ReactMarkdown
+              className="post-content-markdown"
+              remarkPlugins={[remarkGfm]}>
+              {metadata.content || "*weirdly nothing...*"}
+            </ReactMarkdown>
+          </ContentContainer> */}
+
+          <Editor readOnly value={metadata.content} css={{ padding: "1rem" }} />
+        </a>
       </Link>
 
       {/* <Stats
@@ -53,7 +61,7 @@ const Post: React.FC = (props: any) => {
           </Avatar>
           ;<TextDefault>{handle}</TextDefault>
           <SmallText css={{ marginLeft: "auto" }}>
-            {new Date(createdAt).toLocaleTimeString()}
+            {dayjs(createdAt).fromNow()}
           </SmallText>
         </Profile>
       </Link>

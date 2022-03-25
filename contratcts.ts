@@ -155,7 +155,7 @@ export const REFERENCE_MODULES: ModulesI = {
     name: "No Reference Module",
     address: ZERO_ADDRESS,
     dataType: "Boolean",
-    message: "Anyone can reference you post",
+    message: "Anyone can reference your post",
     dataValue: false,
     userMessage: "You can freely reference this post",
   },

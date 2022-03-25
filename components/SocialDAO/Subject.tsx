@@ -8,12 +8,13 @@ import { LightSansSerifText, TextDefault } from "../Text";
 const Subjects: React.FC = () => {
   const socialDao = useStore(SocialDAOStore);
   const subjects = useObservable(socialDao.subjects);
+  const currentDaoProfileInfo = useObservable(socialDao.currentDaoProfileInfo);
 
   return (
     <SubjectsContainer>
       {subjects ? (
         subjects.map((subject, i) => (
-          <Link href={`/post/${subject.id}`} key={i} passHref>
+          <Link href={`/subject/${subject.id}`} key={i} passHref>
             <SubjectBox>
               <Heading as="h3" size="h1" sansSerif italic>
                 {subject.metadata.name}
@@ -37,6 +38,7 @@ export default Subjects;
 
 const SubjectsContainer = styled("div", {
   display: "flex",
+
   flexWrap: "wrap",
 
   margin: "5rem 0",

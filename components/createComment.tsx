@@ -1,5 +1,5 @@
 import { styled } from "@/stitches.config";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Button } from "./Button";
 import Input from "./Input";
 import ReactMarkdown from "react-markdown";
@@ -17,13 +17,17 @@ import useLensHub from "@/hooks/useLensHub";
 import { SemiBoldText } from "./Text";
 import { TextArea } from "./TextArea";
 import { toast } from "react-toastify";
+import Editor from "./Editor";
 
 interface CreateCommentI {
   publicationId: string;
+  css?: Record<string, unknown>;
 }
 
-const CreateComment: React.FC<CreateCommentI> = ({ publicationId }) => {
+const CreateComment: React.FC<CreateCommentI> = ({ publicationId, css }) => {
+  const [name, setName] = useState("");
   const [comment, setComment] = useState("");
+  const [description, setDescription] = useState("");
 
   const [, signTypedData] = useSignTypedData();
 
@@ -108,28 +112,47 @@ const CreateComment: React.FC<CreateCommentI> = ({ publicationId }) => {
   };
 
   return (
-    <CommentContainer onSubmit={onFormSubmit}>
+    <CommentContainer onSubmit={onFormSubmit} css={css}>
       <SemiBoldText>Post a comment</SemiBoldText>
 
-      <TextArea
-        placeholder="my comment .."
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
+      <div>
+        <Input
+          type="text"
+          placeholder="Title"
+          value={name}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setName(e.target.value)
+          }
+          css={{
+            fontSize: "$xxl !important",
+            margin: "0",
+            padding: 0,
+            input: { margin: "0 1rem", padding: 0 },
+          }}
+        />
+
+        <Input
+          type="text"
+          placeholder="Description"
+          value={description}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setDescription(e.target.value)
+          }
+          css={{
+            fontSize: "$xl !important",
+            margin: "0",
+            padding: 0,
+            input: { margin: "1rem", padding: 0 },
+          }}
+        />
+      </div>
+
+      <Editor
+        placeholder="your comment content goes here .."
+        // value={comment}
+        onChange={(val) => setComment(val)}
+        css={{ height: "20rem" }}
       />
-
-      {comment ? (
-        <>
-          <SemiBoldText>Markdown Preview</SemiBoldText>
-
-          <MarkDownContainer css={{ margin: 0 }}>
-            <ReactMarkdown
-              className="post-content-markdown"
-              remarkPlugins={[remarkGfm]}>
-              {comment}
-            </ReactMarkdown>
-          </MarkDownContainer>
-        </>
-      ) : null}
 
       <Button type="submit">Comment</Button>
     </CommentContainer>

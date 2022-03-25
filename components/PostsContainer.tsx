@@ -18,7 +18,7 @@ const PostsContainer: React.FC<PostsContainerProps> = ({
 }) => {
   if (!publications.length) return <></>;
 
-  const pubsArr = chunkify(publications, 3, true);
+  const pubsArr = chunkify(publications, 2, true);
   console.log(pubsArr);
 
   return (
@@ -66,8 +66,9 @@ export default PostsContainer;
 
 const AllPostsContainer = styled(LineBox, {
   width: "100%",
+
   minHeight: "100%",
-  height: "fit-content",
+  height: "100%",
 
   borderRadius: "$500",
 
@@ -83,10 +84,15 @@ const TopContainer = styled("div", {
 const ContentContainer = styled("div", {
   display: "grid",
   gridTemplateColumns: "repeat(2, 1fr)",
+
+  height: "fit-content",
 });
 
 const Posts = styled("div", {
   padding: "1rem 0.5rem",
+
+  minHeight: "100%",
+  height: "100%",
 
   borderRight: "1px solid $grey300",
 

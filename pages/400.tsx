@@ -1,17 +1,17 @@
 import { H3 } from "@/components/Heading";
 import { styled } from "@/stitches.config";
 
-const NotFound = () => {
+const ApplicationError = () => {
   return (
     <Center>
       <H3 sansSerif italic as="a" href="/">
-        Want to get lost in your thoughts?
+        Make sure you are on Polygon Mumbai Network
       </H3>
     </Center>
   );
 };
 
-export default NotFound;
+export default ApplicationError;
 
 const Center = styled("div", {
   display: "flex",

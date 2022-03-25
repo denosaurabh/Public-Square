@@ -19,6 +19,7 @@ import {
 import { LinkText, TextDefault } from "./Text";
 import HeaderHomeLink from "./HeaderHomeLink";
 import ThemeButton from "./ToggleTheme";
+import Notifications from "./Notifictions";
 
 const Header = () => {
   return (
@@ -27,7 +28,7 @@ const Header = () => {
 
       <HeaderCenterBox>
         <Link href="/social" passHref>
-          <LinkText>Daos</LinkText>
+          <LinkText>Social Daos</LinkText>
         </Link>
 
         <Popover>
@@ -49,12 +50,13 @@ const Header = () => {
           </PopoverContent>
         </Popover>
 
-        <LinkText>Social</LinkText>
+        <LinkText>Super Deno</LinkText>
       </HeaderCenterBox>
 
       <HeaderRightBox>
         <ThemeButton />
         <Network />
+        <Notifications />
         <Accounts />
         <AccountButton />
       </HeaderRightBox>

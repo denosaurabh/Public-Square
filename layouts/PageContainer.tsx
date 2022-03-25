@@ -43,6 +43,17 @@ const Container = styled("div", {
   alignItems: "center",
 
   backgroundColor: "$grey100",
+
+  "html::-webkit-scrollbar": {
+    width: "3px",
+  },
+  "html::-webkit-scrollbar-track": {
+    borderRadius: "10px",
+  },
+  "html::-webkit-scrollbar-thumb": {
+    background: "$grey400",
+    borderRadius: "10px",
+  },
 });
 
 const Main = styled("div", {

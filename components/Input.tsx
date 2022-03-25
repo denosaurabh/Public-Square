@@ -4,6 +4,8 @@ const InputContainer = styled("div", {
   display: "flex",
   flexDirection: "column",
 
+  fontSize: "$sm",
+
   width: "auto",
 });
 
@@ -35,15 +37,19 @@ const StyledInput = styled("input", {
   width: "100%",
 
   fontFamily: "$inter",
-  fontSize: "1.5rem",
+  fontSize: "inherit",
 
   padding: "1.6rem 1.5rem",
 
   backgroundColor: "transparent",
-  color: "$grey-600",
+  color: "$grey600",
 
   border: "1px solid $grey-700",
   borderRadius: "0.8rem",
+
+  "&::placeholder": {
+    color: "$grey500",
+  },
 
   variants: {
     size: {

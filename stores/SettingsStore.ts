@@ -9,6 +9,8 @@ interface SettingsLocalStore {
 
 export class SettingsStore {
   theme = observable<themeT>("dark");
+  focusMode = observable<boolean>(false);
+  
 
   localStore = new LocalStore<SettingsLocalStore>("@settingsStore");
 

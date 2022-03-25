@@ -1,8 +1,8 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { styled } from "@/stitches.config";
+import { darkTheme, styled } from "@/stitches.config";
 
 export const Select = styled(SelectPrimitive.Root, {
-  backgroundColor: "$grey200",
+  // backgroundColor: "$grey200",
 });
 
 const StyledTrigger = styled(SelectPrimitive.SelectTrigger, {
@@ -61,7 +61,6 @@ const StyledSelectIcon = styled(SelectPrimitive.Icon, {
 const StyledContent = styled(SelectPrimitive.Content, {
   overflow: "hidden",
 
-  background: "$grey600",
   border: "1px solid $grey300",
   borderRadius: "10px",
 
@@ -73,7 +72,6 @@ const StyledContent = styled(SelectPrimitive.Content, {
 
 const StyledViewport = styled(SelectPrimitive.Viewport, {
   // padding: '5px 6.5px'
-  backgroundColor: "$grey600",
 });
 
 const StyledItem = styled(SelectPrimitive.Item, {
@@ -90,9 +88,14 @@ const StyledItem = styled(SelectPrimitive.Item, {
 
   fontFamily: "inherit",
   fontSize: "14px",
-  color: "$grey200",
 
   backgroundColor: "$grey600",
+  color: "$grey100",
+
+  // [`.${darkTheme} &`]: {
+  //   backgroundColor: "$grey300",
+  //   color: "$grey400",
+  // },
 
   // backgroundColor: "#E7EBF9",
   // borderBottom: "1px solid #D3D3D3",
@@ -128,7 +131,6 @@ const StyledItem = styled(SelectPrimitive.Item, {
 
 const StyledSelectItemText = styled(SelectPrimitive.ItemText, {
   fontSize: "$sm",
-  color: "$grey500",
 
   "&:focus": {
     color: "$grey600",

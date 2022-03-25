@@ -56,7 +56,7 @@ const SocialDaos = () => {
       </TextDefault>
 
       <DaosContainer>
-        {allDaos ? (
+        {allDaos.length ? (
           allDaos.map((dao, i) => {
             return <Profile {...dao} key={i} />;
           })

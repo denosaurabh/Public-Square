@@ -38,6 +38,7 @@ import { gql, useQuery } from "@apollo/client";
 import { apolloClientWithoutAuth } from "@/apollo/client";
 import { LineBox } from "@/components/LineBox";
 import { Separator } from "@/components/Seperator";
+import Editor from "@/components/Editor";
 
 const PostPage: NextPage = () => {
   const router = useRouter();
@@ -88,9 +89,15 @@ const PostPage: NextPage = () => {
       {pub.metadata ? (
         <LeftBox>
           <div>
-            <H5>{pub.metadata.name}</H5>
-            <H6 css={{ margin: "3rem 0" }}>{pub.metadata.description}</H6>
-            <MarkDownBox content={pub.metadata.content} />
+            <H5 size="h1" italic sansSerif>
+              {pub.metadata.name}
+            </H5>
+            <H6 size="h6" weight="600" css={{ margin: "3rem 0" }}>
+              {pub.metadata.description}
+            </H6>
+            {/* <MarkDownBox content={pub.metadata.content} /> */}
+
+            <Editor readOnly value={pub.metadata.content} />
           </div>
 
           <ColumnStatsBox>
@@ -150,7 +157,10 @@ const PostPage: NextPage = () => {
         <TextDefault>loading....</TextDefault>
       )}
 
-      <Separator orientation="vertical" css={{ height: "100vh !important" }} />
+      {/* <Separator
+        orientation="vertical"
+        css={{ minHeight: "100vh", height: "100%" }}
+      /> */}
 
       <RightBox>
         <CommentsContainer data={commentsData} />
@@ -177,6 +187,11 @@ const LeftBox = styled("div", {
   display: "flex",
   flexDirection: "column",
   gap: "8rem",
+
+  paddingRight: "2rem",
+  marginRight: "1rem",
+
+  borderRight: "1px solid $grey300",
 });
 
 const RightBox = styled("div", {

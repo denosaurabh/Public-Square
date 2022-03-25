@@ -23,6 +23,7 @@ import { useSignTypedData } from "wagmi";
 import omitDeep from "omit-deep";
 import { MarkDownContainer } from "@/style/markdown";
 import { TextArea } from "@/components/TextArea";
+import Editor from "@/components/Editor";
 import {
   Amount,
   COLLECT_MODULES,
@@ -48,6 +49,7 @@ const CreatePost = () => {
   const [, signTypedData] = useSignTypedData();
 
   const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [content, setContent] = useState("");
 
   const [collectModule, setCollectModule] = useState(
@@ -114,7 +116,7 @@ const CreatePost = () => {
     const metadata = {
       version: "1.0.0",
       metadata_id: nanoid(),
-      description: content,
+      description,
       content,
       external_url: null,
       image: null,
@@ -271,27 +273,41 @@ const CreatePost = () => {
               onChange={(e) => setName(e.target.value)}
             /> */}
           <Input
-            type="name"
-            placeholder="name"
+            type="text"
+            placeholder="Title"
             value={name}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setName(e.target.value)
             }
+            css={{ fontSize: "$xxl !important" }}
           />
 
-          <TextArea
-            placeholder="I am an artist...."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
+          <Input
+            type="text"
+            placeholder="Description"
+            value={description}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setDescription(e.target.value)
+            }
+            css={{ fontSize: "$xl !important", marginBottom: "2rem" }}
           />
 
-          <MarkDownContainer>
+          <Editor
+            placeholder="Content of your post goes here.... Press '/' to get more commands. Scroll Down to post and get more options "
+            // value={content}
+            onChange={(val) => setContent(val)}
+            css={{ minHeight: "100vh" }}
+          />
+
+          {/* <TextArea /> */}
+
+          {/* <MarkDownContainer>
             <ReactMarkdown
               className="post-content-markdown"
               remarkPlugins={[remarkGfm]}>
               {content}
             </ReactMarkdown>
-          </MarkDownContainer>
+          </MarkDownContainer> */}
 
           <ModuleSelect
             name="Collect"

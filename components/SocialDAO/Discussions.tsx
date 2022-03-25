@@ -37,7 +37,7 @@ interface DiscussionProps {
 
 export const Discussion: React.FC<DiscussionProps> = ({ id, metadata, no }) => {
   return (
-    <Link href={`/post/${id}`} passHref>
+    <Link href={`/discussion/${id}`} passHref>
       <DiscussionBox>
         <LightSansSerifText>{no}.</LightSansSerifText>
         <Heading as="h3" size="h1" sansSerif italic>

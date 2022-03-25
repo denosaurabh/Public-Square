@@ -3,14 +3,15 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Avatar, AvatarImage } from "./Avatar";
+import Editor from "./Editor";
 import { SmallText, TextDefault } from "./Text";
 
 const Comment: React.FC = (props: any) => {
-  const { profile, stats, metadata, id: postId } = props;
+  const { profile, stats, metadata, id: postId, css } = props;
   const { id, handle, picture } = profile;
 
   return (
-    <CommentContainer>
+    <CommentContainer css={css}>
       <ContentContainer>
         {/* <Avatar>
           <AvatarImage
@@ -22,13 +23,11 @@ const Comment: React.FC = (props: any) => {
           />
         </Avatar> */}
 
-        <MarkdownContent>
-          <ReactMarkdown
-            className="post-content-markdown"
-            remarkPlugins={[remarkGfm]}>
-            {metadata.content}
-          </ReactMarkdown>
-        </MarkdownContent>
+        <Editor
+          readOnly
+          value={metadata.content}
+          css={{ margin: 0, padding: 0 }}
+        />
       </ContentContainer>
 
       <Link href={`/profile/${id}`} passHref>
@@ -59,16 +58,16 @@ const CommentContainer = styled("div", {
   width: "100%",
   height: "fit-content",
 
-  color: "$grey600",
+  paddingTop: "1rem",
 
-  padding: "1rem 0",
+  color: "$grey600",
   borderBottom: "1px solid $grey300",
 });
 
 const ContentContainer = styled("div", {
   borderRadius: "$500",
 
-  padding: "1rem",
+  padding: "0 1rem 1rem 2rem",
 
   display: "flex",
   alignItems: "center",
@@ -83,17 +82,11 @@ const ContentContainer = styled("div", {
   },
 });
 
-const MarkdownContent = styled("div", {
-  borderRadius: "10px",
-
-  width: "100%",
-});
-
 const Profile = styled("div", {
   display: "flex",
   alignItems: "center",
 
-  padding: "0rem 1rem",
+  padding: "1rem 2rem",
 
   "&:hover": {
     cursor: "pointer",
