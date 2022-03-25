@@ -8,6 +8,8 @@ export const Button = styled("button", {
 
   // textTransform: "uppercase",
 
+  border: "1px solid $grey300",
+
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -100,7 +102,7 @@ export const TextButton = styled(Button, {
   backgroundColor: "transparent !important",
   boxShadow: "none !important",
 
-  border: "1px solid $grey200",
+  border: "1px solid $grey400 !important",
   color: "$grey400",
 
   transition: "all 150ms",

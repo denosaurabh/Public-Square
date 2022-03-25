@@ -161,7 +161,8 @@ export const StatsItem = styled(TextDefault, {
   "&:hover": {
     cursor: "pointer",
 
-    backgroundColor: "#F0F3FE",
+    color: "$grey100",
+    backgroundColor: "$grey400",
     boxShadow: "0px 7px 15px rgba(139, 146, 172, 0.57)",
   },
 });

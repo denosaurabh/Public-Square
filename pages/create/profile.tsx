@@ -198,6 +198,8 @@ const UploadInputContainer = styled("div", {
 
   borderRadius: "0 0 20px 20px",
 
+  color: "$grey600",
+
   marginTop: "4rem",
   flex: "1",
 
@@ -213,6 +215,8 @@ const UploadInput = styled(Input, {
 
   border: "1px solid $grey300",
   borderRadius: "0 0 20px 20px",
+
+  color: "$grey600",
 });
 
 const Box = styled("div", {
@@ -246,11 +250,15 @@ const LineInput = styled(Input, {
   border: "1px solid $grey300",
   borderRadius: 0,
   backgroundColor: "transparent",
+
+  color: "$grey600",
 });
 
 const UpdateButton = styled("button", {
   backgroundColor: "transparent",
   border: "1px solid $grey300",
+
+  color: "$grey600",
 
   borderLeft: 0,
   borderRight: 0,

@@ -6,13 +6,13 @@ const StyledContent = styled(TooltipPrimitive.Content, {
 
   fontFamily: "$main",
   fontSize: "1.6rem",
-  color: "#000",
+  color: "$grey200",
 
-  border: "1px solid $grey300",
+  border: "1px solid $grey200",
 
   borderRadius: "14px",
 
-  backgroundColor: "#E7EBF9",
+  backgroundColor: "$grey500",
   boxShadow:
     "hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
 

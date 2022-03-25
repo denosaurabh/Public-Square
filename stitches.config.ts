@@ -104,7 +104,7 @@ export const globalStyles = globalCss({
     backgroundColor: "$grey100",
   },
   body: {
-    margin: "0 auto",
+    margin: "0",
     fontFamily: "$main",
     lineHeight: "20px",
     backgroundColor: "$grey100",

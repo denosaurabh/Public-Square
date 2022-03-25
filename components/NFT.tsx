@@ -62,6 +62,9 @@ const NFTBox = styled("div", {
   border: "1px solid $grey300",
   borderRadius: 20,
 
+  display: "flex",
+  flexDirection: "column",
+
   p: {
     margin: 0,
     padding: "1.5rem 2rem",
@@ -76,11 +79,11 @@ const NFTBox = styled("div", {
       fontWeight: 500,
     },
 
-    borderBottom: "1px solid #D3D3D3",
+    borderBottom: "1px solid $grey300",
   },
 
   a: {
-    width: "100%",
+    marginTop: "2rem",
     textAlign: "center",
   },
 });

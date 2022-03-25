@@ -18,6 +18,7 @@ import {
 } from "./Popover";
 import { LinkText, TextDefault } from "./Text";
 import HeaderHomeLink from "./HeaderHomeLink";
+import ThemeButton from "./ToggleTheme";
 
 const Header = () => {
   return (
@@ -52,6 +53,7 @@ const Header = () => {
       </HeaderCenterBox>
 
       <HeaderRightBox>
+        <ThemeButton />
         <Network />
         <Accounts />
         <AccountButton />
