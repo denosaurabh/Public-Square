@@ -1,13 +1,12 @@
 import { useStore, useObservable } from "@/stores";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const Profile = () => {
   const router = useRouter();
 
-  const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeProfileId);
+  const activeAccountAdr = useObservable(ProfilesStore.activeProfileId);
 
   useEffect(() => {
     if (!window) return;

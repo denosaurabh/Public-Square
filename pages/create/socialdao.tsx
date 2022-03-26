@@ -9,7 +9,7 @@ import { createProfile } from "@/graphql/PROFILE";
 import { styled } from "@/stitches.config";
 import { IPFSClient } from "@/utils/ipfs";
 import { SuperDenoDAOStore } from "@/stores/SuperDenoDAOStore";
-import { useStore } from "@/stores";
+// import { useStore } from "@/stores";
 
 const CreateSocialDAO = () => {
   const [uploadedImgData, setUploadedImgData] = useState<string | ArrayBuffer>(
@@ -25,7 +25,7 @@ const CreateSocialDAO = () => {
     constitutionThree: "",
   });
 
-  const socialDaoStore = useStore(SuperDenoDAOStore);
+  // const socialDaoStore = useStore(SuperDenoDAOStore);
 
   const onInputChangeEvent = (e: ChangeEvent<Element>) => {
     e.preventDefault();
@@ -70,7 +70,7 @@ const CreateSocialDAO = () => {
     // socialDaoStore.socialDaoTransactions();
     // return;
 
-    await socialDaoStore.createSocialDAO({
+    await SuperDenoDAOStore.createSocialDAO({
       ...formInput,
       uploadedImgUrl: uploadedImg,
     });
@@ -78,7 +78,7 @@ const CreateSocialDAO = () => {
 
   return (
     <>
-      <H1 italic font="serif">
+      <H1 italic sansSerif>
         Create Social DAO
       </H1>
       <Container onSubmit={onFormSubmit}>
@@ -327,6 +327,8 @@ const LineTextArea = styled(TextArea, {
 const SubmitButton = styled("button", {
   backgroundColor: "transparent",
   border: "1px solid $grey300",
+
+  color: "$grey600",
 
   borderLeft: 0,
   borderRight: 0,

@@ -3,8 +3,8 @@ import { ethers } from "ethers";
 import SuperDeno from "@/artifacts/contracts/SocialDao.sol/SuperDeno.json";
 import SocialDAO from "@/artifacts/contracts/SocialDao.sol/SocialDAO.json";
 
-import { Store, observable } from ".";
-import { AuthStore } from "./AuthStore";
+import { observable } from ".";
+import { WalletStore } from "./WalletStore";
 import { SUPER_DENO_DAO } from "@/contratcts";
 import {
   createProfile,
@@ -31,27 +31,27 @@ interface CreateDaoInput {
   uploadedImgUrl: string;
 }
 
-export class SuperDenoDAOStore {
+class SuperDenoDAOStoreKlass {
   superDenoDaoAddress: string = SUPER_DENO_DAO;
   superDenoDao: ethers.Contract | null = null;
   daoNames = observable<string[]>([]);
   allDaos = observable<object[]>([]);
 
-  constructor(private store: Store) {}
+  // constructor(private store: Store) {}
 
-  private get authStore(): AuthStore {
-    return this.store.get(AuthStore);
-  }
+  // private get authStore(): WalletStore {
+  //   return this.store.get(WalletStore);
+  // }
 
   getContract() {
     if (
-      this.authStore.signer.get()
+      WalletStore.signer.get()
       // && !this.superDenoDao
     ) {
       this.superDenoDao = new ethers.Contract(
         this.superDenoDaoAddress,
         SuperDeno.abi,
-        this.authStore.signer.get()
+        WalletStore.signer.get()
       );
 
       return this.superDenoDao;
@@ -149,7 +149,7 @@ export class SuperDenoDAOStore {
       followNFTURI: "ipfs://yrynry",
     };
 
-    const signer = this.authStore.signer.get();
+    const signer = WalletStore.signer.get();
 
     if (!signer) {
       console.log("no signer");
@@ -213,7 +213,7 @@ export class SuperDenoDAOStore {
   async socialDaoTransactions() {
     const address = "0xB1eDe3F5AC8654124Cb5124aDf0Fd3885CbDD1F7";
 
-    const signer = this.authStore.signer.get();
+    const signer = WalletStore.signer.get();
 
     if (!signer) return;
 
@@ -255,3 +255,5 @@ export class SuperDenoDAOStore {
     return info;
   }
 }
+
+export const SuperDenoDAOStore = new SuperDenoDAOStoreKlass();

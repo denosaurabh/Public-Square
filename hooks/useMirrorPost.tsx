@@ -1,6 +1,6 @@
 import { createMirrorTypedData } from "@/graphql/MIRROR";
 import { useStore, useObservable } from "@/stores";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { useSignTypedData } from "wagmi";
 import useLensHub from "./useLensHub";
 import omitDeep from "omit-deep";
@@ -10,8 +10,7 @@ import { toast } from "react-toastify";
 const useMirrorPost = (publicationId: string) => {
   const [, signTypedData] = useSignTypedData();
 
-  const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeProfileId);
+  const activeAccountAdr = useObservable(ProfilesStore.activeProfileId);
 
   const lensHub = useLensHub();
 

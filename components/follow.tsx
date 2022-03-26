@@ -6,7 +6,7 @@ import {
 import useLensHub from "@/hooks/useLensHub";
 import { styled } from "@/stitches.config";
 import { useStore, useObservable } from "@/stores";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { splitSignature } from "ethers/lib/utils";
 import { useAccount, useSignTypedData } from "wagmi";
 import { Button } from "./Button";
@@ -14,6 +14,7 @@ import omitDeep from "omit-deep";
 import useSWR from "swr";
 import useFollowNFT from "@/hooks/useFollowNft";
 import { FOLLOW_MODULES } from "@/contratcts";
+import { WalletStore } from "@/stores/WalletStore";
 
 interface FollowProps {
   profileId: string;
@@ -27,10 +28,9 @@ const Follow: React.FC<FollowProps> = ({
   followModule,
 }) => {
   const [, signTypedData] = useSignTypedData();
-  const [{ data: accountData }] = useAccount();
+  const [accountRes] = useAccount();
 
-  const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeProfileId);
+  const activeAccountAdr = useObservable(ProfilesStore.activeProfileId);
 
   const { data: doesFollowReq } = useSWR([
     QUERY_DOES_FOLLOW,
@@ -38,7 +38,7 @@ const Follow: React.FC<FollowProps> = ({
       request: {
         followInfos: [
           {
-            followerAddress: accountData?.address,
+            followerAddress: accountRes.data?.address,
             profileId,
           },
         ],
@@ -98,10 +98,10 @@ const Follow: React.FC<FollowProps> = ({
     const { v, r, s } = splitSignature(signature.data);
 
     if (!lensHub) return;
-    if (!accountData?.address) return;
+    if (!accountRes.data?.address) return;
 
     const tx = await lensHub.followWithSig({
-      follower: accountData?.address,
+      follower: accountRes.data?.address,
       profileIds: typedData.value.profileIds,
       datas: typedData.value.datas,
       sig: {
@@ -168,9 +168,19 @@ const Follow: React.FC<FollowProps> = ({
   };
 
   const onFollowUnfollowClick = async (follows: boolean) => {
-    console.log(!lensHub, activeAccountAdr, !profileId, !accountData?.address);
+    console.log(
+      !lensHub,
+      activeAccountAdr,
+      !profileId,
+      !accountRes.data?.address
+    );
 
-    if (!lensHub || !activeAccountAdr || !profileId || !accountData?.address) {
+    if (
+      !lensHub ||
+      !activeAccountAdr ||
+      !profileId ||
+      !accountRes.data?.address
+    ) {
       return;
     }
 

@@ -7,10 +7,9 @@ import {
 import { LocalStore } from "@/utils/localStorage";
 import { gql } from "@apollo/client";
 import { Signer } from "ethers";
-import { observable, Store } from ".";
-import { AccountStore } from "./AccountStore";
+import { observable } from ".";
 
-export class AuthStore {
+class WalletStoreKlass {
   address = observable<string | null>(null);
   signature = observable<string | null>(null);
 
@@ -24,7 +23,7 @@ export class AuthStore {
     refreshToken: string;
   }>("@auth");
 
-  constructor(private store: Store) {
+  constructor() {
     this.accessToken.subscribe((token) => {
       if (token) {
         this.localStoresAuth.update({ accessToken: token });
@@ -40,10 +39,6 @@ export class AuthStore {
         this.localStoresAuth.update({ refreshToken: "" });
       }
     });
-  }
-
-  private get accountStore(): AccountStore {
-    return this.store.get(AccountStore);
   }
 
   setSigner(signer: Signer) {
@@ -72,7 +67,10 @@ export class AuthStore {
     this.accessToken.set(data.data.refresh.accessToken);
     this.refreshToken.set(data.data.refresh.refreshToken);
 
-    return data;
+    return {
+      accessToken: data.data.refresh.accessToken,
+      refreshToken: data.data.refresh.refreshToken,
+    };
   }
 
   async authenticate() {
@@ -101,12 +99,12 @@ export class AuthStore {
     return data;
   }
 
-  getChallange() {
+  async getChallange() {
     if (this.accessToken.get()) return;
 
     if (!this.address.get()) return;
 
-    const challange = apolloClient.query({
+    const challange = await apolloClient.query({
       query: gql(QUERY_CHALLENGE),
       variables: {
         request: {
@@ -114,6 +112,7 @@ export class AuthStore {
         },
       },
     });
+
     return challange;
   }
 
@@ -128,9 +127,9 @@ export class AuthStore {
 
     this.localStoresAuth.update({ accessToken: "", refreshToken: "" });
 
-    this.accountStore.activeProfile.set(null);
-    this.accountStore.activeProfileId.set("");
-    this.accountStore.localStoreAccount.update({ activeAccountAdr: "" });
+    // this.accountStore.activeProfile.set(null);
+    // this.accountStore.activeProfileId.set("");
+    // this.accountStore.localStoreAccount.update({ activeAccountAdr: "" });
   }
 
   updateFromLocalStorage() {
@@ -142,3 +141,5 @@ export class AuthStore {
     }
   }
 }
+
+export const WalletStore = new WalletStoreKlass();

@@ -1,27 +1,28 @@
 import { Avatar, AvatarImage } from "@/components/Avatar";
 import Follow from "@/components/follow";
-import FollowPromises from "@/components/FollowPromises";
 import { LineBox } from "@/components/LineBox";
-import Post from "@/components/Post";
 import ProfileTabs from "@/components/profile/ProfileTabs";
 import {
+  LightSansSerifText,
   LinkSmallText,
   SemiBoldText,
   SmallText,
   TextDefault,
 } from "@/components/Text";
 import { QUERY_PROFILE_BY_ID } from "@/graphql/PROFILE";
-import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
 import { styled } from "@/stitches.config";
-import { PostsContainer } from "@/components/PostsContainer";
 import { cleanUrl } from "@/utils";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { useAccount, useSignTypedData } from "wagmi";
 
 const Profile = () => {
   const router = useRouter();
   const { id } = router.query;
+
+  const [, signTypedData] = useSignTypedData();
+  const [accountRes] = useAccount();
 
   const { data: profileDataRes } = useSWR([
     QUERY_PROFILE_BY_ID,
@@ -33,9 +34,11 @@ const Profile = () => {
     },
   ]);
 
-  console.log(profileDataRes);
+  console.log(profileDataRes, signTypedData, accountRes.data?.address);
 
-  if (!profileDataRes) return <></>;
+  if (!profileDataRes) {
+    return <LightSansSerifText>loading....</LightSansSerifText>;
+  }
 
   const { data } = profileDataRes;
   const {
@@ -70,7 +73,7 @@ const Profile = () => {
           {bio ? (
             <TextDefault>{bio}</TextDefault>
           ) : (
-            <TextDefault font="sansSerif">no bio....</TextDefault>
+            <TextDefault sansSerif>no bio....</TextDefault>
           )}
 
           <Follow
@@ -97,7 +100,12 @@ const Profile = () => {
           ) : null}
 
           {location ? <SmallText>location: {location}</SmallText> : null}
-          <SmallText>owned by: {ownedBy}</SmallText>
+
+          <Link href={`/address/${ownedBy}`} passHref>
+            <LinkSmallText as="a">
+              <SmallText>owned by: {ownedBy}</SmallText>
+            </LinkSmallText>
+          </Link>
         </RightBox>
       </TopContainer>
 

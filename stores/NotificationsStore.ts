@@ -1,18 +1,18 @@
 import { getNotifications } from "@/graphql/NOTIFICATIONS";
-import { Store, observable } from ".";
-import { AccountStore } from "./AccountStore";
+import { observable } from ".";
+import { ProfilesStore } from "./ProfilesStore";
 
 export class NotificationsStore {
   notifications = observable<object[]>([]);
 
-  constructor(private store: Store) {}
+  // constructor(private store: Store) {}
 
-  private get accountStore() {
-    return this.store.get(AccountStore);
-  }
+  // private get accountStore() {
+  //   return this.store.get(ProfilesStore);
+  // }
 
   async fetchNotifications() {
-    const id = this.accountStore.activeProfileId.get();
+    const id = ProfilesStore.activeProfileId.get();
 
     const notifications = await getNotifications(id);
     this.notifications.set(notifications);

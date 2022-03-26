@@ -1,7 +1,5 @@
 import { styled } from "@/stitches.config";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { Avatar, AvatarImage } from "./Avatar";
 import Editor from "./Editor";
 import { SmallText, TextDefault } from "./Text";

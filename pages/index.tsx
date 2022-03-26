@@ -40,7 +40,9 @@ const LandingPage: React.FC = () => {
           Bond of Science, Art and Modern Philosophy
         </Heading>
 
-        <Button css={{ marginTop: "2rem" }}>Join this Community</Button>
+        <Link href="/create/profile" passHref>
+          <Button css={{ marginTop: "2rem" }}>Join this Community</Button>
+        </Link>
       </CenterBox>
 
       <Space>
@@ -72,6 +74,8 @@ const LandingPage: React.FC = () => {
           to make a better world
         </Heading>
       </Space>
+
+      {/* <Text>We know thw current state of social media</Text> */}
     </Container>
   );
 };

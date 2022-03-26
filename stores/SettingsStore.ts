@@ -1,5 +1,5 @@
 import { LocalStore } from "@/utils/localStorage";
-import { observable, Store } from ".";
+import { observable } from ".";
 
 export type themeT = "light" | "dark";
 
@@ -7,14 +7,13 @@ interface SettingsLocalStore {
   theme: themeT;
 }
 
-export class SettingsStore {
+class SettingsStoreKlass {
   theme = observable<themeT>("dark");
   focusMode = observable<boolean>(false);
-  
 
   localStore = new LocalStore<SettingsLocalStore>("@settingsStore");
 
-  constructor(store: Store) {
+  constructor() {
     this.theme.subscribe((newTheme) => {
       this.localStore.update({ theme: newTheme });
     });
@@ -32,3 +31,5 @@ export class SettingsStore {
     }
   }
 }
+
+export const SettingsStore = new SettingsStoreKlass();

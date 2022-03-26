@@ -3,7 +3,7 @@ import { darkTheme, styled } from "@/stitches.config";
 import Header from "@/components/Header";
 import ActionBox from "@/components/ActionBox";
 import { SettingsStore } from "@/stores/SettingsStore";
-import { useStore, useObservable } from "@/stores";
+import { useObservable } from "@/stores";
 
 // import dynamic from "next/dynamic";
 // const Header = dynamic(() => import("@/components/Header"), {
@@ -13,8 +13,8 @@ import { useStore, useObservable } from "@/stores";
 // import ListenAccount from "@/components/ListenAccount";
 
 const PageContainer: React.FC = ({ children }) => {
-  const settingsStore = useStore(SettingsStore);
-  const theme = useObservable(settingsStore.theme);
+  // const settingsStore = useStore(SettingsStore);
+  const theme = useObservable(SettingsStore.theme);
 
   return (
     <Container className={theme === "dark" ? darkTheme : ""}>

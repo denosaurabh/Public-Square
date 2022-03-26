@@ -1,8 +1,5 @@
-import { QUERY_PROFILES_OWNED_BY_ADDRESS } from "@/graphql/PROFILE";
-import { useStore } from "@/stores";
-import { AccountStore } from "@/stores/AccountStore";
-import useSWR from "swr";
-import { useAccount } from "wagmi";
+import { useEffect, useState } from "react";
+import { useAccount, useConnect, useSigner, useSignMessage } from "wagmi";
 import { useObservable } from "@/stores";
 import {
   Select,
@@ -13,94 +10,200 @@ import {
   SelectItem,
   SelectItemText,
 } from "./Select";
-import { useEffect } from "react";
 import { LightSansSerifText, LinkText } from "./Text";
-import { AuthStore } from "@/stores/AuthStore";
 import Link from "next/link";
+import { TextButton } from "./Button";
+
+import { toast } from "react-toastify";
+import { smallAddress } from "@/utils";
+
+import { WalletStore } from "@/stores/WalletStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 
 const Accounts = () => {
-  const accountStore = useStore(AccountStore);
-  const authStore = useStore(AuthStore);
+  const [{ data }, connect] = useConnect();
+  const [{ data: accountData }, disconnect] = useAccount();
+  const [, signMessage] = useSignMessage();
+  const [{ data: signer, error, loading }, getSigner] = useSigner();
 
-  const address = useObservable(authStore.address);
-  const allProfiles = useObservable(accountStore.allProfiles);
+  const address = useObservable(WalletStore.address);
+  const authSigner = useObservable(WalletStore.signer);
+  const accessToken = useObservable(WalletStore.accessToken);
 
-  const activeProfile = useObservable(accountStore.activeProfile);
-  const activeProfileId = useObservable(accountStore.activeProfileId);
+  const allProfiles = useObservable(ProfilesStore.allProfiles);
+  const activeProfile = useObservable(ProfilesStore.activeProfile);
+  const activeProfileId = useObservable(ProfilesStore.activeProfileId);
+
+  // const [accountChoice, setAccountChoice] = useState("metamask");
+
+  // const [open, setOpen] = useState(false);
+  const [load, setLoad] = useState(false);
+
+  const onAuthClick = async (val: string) => {
+    try {
+      if (val === "metamask") {
+        await connect(data.connectors[0]);
+      } else if (val === "sequence") {
+        console.log("onAuthClick", val);
+
+        await connect(data.connectors[1]);
+      }
+
+      toast.success("Successfully connected to wallet");
+      // setOpen(false);
+    } catch (err) {
+      toast.error("Could not connect to wallet! " + err);
+      // setOpen(false);
+    }
+  };
+
+  // const onSelectAccountConnectChange = (val: string) => {
+  //   if (val) {
+  //     setAccountChoice(val);
+  //   }
+  // };
+
+  const disconnectAuth = async () => {
+    disconnect();
+
+    WalletStore.logout();
+  };
+
+  const loadAuth = async (
+    account: { address: string },
+    isAlreadyLoaded: boolean
+  ) => {
+    if (isAlreadyLoaded) {
+      return;
+    }
+
+    WalletStore.updateFromLocalStorage();
+    const refreshData = await WalletStore.refreshAuth();
+
+    if (refreshData?.accessToken) {
+      setLoad(true);
+      return;
+    }
+
+    if (account?.address) {
+      // console.log("accountData", accountData);
+
+      WalletStore?.address.set(account.address);
+
+      const challange = await WalletStore?.getChallange();
+
+      if (challange?.data?.challenge?.text) {
+        const sign = await signMessage({
+          message: challange?.data.challenge.text,
+        });
+
+        if (sign?.data) {
+          WalletStore?.signature.set(sign.data);
+
+          // authenticating
+          await WalletStore?.authenticate();
+        }
+      }
+    }
+
+    setLoad(true);
+  };
 
   useEffect(() => {
+    if (!window) return;
+
+    if (accountData && !load) {
+      loadAuth(accountData, load);
+      setLoad(true);
+    }
+  }, [accountData, load]);
+
+  useEffect(() => {
+    if (!window) return;
+
+    if (signer && !authSigner) {
+      WalletStore.signer.set(signer);
+    }
+  }, [signer, authSigner]);
+
+  useEffect(() => {
+    if (!window) return;
+
     const fetchAndUpdateProfiles = async () => {
       // await accountStore.updateDataFromLocalStore(data?.profiles.items[0].id);
-      await accountStore.fetchProfiles();
+      await ProfilesStore.fetchProfiles();
     };
 
     // if (data?.profiles?.items[0]?.id) {
-    if (address) {
+    if (address && !allProfiles.length) {
       fetchAndUpdateProfiles();
     } else {
       console.log("no address");
     }
     // }
-  }, [address]);
-
-  if (!allProfiles.length) {
-    return (
-      <Link href="/create/profile" passHref>
-        <LinkText as={LightSansSerifText}>Create Profile</LinkText>
-      </Link>
-    );
-  }
+  }, [address, allProfiles]);
 
   const onSelectValChange = (val: string) => {
     if (val) {
       const profile = allProfiles.filter((profile) => profile.id === val);
 
       if (profile.length) {
-        accountStore.setActiveAccount(profile[0]);
+        ProfilesStore.setActiveAccount(profile[0]);
       }
 
-      accountStore.setActiveAccountAdr(val);
+      ProfilesStore.setActiveAccountAdr(val);
     }
   };
 
-  if (!activeProfile) return <></>;
+  if (!allProfiles?.length || !accountData) {
+    return (
+      <>
+        <Link href="/create/profile" passHref>
+          <LinkText as={LightSansSerifText}>Create Profile</LinkText>
+        </Link>
+
+        <TextButton onClick={() => onAuthClick("metamask")}>Connect</TextButton>
+      </>
+    );
+  }
 
   return (
-    <Select
-      defaultValue={activeProfileId}
-      value={activeProfileId}
-      onValueChange={onSelectValChange}>
-      <SelectTrigger>
-        <SelectValue>
-          {/* {dataRes &&
-            data &&
-            activeAccount &&
-            dataRes?.data?.profiles.items.filter(
-              (a) => a.handle === activeAccount
-            )[0].handle} */}
-          {activeProfile?.handle}
-          {/* {activeProfileId} */}
-        </SelectValue>
-      </SelectTrigger>
+    <>
+      <Select
+        defaultValue={activeProfileId}
+        value={activeProfileId}
+        onValueChange={onSelectValChange}>
+        <SelectTrigger>
+          <SelectValue>{activeProfile?.handle}</SelectValue>
+        </SelectTrigger>
 
-      <SelectContent css={{ backgroundColor: "$grey200" }}>
-        <SelectViewport>
-          {allProfiles ? (
-            allProfiles.map((profile) => {
-              return (
-                <SelectItem value={profile.id} key={profile.id}>
-                  <SelectItemText>
-                    {profile.handle} {profile.id}
-                  </SelectItemText>
-                </SelectItem>
-              );
-            })
-          ) : (
-            <LightSansSerifText>Create account</LightSansSerifText>
-          )}
-        </SelectViewport>
-      </SelectContent>
-    </Select>
+        <SelectContent css={{ backgroundColor: "$grey200" }}>
+          <SelectViewport>
+            {allProfiles ? (
+              allProfiles.map((profile) => {
+                return (
+                  <SelectItem value={profile.id} key={profile.id}>
+                    <SelectItemText>
+                      {profile.handle} {profile.id}
+                    </SelectItemText>
+                  </SelectItem>
+                );
+              })
+            ) : (
+              <LightSansSerifText>Create account</LightSansSerifText>
+            )}
+          </SelectViewport>
+        </SelectContent>
+      </Select>
+
+      {accountData ? (
+        <TextButton onClick={disconnectAuth}>
+          {accountData?.ens?.name || smallAddress(accountData.address)}
+        </TextButton>
+      ) : (
+        <TextButton onClick={() => onAuthClick("metamask")}>Connect</TextButton>
+      )}
+    </>
   );
 };
 

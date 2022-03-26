@@ -1,13 +1,17 @@
 import { darkTheme, styled } from "@/stitches.config";
-import RichMarkdownEditor from "rich-markdown-editor";
+import RichMarkdownEditor, { Props } from "rich-markdown-editor";
 import { SettingsStore } from "@/stores/SettingsStore";
-import { useStore, useObservable } from "@/stores";
+import { useObservable } from "@/stores";
 import { IPFSClient } from "@/utils/ipfs";
 import light, { dark } from "@/style/markdownTheme";
 
-const Editor: React.FC = (props) => {
-  const settingsStore = useStore(SettingsStore);
-  const theme = useObservable(settingsStore.theme);
+interface EditorProps extends Props {
+  css?: Record<string, any>;
+}
+
+const Editor: React.FC<EditorProps> = (props) => {
+  // const settingsStore = useStore(SettingsStore);
+  const theme = useObservable(SettingsStore.theme);
 
   return (
     <StyledEditor
@@ -31,24 +35,12 @@ const StyledEditor = styled(RichMarkdownEditor, {
   color: "$grey600",
 
   textAlign: "start",
-
   display: "block !important",
-
   alignItems: "start",
 
-  //   minHeight: "80vh",
   maxHeight: "20rem",
-
   padding: "1rem 0 1rem 0",
 
   textOverflow: "ellipsis",
   overflow: "hidden",
-
-  //   [`.${darkTheme} &`]: {
-  //     background: "$grey200 !important",
-
-  //     div: {
-  //       background: "$grey200 !important",
-  //     },
-  //   },
 });

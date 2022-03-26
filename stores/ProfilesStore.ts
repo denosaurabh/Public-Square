@@ -2,10 +2,10 @@ import { apolloClient } from "@/apollo/client";
 import { LocalStore } from "@/utils/localStorage";
 import { gql } from "@apollo/client";
 import { QUERY_PROFILE_BY_ID } from "@/graphql/PROFILE";
-import { observable, Store } from ".";
-import { AuthStore } from "./AuthStore";
+import { observable } from ".";
+import { WalletStore } from "./WalletStore";
 
-export class AccountStore {
+class ProfilesStoreKlass {
   allProfiles = observable<Record<string, any>[]>([]);
 
   activeProfile = observable<Record<string, any> | null>(null);
@@ -13,7 +13,7 @@ export class AccountStore {
 
   localStoreAccount = new LocalStore<{ activeAccountAdr: string }>("@account");
 
-  constructor(private store: Store) {
+  constructor() {
     this.activeProfileId.subscribe((activeAccountAdr) => {
       if (activeAccountAdr) {
         this.localStoreAccount.update({ activeAccountAdr });
@@ -23,12 +23,16 @@ export class AccountStore {
     });
   }
 
-  private get authStore(): AuthStore {
-    return this.store.get(AuthStore);
+  // private get authStore(): WalletStore {
+  //   return this.store.get(WalletStore);
+  // }
+
+  get activeId() {
+    return this.activeProfileId.get();
   }
 
   async fetchProfiles() {
-    const address = this.authStore.address.get();
+    const address = WalletStore.address.get();
 
     console.log("fetchProfiles", address);
 
@@ -38,7 +42,7 @@ export class AccountStore {
       query: gql(QUERY_PROFILE_BY_ID),
       variables: {
         request: {
-          ownedBy: [address],
+          ownedBy: address,
           // profileIds: [this.activeAccountAdr.get],
           limit: 30,
         },
@@ -58,7 +62,7 @@ export class AccountStore {
       this.setActiveAccountAdr(`${localActiveAccountId}` || profiles[0].id);
 
       this.setActiveAccount(
-        profiles.filter((p) => p.id === localActiveAccountId)[0]
+        profiles.filter((p: any) => p.id === localActiveAccountId)[0]
       );
 
       // return;
@@ -120,3 +124,5 @@ export class AccountStore {
     this.localStoreAccount.set({ activeAccountAdr: "" });
   }
 }
+
+export const ProfilesStore = new ProfilesStoreKlass();

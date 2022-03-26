@@ -2,11 +2,8 @@ import { styled } from "@/stitches.config";
 import { ChangeEvent, useState } from "react";
 import { Button } from "./Button";
 import Input from "./Input";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { MarkDownContainer } from "@/style/markdown";
 import { useStore, useObservable } from "@/stores";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { nanoid } from "nanoid";
 import { IPFSClient } from "@/utils/ipfs";
 import { useSignTypedData } from "wagmi";
@@ -31,8 +28,7 @@ const CreateComment: React.FC<CreateCommentI> = ({ publicationId, css }) => {
 
   const [, signTypedData] = useSignTypedData();
 
-  const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeProfileId);
+  const activeAccountAdr = useObservable(ProfilesStore.activeProfileId);
 
   const lensHub = useLensHub();
 

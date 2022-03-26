@@ -28,7 +28,7 @@ const Post: React.FC = (props: any) => {
       onMouseEnter={() => SetHover(true)}
       onMouseLeave={() => SetHover(false)}>
       <Link href={`/post/${postId}`} passHref>
-        <a>
+        <a style={{ textDecoration: "none" }}>
           {/* <ContentContainer>
             <ReactMarkdown
               className="post-content-markdown"

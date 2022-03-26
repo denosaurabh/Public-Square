@@ -3,26 +3,26 @@ import { darkTheme, styled } from "@/stitches.config";
 import SunSvg from "@/icons/sun.svg";
 import MoonSvg from "@/icons/moon.svg";
 
-import { useStore, useObservable } from "@/stores";
+import { useObservable } from "@/stores";
 import { SettingsStore } from "@/stores/SettingsStore";
 import { useEffect } from "react";
 
 const ThemeButton: React.FC = () => {
-  const settingsStore = useStore(SettingsStore);
-  const theme = useObservable(settingsStore.theme);
+  // const settingsStore = useStore(SettingsStore);
+  const theme = useObservable(SettingsStore.theme);
 
   useEffect(() => {
     if (!window) return;
 
-    settingsStore.updateFromLocalStorage();
+    SettingsStore.updateFromLocalStorage();
   }, []);
 
   return (
     <ThemeSvgContainer>
       {theme === "dark" ? (
-        <SunSvg onClick={() => settingsStore.toggleTheme()} />
+        <SunSvg onClick={() => SettingsStore.toggleTheme()} />
       ) : (
-        <MoonSvg onClick={() => settingsStore.toggleTheme()} />
+        <MoonSvg onClick={() => SettingsStore.toggleTheme()} />
       )}
     </ThemeSvgContainer>
   );

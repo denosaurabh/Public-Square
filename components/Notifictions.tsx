@@ -7,15 +7,15 @@ import {
 } from "./Popover";
 import PlusSvg from "@/icons/plus.svg";
 import { gql, useMutation, useQuery } from "@apollo/client";
-import { GET_NOTIFICATIONS } from "@/graphql/NOTIFICATIONS";
+// import { GET_NOTIFICATIONS } from "@/graphql/NOTIFICATIONS";
 import { id } from "ethers/lib/utils";
 import { useStore, useObservable } from "@/stores";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { useEffect } from "react";
 import { NotificationsStore } from "@/stores/NotificationsStore";
 
 const Notifications = () => {
-  //   const authStore = useStore(AccountStore);
+  //   const authStore = useStore(WalletStore);
   //   const id = useObservable(authStore.activeProfileId);
 
   //   const notificationsStore = useStore(NotificationsStore);

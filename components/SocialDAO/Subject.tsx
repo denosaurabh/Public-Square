@@ -1,14 +1,16 @@
 import { styled } from "@/stitches.config";
-import { useStore, useObservable } from "@/stores";
+import { useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import Link from "next/link";
 import { H3, Heading } from "../Heading";
 import { LightSansSerifText, TextDefault } from "../Text";
 
 const Subjects: React.FC = () => {
-  const socialDao = useStore(SocialDAOStore);
-  const subjects = useObservable(socialDao.subjects);
-  const currentDaoProfileInfo = useObservable(socialDao.currentDaoProfileInfo);
+  // const socialDao = useStore(SocialDAOStore);
+  const subjects = useObservable(SocialDAOStore.subjects);
+  const currentDaoProfileInfo = useObservable(
+    SocialDAOStore.currentDaoProfileInfo
+  );
 
   return (
     <SubjectsContainer>

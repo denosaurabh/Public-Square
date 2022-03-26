@@ -1,6 +1,6 @@
 import { createMirrorTypedData } from "@/graphql/MIRROR";
 import { useStore, useObservable } from "@/stores";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { useAccount, useSignTypedData } from "wagmi";
 import useLensHub from "./useLensHub";
 import omitDeep from "omit-deep";
@@ -11,8 +11,7 @@ const useCollectPost = (publicationId: string) => {
   const [, signTypedData] = useSignTypedData();
   const [{ data, error, loading }] = useAccount();
 
-  const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeProfileId);
+  const activeAccountAdr = useObservable(ProfilesStore.activeProfileId);
 
   const lensHub = useLensHub();
 
@@ -23,7 +22,7 @@ const useCollectPost = (publicationId: string) => {
 
     const collectReq = {
       publicationId,
-      //   profileId: activeAccountAdr,
+      profileId: activeAccountAdr,
     };
 
     const result = await createCollectTypedData(collectReq);

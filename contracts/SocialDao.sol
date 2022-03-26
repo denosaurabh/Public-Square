@@ -164,6 +164,30 @@ contract SocialDAO {
         emit RevokeConfirmation(msg.sender, _txIndex);
     }
 
+    function addOwner(address _newOwner) 
+        public 
+        onlyOwner
+        txExists(_txIndex)
+        notExecuted(_txIndex)
+    {
+        require(!isOwner[_newOwner], "owner already exists");
+
+        isOwner[_newOwner] = true;
+        owners.push(_newOwner);
+    }
+
+    function removeOwner(address _removingOwner) 
+        public 
+        onlyOwner
+        txExists(_txIndex)
+        notExecuted(_txIndex)
+    {
+        require(isOwner[_newOwner], "owner doesn't exist");
+
+        isOwner[_newOwner] = false;
+        delete owners[_newOwner];
+    }
+
     function getOwners() public view returns (address[] memory) {
         return owners;
     }

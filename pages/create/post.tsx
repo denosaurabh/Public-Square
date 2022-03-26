@@ -1,36 +1,18 @@
-import { Avatar, AvatarImage } from "@/components/Avatar";
 import { Button } from "@/components/Button";
 import Input from "@/components/Input";
-import Post from "@/components/Post";
-import {
-  BoldText,
-  LightSansSerifText,
-  SemiBoldText,
-  TextDefault,
-} from "@/components/Text";
 import { createPostTypedData } from "@/graphql/POST";
 import useLensHub from "@/hooks/useLensHub";
 import { styled } from "@/stitches.config";
 import { useStore, useObservable } from "@/stores";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { IPFSClient } from "@/utils/ipfs";
 import { splitSignature } from "ethers/lib/utils";
 import { nanoid } from "nanoid";
 import { ChangeEvent, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { useSignTypedData } from "wagmi";
 import omitDeep from "omit-deep";
-import { MarkDownContainer } from "@/style/markdown";
-import { TextArea } from "@/components/TextArea";
 import Editor from "@/components/Editor";
-import {
-  Amount,
-  COLLECT_MODULES,
-  Module,
-  ModulesI,
-  REFERENCE_MODULES,
-} from "@/contratcts";
+import { COLLECT_MODULES, REFERENCE_MODULES } from "@/contratcts";
 
 import {
   Select,
@@ -72,10 +54,8 @@ const CreatePost = () => {
     Reference: {},
   });
 
-  const accountStore = useStore(AccountStore);
-
-  const activeProfileId = useObservable(accountStore.activeProfileId);
-  const activeProfile = useObservable(accountStore.activeProfile);
+  const activeProfileId = useObservable(ProfilesStore.activeProfileId);
+  const activeProfile = useObservable(ProfilesStore.activeProfile);
 
   const lensHub = useLensHub();
 

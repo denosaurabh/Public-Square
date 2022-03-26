@@ -1,163 +1,163 @@
-import { useStore } from "@/stores";
-import { AuthStore } from "@/stores/AuthStore";
-import { useEffect, useState } from "react";
-import { useAccount, useConnect, useSigner, useSignMessage } from "wagmi";
-import { Button, TextButton } from "./Button";
-import { useObservable } from "@/stores";
-import { smallAddress } from "@/utils";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectViewport,
-  SelectItem,
-  SelectItemText,
-} from "./Select";
-import { LightSansSerifText } from "./Text";
-import { toast } from "react-toastify";
+// import { useStore, useObservable } from "@/stores";
+// import { AuthStore } from "@/stores/AuthStore";
+// import { useEffect, useState } from "react";
+// import { useAccount, useConnect, useSigner, useSignMessage } from "wagmi";
+// import { Button, TextButton } from "./Button";
+// import { smallAddress } from "@/utils";
+// import {
+//   Select,
+//   SelectTrigger,
+//   SelectValue,
+//   SelectContent,
+//   SelectViewport,
+//   SelectItem,
+//   SelectItemText,
+// } from "./Select";
+// import { LightSansSerifText } from "./Text";
+// import { toast } from "react-toastify";
 
-const AccountButton: React.FC = () => {
-  const [{ data }, connect] = useConnect();
-  const [{ data: accountData }, disconnect] = useAccount({
-    fetchEns: true,
-  });
-  const [, signMessage] = useSignMessage();
-  const [{ data: signer, error, loading }, getSigner] = useSigner();
+// const AccountButton: React.FC = () => {
+//   const [{ data }, connect] = useConnect();
+//   const [{ data: accountData }, disconnect] = useAccount();
+//   const [, signMessage] = useSignMessage();
+//   const [{ data: signer, error, loading }, getSigner] = useSigner();
 
-  const [accountChoice, setAccountChoice] = useState("metamask");
-  const [open, setOpen] = useState(false);
+//   const [accountChoice, setAccountChoice] = useState("metamask");
 
-  const authStore = useStore(AuthStore);
-  const accessToken = useObservable(authStore.accessToken);
-  const authSigner = useObservable(authStore.signer);
+//   const [open, setOpen] = useState(false);
+//   const [load, setLoad] = useState(false);
 
-  // const connector = data.connectors.filter((c) => c.name === "MetaMask")[0];
+//   const authStore = useStore(AuthStore);
+//   const accessToken = useObservable(authStore.accessToken);
+//   const authSigner = useObservable(authStore.signer);
 
-  console.log("AccountButton", data);
+//   // const connector = data.connectors.filter((c) => c.name === "MetaMask")[0];
 
-  const [load, setLoad] = useState(false);
+//   const onAuthClick = async (val: string) => {
+//     try {
+//       if (val === "metamask") {
+//         await connect(data.connectors[0]);
+//       } else if (val === "sequence") {
+//         console.log("onAuthClick", val);
 
-  const loadAuth = async () => {
-    if (!window) return;
+//         await connect(data.connectors[1]);
+//       }
 
-    authStore.updateFromLocalStorage();
-    authStore.refreshAuth();
+//       toast.success("Successfully connected to wallet");
+//       setOpen(false);
+//     } catch (err) {
+//       toast.error("Could not connect to wallet! " + err);
+//       setOpen(false);
+//     }
+//   };
 
-    if (accessToken) return;
+//   const onSelectAccountConnectChange = (val: string) => {
+//     if (val) {
+//       setAccountChoice(val);
+//     }
+//   };
 
-    if (accountData?.address) {
-      console.log("accountData", accountData);
+//   const disconnectAuth = async () => {
+//     disconnect();
 
-      authStore?.address.set(accountData.address);
-      const challange = await authStore?.getChallange();
+//     authStore.logout();
+//   };
 
-      if (challange) {
-        const sign = await signMessage({
-          message: challange?.data.challenge.text,
-        });
+//   useEffect(() => {
+//     if (!window) return;
 
-        if (sign.data) {
-          authStore?.signature.set(sign.data);
+//     const loadAuth = async () => {
+//       authStore.updateFromLocalStorage();
+//       authStore.refreshAuth();
 
-          // authenticating
-          await authStore?.authenticate();
-        }
-      }
-    }
-  };
+//       if (accessToken) return;
 
-  const onAuthClick = async (val: string) => {
-    try {
-      if (val === "metamask") {
-        await connect(data.connectors[0]);
-      } else if (val === "sequence") {
-        console.log("onAuthClick", val);
+//       if (accountData?.address) {
+//         console.log("accountData", accountData);
 
-        await connect(data.connectors[1]);
-      }
+//         authStore?.address.set(accountData.address);
+//         const challange = await authStore?.getChallange();
 
-      toast.success("Successfully connected to wallet");
-      setOpen(false);
-    } catch (err) {
-      toast.error("Could not connect to wallet! " + err);
-      setOpen(false);
-    }
-  };
+//         if (challange) {
+//           const sign = await signMessage({
+//             message: challange?.data.challenge.text,
+//           });
 
-  const onSelectAccountConnectChange = (val: string) => {
-    if (val) {
-      setAccountChoice(val);
-    }
-  };
+//           if (sign.data) {
+//             authStore?.signature.set(sign.data);
 
-  const disconnectAuth = async () => {
-    disconnect();
+//             // authenticating
+//             await authStore?.authenticate();
+//           }
+//         }
+//       }
 
-    authStore.logout();
-  };
+//       setLoad(true);
+//     };
 
-  useEffect(() => {
-    if (accountData && !load) {
-      loadAuth();
-      setLoad(true);
-    }
-  }, [, accountData]);
+//     if (accountData && !load) {
+//       loadAuth();
+//     }
+//   }, [, accountData]);
 
-  useEffect(() => {
-    if (signer && !authSigner) {
-      authStore.signer.set(signer);
-    }
-  }, [signer, authSigner]);
+//   useEffect(() => {
+//     if (!window) return;
 
-  if (!accountData) {
-    return (
-      <TextButton onClick={() => onAuthClick("metamask")}>Connect</TextButton>
-    );
+//     if (signer && !authSigner) {
+//       authStore.signer.set(signer);
+//     }
+//   }, [signer, authSigner]);
 
-    return (
-      <Select
-        defaultValue={accountChoice}
-        value={accountChoice}
-        onValueChange={onSelectAccountConnectChange}
-        onOpenChange={(val) => setOpen(true)}
-        open={open}>
-        <SelectTrigger>
-          <SelectValue>Connect</SelectValue>
-        </SelectTrigger>
+//   if (!accountData) {
+//     return (
+//       <TextButton onClick={() => onAuthClick("metamask")}>Connect</TextButton>
+//     );
 
-        <SelectContent css={{ backgroundColor: "$grey200" }}>
-          <SelectViewport>
-            <SelectItem
-              value="metamask"
-              key="metamask"
-              onClick={(e) => {
-                e.preventDefault();
-                onAuthClick("metamask");
-              }}>
-              <SelectItemText>Metamask</SelectItemText>
-            </SelectItem>
+//     return (
+//       <Select
+//         defaultValue={accountChoice}
+//         value={accountChoice}
+//         onValueChange={onSelectAccountConnectChange}
+//         onOpenChange={(val) => setOpen(true)}
+//         open={open}>
+//         <SelectTrigger>
+//           <SelectValue>Connect</SelectValue>
+//         </SelectTrigger>
 
-            {/* <SelectItem
-              value="sequence"
-              key="sequence"
-              onClick={(e) => {
-                e.preventDefault();
-                onAuthClick("sequence");
-              }}>
-              <SelectItemText>Sequence</SelectItemText>
-            </SelectItem> */}
-          </SelectViewport>
-        </SelectContent>
-      </Select>
-    );
-  }
+//         <SelectContent css={{ backgroundColor: "$grey200" }}>
+//           <SelectViewport>
+//             <SelectItem
+//               value="metamask"
+//               key="metamask"
+//               onClick={(e) => {
+//                 e.preventDefault();
+//                 onAuthClick("metamask");
+//               }}>
+//               <SelectItemText>Metamask</SelectItemText>
+//             </SelectItem>
 
-  return (
-    <TextButton onClick={disconnectAuth}>
-      {accountData.ens?.name || smallAddress(accountData.address)}
-    </TextButton>
-  );
-};
+//             {/* <SelectItem
+//               value="sequence"
+//               key="sequence"
+//               onClick={(e) => {
+//                 e.preventDefault();
+//                 onAuthClick("sequence");
+//               }}>
+//               <SelectItemText>Sequence</SelectItemText>
+//             </SelectItem> */}
+//           </SelectViewport>
+//         </SelectContent>
+//       </Select>
+//     );
+//   }
 
-export default AccountButton;
+//   return (
+//     <TextButton onClick={disconnectAuth}>
+//       {accountData.ens?.name || smallAddress(accountData.address)}
+//     </TextButton>
+//   );
+// };
+
+// export default AccountButton;
+
+export {};

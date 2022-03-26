@@ -30,6 +30,7 @@ import Constitution from "@/components/SocialDAO/constitution";
 import { useStore, useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import { LineBox } from "@/components/LineBox";
+import { SuperDenoDAOStore } from "@/stores/SuperDenoDAOStore";
 
 const SocialDAO = () => {
   const router = useRouter();
@@ -50,17 +51,22 @@ const SocialDAO = () => {
   //   owners: [],
   // });
 
-  const socialDao = useStore(SocialDAOStore);
-  const info = useObservable(socialDao.currentDaoContractInfo);
-  const contract = useObservable(socialDao.currentSocialDAOContract);
+  // const socialDao = useStore(SocialDAOStore);
+  const info = useObservable(SocialDAOStore.currentDaoContractInfo);
+  // const contract = useObservable(SocialDAOStore.currentSocialDAOContract);
 
   useEffect(() => {
     if (!window) return;
 
     const getDaoInfo = async () => {
+      if (!window) return;
       if (!daoName || !signer) return;
 
-      await socialDao.getDAOInfoByName(`${daoName}`, signer);
+      const contract = await SuperDenoDAOStore.getContract();
+
+      if (!contract) return;
+
+      await SocialDAOStore.getDAOInfoByName(`${daoName}`, signer, contract);
 
       //   if (!contract || !signer) return;
 
@@ -98,12 +104,12 @@ const SocialDAO = () => {
     }
   }, [, signer]);
 
-  useEffect(() => {
-    if (socialDao) {
-      // socialDao.currentDaoProfileInfo.set(null);
-      // socialDao.currentDaoContractInfo.set(null);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (socialDao) {
+  //     // socialDao.currentDaoProfileInfo.set(null);
+  //     // socialDao.currentDaoContractInfo.set(null);
+  //   }
+  // }, []);
 
   // let profileDataRes = {
   //   data: {
@@ -187,7 +193,7 @@ const SocialDAO = () => {
           {info.bio ? (
             <TextDefault css={{ margin: 0 }}>{info.bio}</TextDefault>
           ) : (
-            <TextDefault font="sansSerif">no bio....</TextDefault>
+            <TextDefault sansSerif>no bio....</TextDefault>
           )}
 
           <ButtonsContainer>

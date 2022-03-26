@@ -1,6 +1,6 @@
 import { decodeTxEncodedData, EMPTY_ADDRESS } from "@/utils";
 import { ethers } from "ethers";
-import { observable, Store } from ".";
+import { observable } from ".";
 import { SuperDenoDAOStore } from "./SuperDenoDAOStore";
 import SocialDao from "@/artifacts/contracts/SocialDao.sol/SocialDAO.json";
 import { apolloClient } from "@/apollo/client";
@@ -22,7 +22,7 @@ interface PostPubication {
   type: DaoPostType;
 }
 
-export class SocialDAOStore {
+class SocialDAOStoreKlass {
   currentSocialDAOContract = observable<ethers.Contract | null>(null);
 
   currentDaoContractInfo = observable<any>({});
@@ -35,11 +35,11 @@ export class SocialDAOStore {
   subjects = observable<any>([]);
   discussions = observable<any>([]);
 
-  constructor(private store: Store) {}
+  // constructor(private store: Store) {}
 
-  private get superDenoDaoStore(): SuperDenoDAOStore {
-    return this.store.get(SuperDenoDAOStore);
-  }
+  // private get superDenoDaoStore(): SuperDenoDAOStore {
+  //   return this.store.get(SuperDenoDAOStore);
+  // }
 
   async fetchPosts(daoProfileId: string) {
     const pubsData = await apolloClient.query({
@@ -92,8 +92,12 @@ export class SocialDAOStore {
     this.discussions.set(discussions);
   }
 
-  async getDAOInfoByName(daoName: string, signer: ethers.Signer) {
-    const superDenoDao = this.superDenoDaoStore.getContract();
+  async getDAOInfoByName(
+    daoName: string,
+    signer: ethers.Signer,
+    superDenoDao: ethers.Contract
+  ) {
+    // const superDenoDao = this.superDenoDaoStore.getContract();
 
     if (!superDenoDao) {
       console.log("superDenoDao is null");
@@ -348,3 +352,5 @@ export class SocialDAOStore {
     this.currentSocialDAOContract.set(contract);
   }
 }
+
+export const SocialDAOStore = new SocialDAOStoreKlass();

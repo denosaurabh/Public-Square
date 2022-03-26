@@ -1,6 +1,6 @@
 import { createSetFollowModuleTypedData } from "@/graphql/PROFILE";
 import { useStore, useObservable } from "@/stores";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { splitSignature } from "ethers/lib/utils";
 import omitDeep from "omit-deep";
 import { toast } from "react-toastify";
@@ -10,8 +10,7 @@ import useLensHub from "./useLensHub";
 const useUpdateFollowModule = () => {
   const [, signTypedData] = useSignTypedData();
 
-  const accountStore = useStore(AccountStore);
-  const activeAccountAdr = useObservable(accountStore.activeProfileId);
+  const activeAccountAdr = useObservable(ProfilesStore.activeProfileId);
 
   const lensHub = useLensHub();
 

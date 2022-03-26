@@ -1,28 +1,33 @@
 import NextLink from "next/link";
+import { useRouter } from "next/router";
+
 import { styled } from "@/stitches.config";
 import { LineBox } from "./LineBox";
 import { Text } from "./Text";
+import Search from "./Search";
 
 const ActionBox = () => {
+  const router = useRouter();
+  const path = router.pathname;
+
   return (
     <ActionBoxContainer>
       <Box>
         <NextLink href="/home" passHref>
-          <Link>Home</Link>
+          <Link active={path === "/home"}>Home</Link>
         </NextLink>
-        {/* <NextLink href="/recommandations" passHref>
-          <Link>Recommandations</Link>
-        </NextLink> */}
+        <NextLink href="/recommandations" passHref>
+          <Link active={path === "/recommandations"}>Recommandations</Link>
+        </NextLink>
         <NextLink href="/social" passHref>
-          <Link>Social Groups</Link>
+          <Link active={path === "/social"}>Social Groups</Link>
         </NextLink>
       </Box>
       <Box>
-        <NextLink href="/social/superdeno" passHref>
-          <Link>Super Deno</Link>
-        </NextLink>
+        <Search />
+
         <NextLink href="/settings" passHref>
-          <Link>Settings</Link>
+          <Link active={path === "/settings"}>Settings</Link>
         </NextLink>
       </Box>
     </ActionBoxContainer>
@@ -69,6 +74,14 @@ const Link = styled(Text, {
   },
 
   transition: "all 0.15s",
+
+  variants: {
+    active: {
+      true: {
+        backgroundColor: "$grey200",
+      },
+    },
+  },
 
   "&:hover": {
     backgroundColor: "$grey300",

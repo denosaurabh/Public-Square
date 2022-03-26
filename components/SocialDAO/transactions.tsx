@@ -1,5 +1,5 @@
 import { styled } from "@/stitches.config";
-import { useStore, useObservable } from "@/stores";
+import { useObservable } from "@/stores";
 import { DaoPostType, SocialDAOStore } from "@/stores/SocialDaoStore";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Button } from "../Button";
@@ -29,24 +29,24 @@ const Transactions = () => {
   const [description, setDescription] = useState("");
   const [type, setType] = useState<DaoPostType>("POST");
 
-  const socialDao = useStore(SocialDAOStore);
+  // const socialDao = useStore(SocialDAOStore);
   const currentSocialDAOContract = useObservable(
-    socialDao.currentSocialDAOContract
+    SocialDAOStore.currentSocialDAOContract
   );
-  const noOfTransactions = useObservable(socialDao.noOfTransactions);
-  const transactions = useObservable(socialDao.transactions);
-  const info = useObservable(socialDao.currentDaoContractInfo);
+  const noOfTransactions = useObservable(SocialDAOStore.noOfTransactions);
+  const transactions = useObservable(SocialDAOStore.transactions);
+  const info = useObservable(SocialDAOStore.currentDaoContractInfo);
 
   const onPostClick = async () => {
     if (!name || !content) return;
 
-    await socialDao.postPubication({ name, content, description, type });
+    await SocialDAOStore.postPubication({ name, content, description, type });
   };
 
   useEffect(() => {
     const getDaoTXsInfo = async () => {
-      await socialDao.getNoOfTransactions();
-      await socialDao.getAllTransactions();
+      await SocialDAOStore.getNoOfTransactions();
+      await SocialDAOStore.getAllTransactions();
     };
 
     if (currentSocialDAOContract) {
@@ -195,18 +195,18 @@ const Transaction: React.FC<TransactionProps> = ({
   numConfirmations,
   totalNoOfConfirmations,
 }) => {
-  const socialDao = useStore(SocialDAOStore);
+  // const socialDao = useStore(SocialDAOStore);
 
   const onConfirmTxClick = async () => {
-    await socialDao.confirmTransaction(txNo);
+    await SocialDAOStore.confirmTransaction(txNo);
   };
 
   const onRevokeTxClick = async () => {
-    await socialDao.revokeTransaction(txNo);
+    await SocialDAOStore.revokeTransaction(txNo);
   };
 
   const onExecuteTxClick = async () => {
-    await socialDao.executeTransaction(txNo);
+    await SocialDAOStore.executeTransaction(txNo);
   };
 
   console.log(data);

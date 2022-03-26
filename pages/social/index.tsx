@@ -1,12 +1,11 @@
 import { styled } from "@/stitches.config";
 import { H1, H3 } from "@/components/Heading";
 import { SuperDenoDAOStore } from "@/stores/SuperDenoDAOStore";
-import { useStore, useObservable } from "@/stores";
+import { useObservable } from "@/stores";
 import { useEffect, useState } from "react";
 import { SUPER_DENO_DAO } from "@/contratcts";
 import SuperDeno from "@/artifacts/contracts/SocialDao.sol/SuperDeno.json";
 import { useContract, useSigner } from "wagmi";
-import Link from "next/link";
 import Profile from "@/components/Profile";
 import { LightSansSerifText, TextDefault } from "@/components/Text";
 
@@ -19,8 +18,8 @@ const SocialDaos = () => {
     signerOrProvider: signer,
   });
 
-  const socialDaoStore = useStore(SuperDenoDAOStore);
-  const allDaos = useObservable(socialDaoStore.allDaos);
+  // const socialDaoStore = useStore(SuperDenoDAOStore);
+  const allDaos = useObservable(SuperDenoDAOStore.allDaos);
 
   useEffect(() => {
     if (!window) return;
@@ -28,8 +27,8 @@ const SocialDaos = () => {
     const getNames = async () => {
       if (!contract || !signer) return;
 
-      const allNames = await socialDaoStore.getAllDaosNames(contract);
-      await socialDaoStore.fetchDaosByNames(allNames);
+      const allNames = await SuperDenoDAOStore.getAllDaosNames(contract);
+      await SuperDenoDAOStore.fetchDaosByNames(allNames);
       //   await socialDaoStore.getContract();
     };
 

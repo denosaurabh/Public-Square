@@ -1,9 +1,8 @@
 import { styled } from "@/stitches.config";
 import { smallAddress } from "@/utils";
-import { AvatarImage } from "@radix-ui/react-avatar";
 import Link from "next/link";
-import { Avatar, AvatarGroup } from "./Avatar";
-import { H6 } from "./Heading";
+import { Avatar, AvatarGroup, AvatarImage } from "./Avatar";
+import { H3, H6, Heading } from "./Heading";
 import { LightSansSerifText, TextDefault } from "./Text";
 
 interface ProfileProps {
@@ -18,6 +17,7 @@ interface ProfileProps {
     totalMirrors: number;
     totalCollects: number;
   };
+  href?: string;
 }
 
 const Profile: React.FC<ProfileProps> = ({
@@ -27,14 +27,25 @@ const Profile: React.FC<ProfileProps> = ({
   id,
   ownedBy,
   stats,
+  href = `/social/${handle}`,
 }) => {
   return (
-    <Link href={`/social/${handle}`}>
+    <Link href={href}>
       <ProfileBox>
         <TopContainer>
           <AvatarBox>
-            <Avatar css={{ width: "120px", height: "120px" }}>
+            <Avatar
+              css={{
+                width: "120px",
+                height: "120px",
+              }}>
               <AvatarImage
+                css={{
+                  width: "80px !important",
+                  height: "auto !important",
+
+                  objectFit: "cover",
+                }}
                 src={
                   picture?.original.url ||
                   `https://source.boringavatars.com/marble/25/${handle}`
@@ -45,7 +56,9 @@ const Profile: React.FC<ProfileProps> = ({
           </AvatarBox>
           <RightBox>
             {/* <AvatarGroup>{}</AvatarGroup> */}
-            <H6>{handle}</H6>
+            <H3 as="h6" size="h6">
+              {handle.length > 10 ? `${handle.slice(0, 10)}...` : handle}
+            </H3>
             <TextDefault>{id}</TextDefault>
           </RightBox>
         </TopContainer>

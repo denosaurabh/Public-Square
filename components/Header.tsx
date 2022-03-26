@@ -3,10 +3,9 @@ import { useRouter } from "next/router";
 
 import { styled } from "@/stitches.config";
 
-import AccountButton from "./AccountButton";
 import Network from "./Network";
 import Accounts from "./Accounts";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { useStore, useObservable } from "@/stores";
 
 import PlusSvg from "@/icons/plus.svg";
@@ -55,10 +54,15 @@ const Header = () => {
 
       <HeaderRightBox>
         <ThemeButton />
+
+        <Link href="/status" passHref>
+          <LinkText>status</LinkText>
+        </Link>
+
         <Network />
         <Notifications />
         <Accounts />
-        <AccountButton />
+        {/* <AccountButton /> */}
       </HeaderRightBox>
     </HeaderContainer>
   );

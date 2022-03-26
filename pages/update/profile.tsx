@@ -14,7 +14,7 @@ import { IPFSClient } from "@/utils/ipfs";
 import { gql } from "@apollo/client";
 import { useObservable, useStore } from "@/stores/index";
 import { ChangeEvent, useEffect, useState } from "react";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { toast } from "react-toastify";
 import { ModuleSelect } from "@/components/ModuleSelect";
 import { FOLLOW_MODULES } from "@/contratcts";
@@ -26,8 +26,7 @@ const UpdateProfile = () => {
     ""
   );
 
-  const accountStore = useStore(AccountStore);
-  const activeAccount = useObservable(accountStore.activeProfile);
+  const activeAccount = useObservable(ProfilesStore.activeProfile);
 
   const [formInput, setFormInput] = useState({
     handle: "",

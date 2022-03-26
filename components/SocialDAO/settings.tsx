@@ -13,9 +13,9 @@ import {
 import { styled } from "@/stitches.config";
 import { IPFSClient } from "@/utils/ipfs";
 import { gql } from "@apollo/client";
-import { useObservable, useStore } from "@/stores/index";
+import { useObservable } from "@/stores/index";
 import { ChangeEvent, useEffect, useState } from "react";
-import { AccountStore } from "@/stores/AccountStore";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 import { toast } from "react-toastify";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
 
@@ -24,8 +24,8 @@ const Settings = () => {
     ""
   );
 
-  const socialDAO = useStore(SocialDAOStore);
-  const activeAccount = useObservable(socialDAO.currentDaoProfileInfo);
+  // const socialDAO = useStore(SocialDAOStore);
+  const activeAccount = useObservable(SocialDAOStore.currentDaoProfileInfo);
 
   const [formInput, setFormInput] = useState({
     handle: "",
@@ -144,7 +144,7 @@ const Settings = () => {
 
   return (
     <SettingsContainer>
-      <H1 italic font="serif">
+      <H1 italic sansSerif>
         Update your DAO
       </H1>
       <Container onSubmit={onFormSubmit}>

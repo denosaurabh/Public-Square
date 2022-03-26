@@ -1,6 +1,6 @@
 import { EXPLORE_PUBLICATIONS } from "@/graphql/DISCOVERY";
 import { QUERY_PUBLICATIONS } from "@/graphql/PUBLICATIONS";
-import { useStore, useObservable } from "@/stores";
+import { useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import PostsContainer from "@/components/PostsContainer";
 import useSWR from "swr";
@@ -8,8 +8,8 @@ import Post from "../Post";
 import { LightSansSerifText } from "../Text";
 
 const Publications: React.FC = () => {
-  const socialDao = useStore(SocialDAOStore);
-  const posts = useObservable(socialDao.posts);
+  // const socialDao = useStore(SocialDAOStore);
+  const posts = useObservable(SocialDAOStore.posts);
 
   return (
     <>

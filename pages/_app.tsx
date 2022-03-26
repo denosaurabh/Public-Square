@@ -16,7 +16,7 @@ import SEO from "@/components/seo";
 // import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 // import { SequenceConnect } from "@/utils/sequenceConnect";
 
-const store = createStore();
+// const store = createStore();
 
 function MyApp({ Component, pageProps }: AppProps) {
   globalStyles();
@@ -55,28 +55,25 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
 
   return (
-    <StoreProvider store={store}>
-      <Provider autoConnect connectors={connectors}>
-        <SWRConfig
-          value={{
-            refreshInterval: 3000,
-            fetcher: (query, variables) =>
-              apolloClient.query({
-                query: gql(query),
-                variables,
-              }),
-          }}>
-          <ApolloProvider client={apolloClient}>
-            <PageContainer>
-              <SEO />
-              <Component {...pageProps} />
-              <ToastContainer />
-            </PageContainer>
-          </ApolloProvider>
-          ,
-        </SWRConfig>
-      </Provider>
-    </StoreProvider>
+    <Provider autoConnect connectors={connectors}>
+      <SWRConfig
+        value={{
+          refreshInterval: 3000,
+          fetcher: (query, variables) =>
+            apolloClient.query({
+              query: gql(query),
+              variables,
+            }),
+        }}>
+        <ApolloProvider client={apolloClient}>
+          <PageContainer>
+            <SEO />
+            <Component {...pageProps} />
+            <ToastContainer />
+          </PageContainer>
+        </ApolloProvider>
+      </SWRConfig>
+    </Provider>
   );
 }
 
