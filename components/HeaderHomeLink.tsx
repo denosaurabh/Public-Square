@@ -8,7 +8,7 @@ const HeaderHomeLink = () => {
 
   return (
     <HeaderHomeLinkStyled>
-      <Link href={"/home"} passHref>
+      <Link href={"/"} passHref>
         <a>δεσμός</a>
       </Link>
     </HeaderHomeLinkStyled>
@@ -26,5 +26,5 @@ const HeaderHomeLinkStyled = styled("div", {
 
   fontFamily: "$sansSerif",
   fontSize: "1.8rem",
-  color: '$grey600'
+  color: "$grey600",
 });

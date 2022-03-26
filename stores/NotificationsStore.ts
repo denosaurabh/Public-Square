@@ -2,7 +2,7 @@ import { getNotifications } from "@/graphql/NOTIFICATIONS";
 import { observable } from ".";
 import { ProfilesStore } from "./ProfilesStore";
 
-export class NotificationsStore {
+class NotificationsStoreKlass {
   notifications = observable<object[]>([]);
 
   // constructor(private store: Store) {}
@@ -18,3 +18,5 @@ export class NotificationsStore {
     this.notifications.set(notifications);
   }
 }
+
+export const NotificationsStore = new NotificationsStoreKlass();

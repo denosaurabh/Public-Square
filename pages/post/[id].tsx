@@ -69,20 +69,20 @@ const PostPage: NextPage = () => {
       },
     },
 
+    pollInterval: 3000,
     ssr: true,
   });
 
-  console.log(data);
-
-  const { data: commentsData } = useSWR([
-    QUERY_PUBLICATIONS,
-    {
+  const { data: commentsData } = useQuery(gql(QUERY_PUBLICATIONS), {
+    variables: {
       request: {
         commentsOf: id,
         limit: 30,
       },
     },
-  ]);
+
+    pollInterval: 3000,
+  });
 
   const pub = data?.publication;
 
@@ -145,7 +145,15 @@ const PostPage: NextPage = () => {
 
             <ColumnStatsBox>
               <StatsItem
-                onClick={() => setOpenCreateComment(!openCreateComment)}>
+                onClick={async () => {
+                  await setOpenCreateComment(!openCreateComment);
+
+                  window.scrollTo({
+                    left: 0,
+                    top: document.body.scrollHeight,
+                    behavior: "smooth",
+                  });
+                }}>
                 <CommentSvg />
                 {pub.stats.totalAmountOfComments || "no"} comment
                 {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
@@ -219,7 +227,7 @@ const PostPage: NextPage = () => {
       /> */}
 
         <RightBox>
-          <CommentsContainer data={commentsData} />
+          <CommentsContainer data={{ data: commentsData }} />
         </RightBox>
       </Container>
 

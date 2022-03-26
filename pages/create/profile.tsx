@@ -8,12 +8,21 @@ import { MUTATE_PROFILE } from "@/graphql/PROFILE";
 import { styled } from "@/stitches.config";
 import { IPFSClient } from "@/utils/ipfs";
 import { gql } from "@apollo/client";
+import { useObservable } from "@/stores";
 import { useRouter } from "next/router";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
+import { WalletStore } from "@/stores/WalletStore";
+import { useAccount, useConnect } from "wagmi";
 
 const CreateProfile = () => {
+  const [{ data }, connect] = useConnect();
+  const [{ data: accountData }, disconnect] = useAccount();
+
   const router = useRouter();
+
+  const address = useObservable(WalletStore.address);
+  const signer = useObservable(WalletStore.signer);
 
   const [uploadedImgData, setUploadedImgData] = useState<string | ArrayBuffer>(
     ""
@@ -49,36 +58,53 @@ const CreateProfile = () => {
   const onFormSubmit = async (e) => {
     e.preventDefault();
 
-    let imgUrl =
-      uploadedImg ||
-      `https://source.boringavatars.com/marble/25/${
-        formInput.handle || "deno"
-      }`;
+    if (!address) {
+      await connect(data.connectors[0]);
 
-    if (!imgUrl || !formInput.handle) return;
-
-    console.log(uploadedImg, formInput.handle);
-
-    try {
-      const res = await apolloClient.mutate({
-        mutation: gql(MUTATE_PROFILE),
-        variables: {
-          request: {
-            handle: formInput.handle,
-            profilePictureUri: imgUrl,
-          },
-        },
-      });
-
-      console.log(res);
-
-      toast.success("Profile has been created!");
-
-      router.push("/");
-    } catch (err) {
-      console.log(err);
-      toast.error("Error creating profile");
+      if (accountData?.address && signer) {
+        await WalletStore.login(accountData?.address, signer);
+      }
     }
+
+    const createProfile = async () => {
+      let imgUrl =
+        uploadedImg ||
+        `https://source.boringavatars.com/marble/25/${
+          formInput.handle || "deno"
+        }`;
+
+      if (!imgUrl || !formInput.handle) {
+        throw new Error("Please enter your handle");
+      }
+
+      console.log(uploadedImg, formInput.handle);
+
+      try {
+        const res = await apolloClient.mutate({
+          mutation: gql(MUTATE_PROFILE),
+          variables: {
+            request: {
+              handle: formInput.handle,
+              profilePictureUri: imgUrl,
+            },
+          },
+        });
+
+        console.log(res);
+
+        router.push("/");
+      } catch (err) {
+        console.log(err);
+
+        throw new Error("error creating profile");
+      }
+    };
+
+    toast.promise(createProfile, {
+      pending: "Creating Profile...",
+      success: "Profile Created!",
+      error: "Error Creating Profile",
+    });
   };
 
   const onInputChange = (e: ChangeEvent) => {
@@ -88,7 +114,7 @@ const CreateProfile = () => {
 
   return (
     <Center>
-      <H1 italic font="serif">
+      <H1 italic sansSerif>
         Create your Profile
       </H1>
       <Container onSubmit={onFormSubmit}>
@@ -133,6 +159,7 @@ const CreateProfile = () => {
               value={formInput.handle}
               placeholder="your handle, like @deno"
               onChange={onInputChange}
+              required
             />
           </AvatarBox>
         </TopContainer>

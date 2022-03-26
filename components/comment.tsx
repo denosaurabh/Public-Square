@@ -9,8 +9,6 @@ const Comment: React.FC = (props: any) => {
   const { profile, stats, metadata, id: postId, css, createdAt } = props;
   const { id, handle, picture } = profile;
 
-  console.log("comment", props);
-
   return (
     <CommentContainer css={css}>
       <Link href={`/post/${postId}`} passHref>

@@ -14,6 +14,7 @@ import {
 import { QUERY_PROFILE_BY_ID } from "@/graphql/PROFILE";
 import { styled } from "@/stitches.config";
 import { cleanUrl } from "@/utils";
+import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -26,23 +27,22 @@ const Profile = () => {
   const [, signTypedData] = useSignTypedData();
   const [accountRes] = useAccount();
 
-  const { data: profileDataRes } = useSWR([
-    QUERY_PROFILE_BY_ID,
-    {
+  const { data: profileDataRes, loading } = useQuery(gql(QUERY_PROFILE_BY_ID), {
+    variables: {
       request: {
         profileIds: [id],
         limit: 1,
       },
     },
-  ]);
+    pollInterval: 3000,
+  });
 
   console.log(profileDataRes, signTypedData, accountRes.data?.address);
 
-  if (!profileDataRes) {
+  if (loading || !profileDataRes) {
     return <LightSansSerifText>loading....</LightSansSerifText>;
   }
 
-  const { data } = profileDataRes;
   const {
     handle,
     bio,
@@ -53,7 +53,7 @@ const Profile = () => {
     website,
     twitterUrl,
     location,
-  } = data?.profiles.items[0];
+  } = profileDataRes?.profiles.items[0];
 
   return (
     <Container>

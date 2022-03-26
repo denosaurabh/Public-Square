@@ -4,35 +4,31 @@ import PostsContainer from "@/components/PostsContainer";
 import { LightSansSerifText, TextDefault } from "@/components/Text";
 import { EXPLORE_PUBLICATIONS } from "@/graphql/DISCOVERY";
 // import { PostsContainer } from "@/components/PostsContainer";
-import { gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import type { NextPage } from "next";
 import useSWR from "swr";
 
 const Home: NextPage = ({ publications }) => {
-  const { data } = useSWR(
-    [
-      EXPLORE_PUBLICATIONS,
-      {
-        request: {
-          limit: 40,
-          sortCriteria: "TOP_COMMENTED",
-          // sources: ["deno-lensapp", "denolensapp"],
-        },
+  const { data, fetchMore } = useQuery(gql(EXPLORE_PUBLICATIONS), {
+    variables: {
+      request: {
+        limit: 40,
+        sortCriteria: "TOP_COMMENTED",
+        // sources: ["deno-lensapp", "denolensapp"],
       },
-    ],
-    {
-      fallbackData: publications,
-    }
-  );
+    },
+  });
 
   console.log(data);
 
-  if (!data?.data.explorePublications?.items) {
+  if (!data?.explorePublications?.items) {
     return <LightSansSerifText>loading....</LightSansSerifText>;
   }
 
   return (
-    <PostsContainer publications={data?.data.explorePublications?.items} />
+    <>
+      <PostsContainer publications={data?.explorePublications?.items} />
+    </>
   );
 };
 

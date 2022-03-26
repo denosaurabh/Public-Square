@@ -17,8 +17,6 @@ import { H3 } from "./Heading";
 dayjs.extend(relativeTime);
 
 const Post: React.FC = (props: any) => {
-  console.log(props);
-
   const { profile, stats, metadata, createdAt, id: postId } = props;
   const { id, handle, picture } = profile;
 

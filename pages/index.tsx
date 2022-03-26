@@ -6,6 +6,7 @@ import { styled } from "@/stitches.config";
 import { Text } from "@/components/Text";
 import { Heading } from "@/components/Heading";
 import { Button } from "@/components/Button";
+import Gradient from "@/components/Gradient";
 
 const LandingPage: React.FC = () => {
   return (
@@ -21,6 +22,12 @@ const LandingPage: React.FC = () => {
         <Text>Posted on 27 March 2022</Text>
       </TopBox>
       <CenterBox>
+        {/* <Logo
+          css={{ width: "160px", height: "auto" }}
+          src="/img/logo.svg"
+          alt="Bond logo"
+        /> */}
+
         <Heading as="h1" size="xxl" weight="bold" sansSerif italic>
           Public Square
         </Heading>
@@ -73,7 +80,18 @@ const LandingPage: React.FC = () => {
           css={{ color: "$grey400" }}>
           to make a better world
         </Heading>
+
+        <Image
+          src="/img/bond.webp"
+          alt="bond between Thinkers, Artists and Enginners"
+        />
+
+        <Text sansSerif size="lg" width="80%">
+          We live in such digital space where, 
+        </Text>
       </Space>
+
+      {/* <Gradient /> */}
 
       {/* <Text>We know thw current state of social media</Text> */}
     </Container>
@@ -118,4 +136,20 @@ const Space = styled("div", {
   alignItems: "center",
 
   gap: "6rem",
+});
+
+const Image = styled("img", {
+  width: "100%",
+  height: "auto",
+
+  objectFit: "cover",
+});
+
+const Logo = styled(Image, {
+  stroke: "$grey600 !important",
+
+  svg: {
+    stroke: "$grey600 !important",
+    fill: "$grey600 !important",
+  },
 });

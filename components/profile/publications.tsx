@@ -29,6 +29,10 @@ const Publications: React.FC = () => {
       {posts ? (
         <PostsContainer publications={posts} noHeader showStats />
       ) : null}
+
+      {pubsDataRes?.data?.loading ? (
+        <LightSansSerifText>Loading...</LightSansSerifText>
+      ) : null}
     </>
   );
 };

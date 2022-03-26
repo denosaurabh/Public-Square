@@ -41,8 +41,19 @@ const Timeline = () => {
       <PostsContainer
         noHeader
         publications={data.timeline.items}
-        css={{ border: "none !important" }}
+        css={{
+          border: "none !important",
+          borderTop: "1px solid $grey300 !important",
+          borderRadius: 0,
+        }}
       />
+
+      {!data.timeline.items.length ? (
+        <LightSansSerifText>
+          Follow profiles you like, engage with peoples posts to get connections
+          posts here :)
+        </LightSansSerifText>
+      ) : null}
     </Container>
   );
 };

@@ -120,11 +120,10 @@ const Accounts = () => {
   useEffect(() => {
     if (!window) return;
 
-    if (accountData && !load) {
-      loadAuth(accountData, load);
-      setLoad(true);
+    if (accountData?.address && authSigner) {
+      WalletStore.login(accountData.address, authSigner);
     }
-  }, [accountData, load]);
+  }, [accountData, load, authSigner]);
 
   useEffect(() => {
     if (!window) return;
@@ -134,22 +133,22 @@ const Accounts = () => {
     }
   }, [signer, authSigner]);
 
-  useEffect(() => {
-    if (!window) return;
+  // useEffect(() => {
+  //   if (!window) return;
 
-    const fetchAndUpdateProfiles = async () => {
-      // await accountStore.updateDataFromLocalStore(data?.profiles.items[0].id);
-      await ProfilesStore.fetchProfiles();
-    };
+  //   const fetchAndUpdateProfiles = async () => {
+  //     // await accountStore.updateDataFromLocalStore(data?.profiles.items[0].id);
+  //     await ProfilesStore.fetchProfiles();
+  //   };
 
-    // if (data?.profiles?.items[0]?.id) {
-    if (accountData?.address && !allProfiles.length) {
-      fetchAndUpdateProfiles();
-    } else {
-      console.log("no address");
-    }
-    // }
-  }, [accountData, allProfiles]);
+  //   // if (data?.profiles?.items[0]?.id) {
+  //   if (accountData?.address && !allProfiles.length) {
+  //     fetchAndUpdateProfiles();
+  //   } else {
+  //     console.log("no address");
+  //   }
+  //   // }
+  // }, [accountData, allProfiles]);
 
   const onSelectValChange = (val: string) => {
     if (val) {

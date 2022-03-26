@@ -85,29 +85,29 @@ class ProfilesStoreKlass {
     this.activeProfileId.set(address);
   }
 
-  async updateDataFromLocalStore(id: string) {
+  async updateDataFromLocalStore() {
     const localData = this.localStoreAccount.get();
     // const adr = this.authStore.address.get;
 
     if (localData?.activeAccountAdr) {
-      this.activeProfileId.set(localData?.activeAccountAdr || id);
-    }
+      this.activeProfileId.set(localData?.activeAccountAdr);
 
-    const data = await apolloClient.query({
-      query: gql(QUERY_PROFILE_BY_ID),
-      variables: {
-        request: {
-          // ownedBy: [],
-          profileIds: [localData?.activeAccountAdr || id],
-          limit: 1,
+      const data = await apolloClient.query({
+        query: gql(QUERY_PROFILE_BY_ID),
+        variables: {
+          request: {
+            // ownedBy: [],
+            profileIds: [localData?.activeAccountAdr],
+            limit: 1,
+          },
         },
-      },
-    });
+      });
 
-    const profile = data?.data?.profiles?.items?.[0];
+      const profile = data?.data?.profiles?.items?.[0];
 
-    if (profile) {
-      this.setActiveAccount(profile);
+      if (profile) {
+        this.setActiveAccount(profile);
+      }
     }
   }
 
@@ -117,7 +117,7 @@ class ProfilesStoreKlass {
     this.activeProfile.set(null);
     this.activeProfileId.set("");
 
-    this.localStoreAccount.set({ activeAccountAdr: "" });
+    this.localStoreAccount.del();
   }
 }
 

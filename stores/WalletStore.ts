@@ -6,7 +6,7 @@ import {
 } from "@/graphql/AUTH";
 import { LocalStore } from "@/utils/localStorage";
 import { gql } from "@apollo/client";
-import { Signer } from "ethers";
+import { ethers, Signer } from "ethers";
 import { observable } from ".";
 import { ProfilesStore } from "./ProfilesStore";
 
@@ -76,6 +76,7 @@ class WalletStoreKlass {
 
   async authenticate() {
     if (!this.address.get() || !this.signature.get()) return;
+    if (this.accessToken.get() && this.refreshToken.get()) return;
 
     let data = null;
     try {
@@ -101,8 +102,9 @@ class WalletStoreKlass {
   }
 
   async getChallange() {
-    if (this.accessToken.get()) return;
+    console.log("getChallange", this.accessToken.get(), this.address.get());
 
+    if (this.accessToken.get()) return;
     if (!this.address.get()) return;
 
     const challange = await apolloClient.query({
@@ -115,6 +117,48 @@ class WalletStoreKlass {
     });
 
     return challange;
+  }
+
+  async login(address: string, signer: ethers.Signer) {
+    if (this.address.get()) return;
+
+    if (!address) {
+      throw new Error("no address given");
+    }
+
+    if (!address) {
+      throw new Error("no address given");
+    }
+
+    this.address.set(address);
+
+    this.updateFromLocalStorage();
+    await this.refreshAuth();
+
+    const challange = await this.getChallange();
+    console.log("challange", challange);
+
+    if (!challange?.data?.challenge?.text) {
+      await this.authenticate();
+
+      await ProfilesStore.updateDataFromLocalStore();
+      await ProfilesStore.fetchProfiles();
+
+      return;
+    }
+
+    const sig = await signer.signMessage(challange.data.challenge.text);
+
+    if (!sig) {
+      throw new Error("no signature");
+    }
+
+    this.signature.set(sig);
+
+    await this.authenticate();
+
+    await ProfilesStore.updateDataFromLocalStore();
+    await ProfilesStore.fetchProfiles();
   }
 
   logout() {
@@ -131,6 +175,8 @@ class WalletStoreKlass {
     ProfilesStore.activeProfile.set(null);
     ProfilesStore.activeProfileId.set("");
     ProfilesStore.localStoreAccount.del();
+
+    ProfilesStore.clearProfiles();
   }
 
   updateFromLocalStorage() {
