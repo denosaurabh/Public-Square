@@ -10,11 +10,10 @@ const InputContainer = styled("div", {
 });
 
 const InputLabel = styled("label", {
-  fontFamily: "$inter",
+  fontFamily: "$main",
+  color: "$grey500",
   fontSize: "1.4rem",
   marginBottom: "0.8rem",
-
-  color: "$grey-600",
 
   svg: {
     fill: "$grey-800",

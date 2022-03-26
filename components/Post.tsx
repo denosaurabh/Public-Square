@@ -12,21 +12,18 @@ import { useState } from "react";
 import Editor from "./Editor";
 
 import relativeTime from "dayjs/plugin/relativeTime";
+import { H3 } from "./Heading";
 
 dayjs.extend(relativeTime);
 
 const Post: React.FC = (props: any) => {
-  const [hover, SetHover] = useState(false);
-
   console.log(props);
 
   const { profile, stats, metadata, createdAt, id: postId } = props;
   const { id, handle, picture } = profile;
 
   return (
-    <PostContainer
-      onMouseEnter={() => SetHover(true)}
-      onMouseLeave={() => SetHover(false)}>
+    <PostContainer>
       <Link href={`/post/${postId}`} passHref>
         <a style={{ textDecoration: "none" }}>
           {/* <ContentContainer>
@@ -37,7 +34,9 @@ const Post: React.FC = (props: any) => {
             </ReactMarkdown>
           </ContentContainer> */}
 
-          <Editor readOnly value={metadata.content} css={{ padding: "1rem" }} />
+          {/* <Editor readOnly value={metadata.content} css={{ padding: "1rem" }} /> */}
+
+          <Headline metadata={metadata} />
         </a>
       </Link>
 
@@ -70,6 +69,40 @@ const Post: React.FC = (props: any) => {
 };
 
 export default Post;
+
+interface HeadlineProps {
+  metadata: Record<string, any>;
+}
+
+const Headline: React.FC<HeadlineProps> = ({ metadata }) => {
+  const { name, description, content } = metadata;
+  const random = Math.random();
+
+  if (random > 0 && random < 0.33 && name && name.length < 40) {
+    return (
+      <H3
+        size="xl"
+        as="h3"
+        sansSerif
+        italic
+        css={{ padding: "1rem", lineHeight: "50px" }}>
+        {name}
+      </H3>
+    );
+  } else if (random > 0.33 && random < 0.66 && description) {
+    return <Editor readOnly value={description} css={{ padding: "1rem" }} />;
+  } else if (random > 0.66 && random < 0.99 && content) {
+    return (
+      <Editor
+        readOnly
+        value={content}
+        css={{ fontSize: "1.6rem", fontFamily: "$sansSerif", padding: "1rem" }}
+      />
+    );
+  } else {
+    return <Editor readOnly value={content} css={{ padding: "1rem" }} />;
+  }
+};
 
 interface StatsProps {
   stats: {

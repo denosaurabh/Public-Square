@@ -42,12 +42,12 @@ const SocialDaos = () => {
 
   return (
     <>
-      <H1 italic font="serif">
+      <H1 italic sansSerif>
         Social Daos
       </H1>
       <TextDefault
         italic
-        font="sansSerif"
+        sansSerif
         css={{ padding: 0, margin: 0, marginBottom: "4rem" }}>
         There Social Daos are special. There are simply lens profiles controlled
         by multiple accounts, proposing propsals for anything and so opening

@@ -87,14 +87,14 @@ const Search = () => {
         </TabsList>
 
         <TabsContent value="PUBLICATION">
-          {!data ||
-          data.search.__typename !== "PublicationSearchResult" ||
-          loading ? (
+          {data?.search?.items?.length &&
+          data.search.__typename !== "PublicationSearchResult" &&
+          !loading ? (
+            <PostsContainer noHeader publications={data?.search.items} />
+          ) : (
             <LightSansSerifText css={{ textAlign: "center" }}>
               loading....
             </LightSansSerifText>
-          ) : (
-            <PostsContainer noHeader publications={data?.search.items} />
           )}
 
           {!loading &&

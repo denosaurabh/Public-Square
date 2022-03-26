@@ -5,11 +5,13 @@ export type themeT = "light" | "dark";
 
 interface SettingsLocalStore {
   theme: themeT;
+  publicationsContainerColumns: number;
 }
 
 class SettingsStoreKlass {
   theme = observable<themeT>("dark");
   focusMode = observable<boolean>(false);
+  publicationsContainerColumns = observable<number>(2);
 
   localStore = new LocalStore<SettingsLocalStore>("@settingsStore");
 
@@ -17,6 +19,14 @@ class SettingsStoreKlass {
     this.theme.subscribe((newTheme) => {
       this.localStore.update({ theme: newTheme });
     });
+
+    this.publicationsContainerColumns.subscribe(
+      (updatedPublicationsContainerColumns) => {
+        this.localStore.update({
+          publicationsContainerColumns: updatedPublicationsContainerColumns,
+        });
+      }
+    );
   }
 
   toggleTheme() {
@@ -24,11 +34,21 @@ class SettingsStoreKlass {
   }
 
   updateFromLocalStorage() {
-    const localTheme = this.localStore.get()?.theme;
+    const localStore = this.localStore.get();
 
-    if (localTheme) {
-      this.theme.set(localTheme);
+    if (localStore?.theme) {
+      this.theme.set(localStore.theme);
     }
+
+    if (localStore?.publicationsContainerColumns) {
+      this.publicationsContainerColumns.set(
+        localStore.publicationsContainerColumns
+      );
+    }
+  }
+
+  setPublicationsContainerColumns(columns: number) {
+    this.publicationsContainerColumns.set(columns);
   }
 }
 

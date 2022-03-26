@@ -18,7 +18,7 @@ const Search = () => {
     setSearch(value);
   };
 
-  const onFromSubmit = (e) => {
+const onFromSubmit = (e) => {
     e.preventDefault();
 
     if (!search) return;
@@ -47,6 +47,8 @@ const SearchBox = styled("form", {
   },
 
   input: {
+    fontSize: "$md",
+
     margin: 0,
     padding: 0,
   },

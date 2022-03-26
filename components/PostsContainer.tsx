@@ -1,9 +1,11 @@
 import { styled } from "@/stitches.config";
+import { SettingsStore } from "@/stores/SettingsStore";
 import { chunkify, sliceIntoChunks } from "@/utils";
+import { useObservable } from "@/stores";
 import { LineBox } from "./LineBox";
 import Post from "./Post";
 import Tag from "./Tag";
-import { Text } from "./Text";
+import { LightSansSerifText, Text } from "./Text";
 
 interface PostsContainerProps {
   publications: object[];
@@ -16,9 +18,12 @@ const PostsContainer: React.FC<PostsContainerProps> = ({
   noHeader,
   showStats,
 }) => {
-  if (!publications.length) return <></>;
+  const noOfColumns = useObservable(SettingsStore.publicationsContainerColumns);
 
-  const pubsArr = chunkify(publications, 2, true);
+  if (!publications.length)
+    return <LightSansSerifText>loading....</LightSansSerifText>;
+
+  const pubsArr = chunkify(publications, noOfColumns, true);
   console.log(pubsArr);
 
   return (
@@ -46,7 +51,10 @@ const PostsContainer: React.FC<PostsContainerProps> = ({
         </>
       )}
 
-      <ContentContainer>
+      <ContentContainer
+        css={{
+          gridTemplateColumns: `repeat(${noOfColumns}, 1fr)`,
+        }}>
         {pubsArr.map((pubs, i) => {
           return (
             <Posts key={i}>
@@ -83,7 +91,6 @@ const TopContainer = styled("div", {
 
 const ContentContainer = styled("div", {
   display: "grid",
-  gridTemplateColumns: "repeat(2, 1fr)",
 
   height: "fit-content",
 });

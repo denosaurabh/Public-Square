@@ -42,9 +42,9 @@ const Profile: React.FC<ProfileProps> = ({
               <AvatarImage
                 css={{
                   width: "80px !important",
-                  height: "auto !important",
+                  height: "80px !important",
 
-                  objectFit: "cover",
+                  objectFit: "fill",
                 }}
                 src={
                   picture?.original.url ||

@@ -31,7 +31,10 @@ const Editor: React.FC<EditorProps> = (props) => {
 export default Editor;
 
 const StyledEditor = styled(RichMarkdownEditor, {
-  fontSize: "$sm",
+  fontFamily: "$main !important",
+  fontSize: "$md",
+  fontWeight: "400",
+
   color: "$grey600",
 
   textAlign: "start",

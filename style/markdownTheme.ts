@@ -15,11 +15,12 @@ const colors = {
 
 export const base = {
   ...colors,
-  fontFamily:
-    "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen, Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif",
-  fontFamilyMono:
-    "'SFMono-Regular',Consolas,'Liberation Mono', Menlo, Courier,monospace",
-  fontWeight: 400,
+  // fontFamily:
+  //   "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen, Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif",
+  // fontFamilyMono:
+  //   "'SFMono-Regular',Consolas,'Liberation Mono', Menlo, Courier,monospace",
+  // fontWeight: 400,
+
   zIndex: 100,
   link: colors.primary,
   placeholder: "#B1BECC",

@@ -8,7 +8,7 @@ import { H3, H5, H6 } from "../Heading";
 import Input from "../Input";
 import { TextArea } from "../TextArea";
 import "draft-js/dist/Draft.css";
-import { LightSansSerifText, TextDefault } from "../Text";
+import { LightSansSerifText, LinkSmallText, TextDefault } from "../Text";
 import { smallAddress } from "@/utils";
 import { Dialog, DialogContent, DialogTrigger } from "../Dialog";
 import {
@@ -20,6 +20,7 @@ import {
   SelectValue,
   SelectViewport,
 } from "../Select";
+import Link from "next/link";
 
 const Transactions = () => {
   const [showAddPost, setShowAddPost] = useState(false);
@@ -132,12 +133,12 @@ const Transactions = () => {
           </Button>
         </ContentInputContainer>
       )}
-      <TotalTxHeading>
+      <TotalTxHeading size="h2">
         Total <span>{noOfTransactions}</span> Transactions has been made so
         far...
       </TotalTxHeading>
 
-      <Label>Confirming proposals</Label>
+      <Label size="h5">Confirming proposals</Label>
       <TransactionsBoxContainer>
         {confirmingProposals.map((tx: TransactionProps, i: number) => (
           <Transaction key={i} {...tx} />
@@ -147,7 +148,7 @@ const Transactions = () => {
         )}
       </TransactionsBoxContainer>
 
-      <Label>To be executed proposals</Label>
+      <Label size="h5">To be executed proposals</Label>
       <TransactionsBoxContainer>
         {toBeExecutedProposals.map((tx: TransactionProps, i: number) => (
           <Transaction key={i} {...tx} />
@@ -157,7 +158,7 @@ const Transactions = () => {
         )}
       </TransactionsBoxContainer>
 
-      <Label>Executed proposals</Label>
+      <Label size="h5">Executed proposals</Label>
       <TransactionsBoxContainer>
         {executedProposals.map((tx: TransactionProps, i: number) => (
           <Transaction key={i} {...tx} />
@@ -168,7 +169,18 @@ const Transactions = () => {
       </TransactionsBoxContainer>
 
       <TextDefault>
-        transactions controlled by: {info.owners.join(", ")}
+        owned by transactions controlled by:
+        {info.owners.map((address, i) => {
+          return (
+            <Link key={i} href={`/address/${address}`} passHref>
+              <a>
+                <LinkSmallText css={{ margin: 0, padding: 0 }}>
+                  {address}
+                </LinkSmallText>
+              </a>
+            </Link>
+          );
+        })}
       </TextDefault>
     </TransactionContainer>
   );
@@ -285,7 +297,11 @@ const TotalTxHeading = styled(H5, {
   margin: "6rem 0 !important",
 
   color: "grey",
-  span: { color: "$grey400", fontSize: "150%" },
+  span: {
+    color: "$grey400",
+    fontSize: "150%",
+    fontWeight: "500",
+  },
 });
 
 const TransactionsBoxContainer = styled("div", {

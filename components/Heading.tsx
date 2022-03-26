@@ -11,6 +11,9 @@ export const Heading = styled("h1", {
       xxl: {
         fontSize: "6rem",
       },
+      xl: {
+        fontSize: "5rem",
+      },
       h1: {
         fontSize: "3.2rem",
       },

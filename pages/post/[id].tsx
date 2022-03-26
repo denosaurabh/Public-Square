@@ -144,13 +144,19 @@ const PostPage: NextPage = () => {
           {openCreateComment ? <CreateComment publicationId={pub.id} /> : null}
 
           <div>
-            <SmallText css={{ display: "flex", alignItems: "center" }}>
+            <SmallTextFlex>
               from
               <Link href={`/profile/${pub.profile.id}`} passHref>
                 <LinkSmallText>@{pub.profile.handle}</LinkSmallText>
               </Link>
-            </SmallText>
-            <SmallText>owned by {pub.profile.ownedBy}</SmallText>
+            </SmallTextFlex>
+
+            <SmallTextFlex>
+              owned by
+              <Link href={`/address/${pub.profile.ownedBy}`} passHref>
+                <LinkSmallText>{pub.profile.ownedBy}</LinkSmallText>
+              </Link>
+            </SmallTextFlex>
           </div>
         </LeftBox>
       ) : (
@@ -210,4 +216,11 @@ const ColumnStatsBox = styled(StatsBox, {
   "& p": {
     gap: "1rem",
   },
+});
+
+const SmallTextFlex = styled(SmallText, {
+  display: "flex",
+  alignItems: "center",
+
+  margin: 0,
 });
