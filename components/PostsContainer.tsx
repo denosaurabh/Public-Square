@@ -13,23 +13,26 @@ interface PostsContainerProps {
   publications: object[];
   noHeader?: boolean;
   showStats?: boolean;
+  css?: Record<string, any>;
 }
 
 const PostsContainer: React.FC<PostsContainerProps> = ({
   publications,
   noHeader,
   showStats,
+  css,
 }) => {
   const noOfColumns = useObservable(SettingsStore.publicationsContainerColumns);
 
-  if (!publications.length)
-    return <LightSansSerifText>loading....</LightSansSerifText>;
+  if (!publications.length) {
+    return <LightSansSerifText>No Posts....</LightSansSerifText>;
+  }
 
   const pubsArr = chunkify(publications, noOfColumns, true);
   console.log(pubsArr);
 
   return (
-    <AllPostsContainer>
+    <AllPostsContainer css={css}>
       {!noHeader && (
         <>
           <TopContainer>

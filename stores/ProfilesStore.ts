@@ -34,8 +34,6 @@ class ProfilesStoreKlass {
   async fetchProfiles() {
     const address = WalletStore.address.get();
 
-    console.log("fetchProfiles", address);
-
     if (!address) return;
 
     const data = await apolloClient.query({
@@ -51,15 +49,11 @@ class ProfilesStoreKlass {
 
     const profiles = data?.data?.profiles?.items;
 
-    console.log("fetchProfiles", profiles);
-
     if (profiles?.length) {
       this.allProfiles.set(profiles);
 
       const localActiveAccountId =
         this.localStoreAccount.get()?.activeAccountAdr;
-
-      console.log("fetchProfiles", localActiveAccountId);
 
       if (localActiveAccountId) {
         this.setActiveAccountAdr(localActiveAccountId);

@@ -22,15 +22,13 @@ const Publications: React.FC = () => {
 
   console.log(id, pubsDataRes);
 
-  if (!pubsDataRes) return <LightSansSerifText>loading....</LightSansSerifText>;
-
-  const posts = pubsDataRes?.data.publications.items;
+  const posts = pubsDataRes?.data?.publications?.items;
 
   return (
     <>
-      <PostsContainer publications={posts} noHeader showStats />
-
-      {!posts.length ? <LightSansSerifText>No Posts</LightSansSerifText> : null}
+      {posts ? (
+        <PostsContainer publications={posts} noHeader showStats />
+      ) : null}
     </>
   );
 };

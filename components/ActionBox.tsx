@@ -19,6 +19,9 @@ const ActionBox = () => {
         <NextLink href="/recommandations" passHref>
           <Link active={path === "/recommandations"}>Recommandations</Link>
         </NextLink>
+        <NextLink href="/timeline" passHref>
+          <Link active={path === "/timeline"}>Connections</Link>
+        </NextLink>
         <NextLink href="/social" passHref>
           <Link active={path === "/social"}>Social Groups</Link>
         </NextLink>

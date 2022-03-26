@@ -207,10 +207,6 @@ const Accounts = () => {
               <PopoverText>Revenue</PopoverText>
             </Link>
 
-            <Link href="/timeline" passHref>
-              <PopoverText>Timeline</PopoverText>
-            </Link>
-
             <Link href="/settings" passHref>
               <PopoverText>Settings</PopoverText>
             </Link>

@@ -41,6 +41,8 @@ import { LineBox } from "@/components/LineBox";
 import { Separator } from "@/components/Seperator";
 import Editor from "@/components/Editor";
 import { day } from "@/utils/dayjs";
+import ReportPublication from "@/components/ReportPublication";
+import ActionBox from "@/components/ActionBox";
 
 const PostPage: NextPage = () => {
   const router = useRouter();
@@ -204,6 +206,8 @@ const PostPage: NextPage = () => {
 
               <SmallTextFlex>App Id: {pub.appId}</SmallTextFlex>
             </FlexColumn>
+
+            {/* <ReportPublication publicationId={pub.id} /> */}
           </LeftBox>
         ) : (
           <TextDefault>loading....</TextDefault>

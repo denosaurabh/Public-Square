@@ -23,7 +23,6 @@ import {
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../Tabs";
 import Editor from "../Editor";
-import { toast } from "react-toastify";
 
 const Proposals = () => {
   return (
