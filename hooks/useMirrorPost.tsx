@@ -59,7 +59,7 @@ const useMirrorPost = (publicationId: string) => {
 
       toast.success("Mirrored this post!");
     } catch (e) {
-      toast.error("Failed mirroring a post!");
+      toast.error("Failed mirroring this post!");
     }
   };
 

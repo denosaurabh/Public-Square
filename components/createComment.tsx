@@ -101,6 +101,10 @@ const CreateComment: React.FC<CreateCommentI> = ({ publicationId, css }) => {
       console.log("posted comment with hash", tx.hash);
 
       toast.success("Comment posted successfully!");
+
+      setName("");
+      setComment("");
+      setDescription("");
     } catch (err) {
       console.log(err);
       toast.error("Failed posting a comment!");

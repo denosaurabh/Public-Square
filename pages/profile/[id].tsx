@@ -1,7 +1,9 @@
 import { Avatar, AvatarImage } from "@/components/Avatar";
+import { Button } from "@/components/Button";
 import Follow from "@/components/follow";
 import { LineBox } from "@/components/LineBox";
 import ProfileTabs from "@/components/profile/ProfileTabs";
+import ProfileMessageActions from "@/components/ProfileMessageActions";
 import {
   LightSansSerifText,
   LinkSmallText,
@@ -81,6 +83,8 @@ const Profile = () => {
             followerAddress={ownedBy}
             followModule={followModule}
           />
+
+          {/* <ProfileMessageActions /> */}
         </CenterBox>
         <RightBox>
           {website ? (

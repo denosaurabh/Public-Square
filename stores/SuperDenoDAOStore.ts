@@ -20,6 +20,7 @@ import { EMPTY_ADDRESS } from "@/utils";
 import { CreateProfileDataStruct } from "@/typechain-types/LensHub";
 import { apolloClient } from "@/apollo/client";
 import { gql } from "@apollo/client";
+import { toast } from "react-toastify";
 
 interface CreateDaoInput {
   name: string;
@@ -132,13 +133,19 @@ class SuperDenoDAOStoreKlass {
     const res = await tx.wait();
     console.log(res);
 
+    toast.success("Step 1 / 4! DAO created through Super Deno");
+
     const socialDaoAddress = await this.superDenoDao.getDAOAddressByName(name);
     console.log(socialDaoAddress);
 
     if (!socialDaoAddress || socialDaoAddress === EMPTY_ADDRESS) {
       console.log("dao not found");
+      toast.error("DAO not found!");
+
       return;
     }
+
+    toast.success("Step 2 / 4. Fetched DAO");
 
     const inputStruct: CreateProfileDataStruct = {
       to: socialDaoAddress,
@@ -153,6 +160,8 @@ class SuperDenoDAOStoreKlass {
 
     if (!signer) {
       console.log("no signer");
+      toast.error("Signer not found!");
+
       return;
     }
 
@@ -164,6 +173,8 @@ class SuperDenoDAOStoreKlass {
     const profileRes = await lensHub.proxyCreateProfile(inputStruct);
     console.log(profileRes);
     await profileRes.wait();
+
+    toast.success("Step 3 / 4. Lens Profile Created!");
 
     const profileData = await apolloClient.query({
       query: gql(QUERY_PROFILES_OWNED_BY_ADDRESS),
@@ -208,6 +219,7 @@ class SuperDenoDAOStoreKlass {
     ]);
 
     console.log(updatedSocialDAO);
+    toast.success("Success! DAO created.");
   }
 
   async socialDaoTransactions() {

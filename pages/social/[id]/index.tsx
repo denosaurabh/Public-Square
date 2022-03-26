@@ -202,7 +202,7 @@ const SocialDAO = () => {
               followerAddress={info.ownedBy}
               followModule={info.followModule}
             /> */}
-            <Button>Join</Button>
+            {/* <Button>Join</Button> */}
             <Constitution constitutions={info.constitutions} />
           </ButtonsContainer>
         </CenterBox>

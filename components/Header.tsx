@@ -54,10 +54,10 @@ const Header = () => {
 
       <HeaderRightBox>
         <ThemeButton />
-
+        {/* 
         <Link href="/status" passHref>
           <LinkText>status</LinkText>
-        </Link>
+        </Link> */}
 
         <Network />
         <Notifications />

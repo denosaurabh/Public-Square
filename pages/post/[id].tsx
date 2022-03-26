@@ -7,6 +7,7 @@ import {
   LinkSmallText,
   SemiBoldText,
   SmallText,
+  Text,
   TextDefault,
 } from "@/components/Text";
 import {
@@ -39,6 +40,7 @@ import { apolloClientWithoutAuth } from "@/apollo/client";
 import { LineBox } from "@/components/LineBox";
 import { Separator } from "@/components/Seperator";
 import Editor from "@/components/Editor";
+import { day } from "@/utils/dayjs";
 
 const PostPage: NextPage = () => {
   const router = useRouter();
@@ -80,98 +82,152 @@ const PostPage: NextPage = () => {
     },
   ]);
 
-  if (loading) return <LightSansSerifText>Loading....</LightSansSerifText>;
-
   const pub = data?.publication;
 
+  if (loading || !pub) {
+    return <LightSansSerifText>Loading....</LightSansSerifText>;
+  }
+
   return (
-    <Container>
-      {pub.metadata ? (
-        <LeftBox>
-          <div>
+    <>
+      {pub.mainPost ? (
+        <>
+          <Container
+            css={{
+              flexDirection: "column",
+              gap: "2rem",
+              paddingBottom: "2rem",
+            }}>
             <H5 size="h1" italic sansSerif>
-              {pub.metadata.name}
+              {pub.mainPost.metadata.name}
             </H5>
-            <H6 size="h6" weight="600" css={{ margin: "3rem 0" }}>
-              {pub.metadata.description}
-            </H6>
-            {/* <MarkDownBox content={pub.metadata.content} /> */}
 
-            <Editor readOnly value={pub.metadata.content} />
-          </div>
+            <Link href={`/post/${pub.mainPost.id}`} passHref>
+              <Text
+                size="lg"
+                sansSerif
+                italic
+                css={{
+                  textDecoration: "underline",
+                  padding: "1.2rem 2rem",
+                  border: "1px solid $grey400",
+                  borderRadius: "$500",
+                  width: "fit-content",
+                  "&:hover": {
+                    cursor: "pointer",
+                  },
+                }}>
+                Check out full post
+              </Text>
+            </Link>
+          </Container>
 
-          <ColumnStatsBox>
-            <StatsItem onClick={() => setOpenCreateComment(!openCreateComment)}>
-              <CommentSvg />
-              {pub.stats.totalAmountOfComments || "no"} comment
-              {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
-            </StatsItem>
+          <Separator orientation="vertical" css={{ maxHeight: "40px" }} />
+        </>
+      ) : null}
 
-            <Tooltip>
-              <TooltipTrigger>
-                <StatsItem onClick={collectPost}>
-                  <CollectSvg />
-                  {pub.stats.totalAmountOfCollects || "no"} collect
-                  {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
-                </StatsItem>
-              </TooltipTrigger>
+      <Container>
+        {pub.metadata ? (
+          <LeftBox>
+            <div>
+              <H5 size="h1" italic sansSerif>
+                {pub.metadata.name}
+              </H5>
+              <H6 size="h6" weight="600" css={{ margin: "3rem 0" }}>
+                {pub.metadata.description}
+              </H6>
+              {/* <MarkDownBox content={pub.metadata.content} /> */}
 
-              <TooltipContent>
-                {pub.collectModule
-                  ? COLLECT_MODULES[pub.collectModule.__typename].userMessage
-                  : COLLECT_MODULES["EmptyCollectModuleSettings"].userMessage}
-              </TooltipContent>
-            </Tooltip>
+              <Editor readOnly value={pub.metadata.content} />
+            </div>
 
-            <Tooltip>
-              <TooltipTrigger>
-                <StatsItem onClick={mirrorPost}>
-                  <MirrorSvg />
-                  {pub.stats.totalAmountOfMirrors || "no"} mirror
-                  {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
-                </StatsItem>
-              </TooltipTrigger>
+            <ColumnStatsBox>
+              <StatsItem
+                onClick={() => setOpenCreateComment(!openCreateComment)}>
+                <CommentSvg />
+                {pub.stats.totalAmountOfComments || "no"} comment
+                {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
+              </StatsItem>
 
-              <TooltipContent>
-                {pub.referenceModule
-                  ? REFERENCE_MODULES[pub.referenceModule.__typename]
-                      .userMessage
-                  : REFERENCE_MODULES["none"].userMessage}
-              </TooltipContent>
-            </Tooltip>
-          </ColumnStatsBox>
+              <Tooltip>
+                <TooltipTrigger>
+                  <StatsItem onClick={collectPost}>
+                    <CollectSvg />
+                    {pub.stats.totalAmountOfCollects || "no"} collect
+                    {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
+                  </StatsItem>
+                </TooltipTrigger>
 
-          {openCreateComment ? <CreateComment publicationId={pub.id} /> : null}
+                <TooltipContent>
+                  {pub.collectModule
+                    ? COLLECT_MODULES[pub.collectModule.__typename].userMessage
+                    : COLLECT_MODULES["EmptyCollectModuleSettings"].userMessage}
+                </TooltipContent>
+              </Tooltip>
 
-          <div>
-            <SmallTextFlex>
-              from
-              <Link href={`/profile/${pub.profile.id}`} passHref>
-                <LinkSmallText>@{pub.profile.handle}</LinkSmallText>
-              </Link>
-            </SmallTextFlex>
+              <Tooltip>
+                <TooltipTrigger>
+                  <StatsItem onClick={mirrorPost}>
+                    <MirrorSvg />
+                    {pub.stats.totalAmountOfMirrors || "no"} mirror
+                    {pub.stats.totalAmountOfMirrors > 1 ? "s" : ""}
+                  </StatsItem>
+                </TooltipTrigger>
 
-            <SmallTextFlex>
-              owned by
-              <Link href={`/address/${pub.profile.ownedBy}`} passHref>
-                <LinkSmallText>{pub.profile.ownedBy}</LinkSmallText>
-              </Link>
-            </SmallTextFlex>
-          </div>
-        </LeftBox>
-      ) : (
-        <TextDefault>loading....</TextDefault>
-      )}
+                <TooltipContent>
+                  {pub.referenceModule
+                    ? REFERENCE_MODULES[pub.referenceModule.__typename]
+                        .userMessage
+                    : REFERENCE_MODULES["none"].userMessage}
+                </TooltipContent>
+              </Tooltip>
+            </ColumnStatsBox>
 
-      {/* <Separator
+            <FlexColumn>
+              <SmallTextFlex>
+                Posted on: {day(pub.createdAt).fromNow()}
+              </SmallTextFlex>
+
+              <SmallTextFlex>
+                From
+                <Link href={`/profile/${pub.profile.id}`} passHref>
+                  <LinkSmallText>@{pub.profile.handle}</LinkSmallText>
+                </Link>
+              </SmallTextFlex>
+
+              <SmallTextFlex>
+                Owned by
+                <Link href={`/address/${pub.profile.ownedBy}`} passHref>
+                  <LinkSmallText>{pub.profile.ownedBy}</LinkSmallText>
+                </Link>
+              </SmallTextFlex>
+
+              <SmallTextFlex>App Id: {pub.appId}</SmallTextFlex>
+            </FlexColumn>
+          </LeftBox>
+        ) : (
+          <TextDefault>loading....</TextDefault>
+        )}
+
+        {/* <Separator
         orientation="vertical"
         css={{ minHeight: "100vh", height: "100%" }}
       /> */}
 
-      <RightBox>
-        <CommentsContainer data={commentsData} />
-      </RightBox>
-    </Container>
+        <RightBox>
+          <CommentsContainer data={commentsData} />
+        </RightBox>
+      </Container>
+
+      {openCreateComment ? (
+        <>
+          <Separator orientation="vertical" css={{ maxHeight: "30px" }} />
+          <Container>
+            <CreateComment publicationId={pub.id} />
+          </Container>
+        </>
+      ) : null}
+    </>
   );
 };
 
@@ -218,9 +274,29 @@ const ColumnStatsBox = styled(StatsBox, {
   },
 });
 
+const FlexColumn = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "2rem",
+
+  marginBottom: "4rem",
+});
+
 const SmallTextFlex = styled(SmallText, {
   display: "flex",
   alignItems: "center",
+  height: "1rem",
 
   margin: 0,
+  padding: 0,
+
+  a: {
+    margin: 0,
+    padding: 0,
+  },
+
+  p: {
+    // margin: "0.5rem",
+    padding: 0,
+  },
 });

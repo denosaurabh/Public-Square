@@ -23,6 +23,14 @@ contract SocialDAO {
     mapping(address => bool) public isOwner;
     uint public numConfirmationsRequired;
 
+    struct OwnerProposal {
+        address who;
+        bytes data;
+    }
+
+    OwnerProposal[] public ownerProposals;
+    mapping(address => bool) public isUserProposing;
+
     struct Transaction {
         address to;
         uint value;
@@ -164,28 +172,36 @@ contract SocialDAO {
         emit RevokeConfirmation(msg.sender, _txIndex);
     }
 
+    function publishProposalForOwner(address _proposalUser, bytes memory _data)
+        public
+    {
+        require(!isOwner[_proposalUser], "owner already exists");
+        require(_proposalUser != address(0), "invalid user");
+
+        ownerProposals.push(OwnerProposal(_proposalUser, _data));
+
+        isUserProposing[_proposalUser] = true;
+    }
+
     function addOwner(address _newOwner) 
-        public 
-        onlyOwner
-        txExists(_txIndex)
-        notExecuted(_txIndex)
+        public
     {
         require(!isOwner[_newOwner], "owner already exists");
+        require(isUserProposing[_newOwner], "user hasnt proposed yet!");
+        require (msg.sender == address(this), "Call not send by contract");
 
         isOwner[_newOwner] = true;
         owners.push(_newOwner);
     }
 
     function removeOwner(address _removingOwner) 
-        public 
-        onlyOwner
-        txExists(_txIndex)
-        notExecuted(_txIndex)
+        public
     {
-        require(isOwner[_newOwner], "owner doesn't exist");
+        require(!isOwner[_removingOwner], "owner doesn't exist");
+        require (msg.sender == address(this), "Call not send by contract");
 
-        isOwner[_newOwner] = false;
-        delete owners[_newOwner];
+        isOwner[_removingOwner] = false;
+        // delete owners[_removingOwner];
     }
 
     function getOwners() public view returns (address[] memory) {

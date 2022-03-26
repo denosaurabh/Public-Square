@@ -243,6 +243,34 @@ class SocialDAOStoreKlass {
     }
   }
 
+  async publishOwnerProposal(
+    address: string,
+    data: { profileId: string; description: string }
+  ) {
+    const socialDao = this.currentSocialDAOContract.get();
+    if (!socialDao) {
+      console.log("socialDao is null");
+      return;
+    }
+
+    try {
+      // const ipfsResult = await IPFSClient.add(JSON.stringify(data));
+      // console.log(ipfsResult);
+
+      const tx = await socialDao.publishProposalForOwner(address, {
+        // dataUri: "https://ipfs://" + ipfsResult.path,
+        profileId: data.profileId,
+        description: data.description,
+      });
+
+      console.log("publishOwnerProposal", tx);
+
+      toast.success("Join Proposal submitted successfully");
+    } catch (err) {
+      toast.error("Error publishing");
+    }
+  }
+
   async confirmTransaction(txNum: number) {
     const socialDao = this.currentSocialDAOContract.get();
 

@@ -1,17 +1,21 @@
 import { styled } from "@/stitches.config";
+import { day } from "@/utils/dayjs";
 import Link from "next/link";
 import { Avatar, AvatarImage } from "./Avatar";
 import Editor from "./Editor";
 import { SmallText, TextDefault } from "./Text";
 
 const Comment: React.FC = (props: any) => {
-  const { profile, stats, metadata, id: postId, css } = props;
+  const { profile, stats, metadata, id: postId, css, createdAt } = props;
   const { id, handle, picture } = profile;
+
+  console.log("comment", props);
 
   return (
     <CommentContainer css={css}>
-      <ContentContainer>
-        {/* <Avatar>
+      <Link href={`/post/${postId}`} passHref>
+        <ContentContainer>
+          {/* <Avatar>
           <AvatarImage
             src={
               picture?.original.url ||
@@ -21,12 +25,13 @@ const Comment: React.FC = (props: any) => {
           />
         </Avatar> */}
 
-        <Editor
-          readOnly
-          value={metadata.content}
-          css={{ margin: 0, padding: 0 }}
-        />
-      </ContentContainer>
+          <Editor
+            readOnly
+            value={metadata.content}
+            css={{ margin: 0, padding: 0 }}
+          />
+        </ContentContainer>
+      </Link>
 
       <Link href={`/profile/${id}`} passHref>
         <Profile>
@@ -43,7 +48,10 @@ const Comment: React.FC = (props: any) => {
           <TextDefault>
             {handle.length > 8 ? `${handle.slice(0, 8)}...` : handle}
           </TextDefault>
-          <SmallText css={{ marginLeft: "auto" }}>commented</SmallText>
+          {/* <SmallText css={{ marginLeft: "auto" }}>commented</SmallText> */}
+          <SmallText css={{ marginLeft: "auto" }}>
+            {day(createdAt).fromNow()}
+          </SmallText>
         </Profile>
       </Link>
     </CommentContainer>
@@ -85,6 +93,7 @@ const Profile = styled("div", {
   alignItems: "center",
 
   padding: "1rem 2rem",
+  paddingRight: 0,
 
   "&:hover": {
     cursor: "pointer",

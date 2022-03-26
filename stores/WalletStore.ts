@@ -117,7 +117,7 @@ class WalletStoreKlass {
     return challange;
   }
 
-  async logout() {
+  logout() {
     this.address.set(null);
     this.signature.set(null);
 
@@ -126,11 +126,11 @@ class WalletStoreKlass {
     this.accessToken.set(null);
     this.refreshToken.set(null);
 
-    this.localStoresAuth.update({ accessToken: "", refreshToken: "" });
+    this.localStoresAuth.del();
 
     ProfilesStore.activeProfile.set(null);
     ProfilesStore.activeProfileId.set("");
-    ProfilesStore.localStoreAccount.update({ activeAccountAdr: "" });
+    ProfilesStore.localStoreAccount.del();
   }
 
   updateFromLocalStorage() {

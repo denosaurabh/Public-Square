@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAccount, useConnect, useSigner, useSignMessage } from "wagmi";
 import { useObservable } from "@/stores";
+
 import {
   Select,
   SelectTrigger,
@@ -10,6 +11,13 @@ import {
   SelectItem,
   SelectItemText,
 } from "./Select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverText,
+  PopoverTrigger,
+} from "./Popover";
+
 import { LightSansSerifText, LinkText } from "./Text";
 import Link from "next/link";
 import { TextButton } from "./Button";
@@ -185,9 +193,35 @@ const Accounts = () => {
       )}
 
       {accountData ? (
-        <TextButton onClick={disconnectAuth}>
-          {accountData?.ens?.name || smallAddress(accountData.address)}
-        </TextButton>
+        <Popover>
+          <PopoverTrigger
+            css={{
+              padding: "1.2rem 2rem",
+              fontSize: "$sm",
+              "&:hover": { cursor: "pointer" },
+            }}>
+            {accountData?.ens?.name || smallAddress(accountData.address)}
+          </PopoverTrigger>
+          <PopoverContent>
+            <Link href="/revenue" passHref>
+              <PopoverText>Revenue</PopoverText>
+            </Link>
+
+            <Link href="/timeline" passHref>
+              <PopoverText>Timeline</PopoverText>
+            </Link>
+
+            <Link href="/settings" passHref>
+              <PopoverText>Settings</PopoverText>
+            </Link>
+
+            <Link href="/status" passHref>
+              <PopoverText>Lens Status</PopoverText>
+            </Link>
+
+            <PopoverText onClick={disconnectAuth}>Disconnect</PopoverText>
+          </PopoverContent>
+        </Popover>
       ) : (
         <TextButton onClick={() => onAuthClick("metamask")}>Connect</TextButton>
       )}

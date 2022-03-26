@@ -1,5 +1,5 @@
 import { styled } from "@/stitches.config";
-import {  useObservable } from "@/stores";
+import { useObservable } from "@/stores";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
 import Link from "next/link";
 import { Avatar, AvatarGroup, AvatarImage } from "../Avatar";
@@ -21,9 +21,9 @@ const Discussions: React.FC = () => {
         <LightSansSerifText>No Discussions</LightSansSerifText>
       ) : null}
 
-      <CreateDiscussionHeading>
+      {/* <CreateDiscussionHeading>
         Create your own discussion
-      </CreateDiscussionHeading>
+      </CreateDiscussionHeading>*/}
     </DiscussionsContainer>
   );
 };

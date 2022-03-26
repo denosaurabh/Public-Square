@@ -26,9 +26,9 @@ const ActionBox = () => {
       <Box>
         <Search />
 
-        <NextLink href="/settings" passHref>
+        {/* <NextLink href="/settings" passHref>
           <Link active={path === "/settings"}>Settings</Link>
-        </NextLink>
+        </NextLink> */}
       </Box>
     </ActionBoxContainer>
   );
@@ -58,19 +58,19 @@ const Link = styled(Text, {
   "&:first-child": {
     borderLeft: "0",
 
-    "&:hover": {
-      borderTopLeftRadius: "$500",
-      borderBottomLeftRadius: "$500",
-    },
+    // "&:hover": {
+    borderTopLeftRadius: "$500",
+    borderBottomLeftRadius: "$500",
+    // },
   },
 
   "&:last-child": {
     borderRight: "0",
 
-    "&:hover": {
-      borderTopRightRadius: "$500",
-      borderBottomRightRadius: "$500",
-    },
+    // "&:hover": {
+    borderTopRightRadius: "$500",
+    borderBottomRightRadius: "$500",
+    // },
   },
 
   transition: "all 0.15s",

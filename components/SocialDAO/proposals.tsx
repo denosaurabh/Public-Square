@@ -35,7 +35,7 @@ const Proposals = () => {
             Create New Proposals
           </Text> */}
           <TabsTrigger value="postpublication">Post Publication</TabsTrigger>
-          <TabsTrigger value="advance">Advance</TabsTrigger>
+          <TabsTrigger value="advance">Advance Transactions</TabsTrigger>
         </TabsList>
         <TabsContent value="transactions">
           <AllTransaction />

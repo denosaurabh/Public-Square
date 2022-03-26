@@ -7,6 +7,7 @@ import Post from "./Post";
 import Tag from "./Tag";
 import { LightSansSerifText, Text } from "./Text";
 import { now } from "@/utils/dayjs";
+import Comment from "@/components/Comment";
 
 interface PostsContainerProps {
   publications: object[];
@@ -60,7 +61,13 @@ const PostsContainer: React.FC<PostsContainerProps> = ({
           return (
             <Posts key={i}>
               {pubs.map((pub) => {
-                return <Post {...pub} key={pub.id} />;
+                if (pub.__typename === "Post") {
+                  return <Post {...pub} key={pub.id} />;
+                } else if (pub.__typename === "Comment") {
+                  return <Comment {...pub} key={pub.id} />;
+                } else {
+                  return <Post {...pub} key={pub.id} />;
+                }
               })}
               );
             </Posts>
