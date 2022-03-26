@@ -21,6 +21,10 @@ export const Button = styled("button", {
 
   variants: {
     color: {
+      action: {
+        backgroundColor: "$grey500",
+        color: "$grey100",
+      },
       dark: {
         backgroundColor: "$grey-800",
         color: "$grey400",

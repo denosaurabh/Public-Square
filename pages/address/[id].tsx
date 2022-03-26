@@ -30,7 +30,9 @@ const AddressPage: NextPage = () => {
 
   return (
     <Container>
-      <H3 css={{ marginBottom: "5rem", padding: "2rem" }}>{id}</H3>
+      <H3 size="h1" css={{ marginBottom: "5rem", padding: "2rem" }}>
+        {id}
+      </H3>
 
       <H3 css={{ marginBottom: "1rem", padding: "2rem" }} size="h6">
         {data?.profiles?.items.length} Profiles

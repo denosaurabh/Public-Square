@@ -12,8 +12,9 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({
   if (!commentsData?.data) return <></>;
 
   if (commentsData?.data.publications.items.length === 0) {
-    return <></>;
+    return <LightSansSerifText>No comments</LightSansSerifText>;
   }
+
   return (
     <Container>
       <SemiBoldText>Comments</SemiBoldText>
@@ -26,7 +27,7 @@ const CommentsContainer: React.FC<CommentsContainerProps> = ({
         <TextDefault>loading....</TextDefault>
       )}
 
-      {commentsData?.data.publications.items.length === 0 ? (
+      {!commentsData?.data.publications.items.length ? (
         <LightSansSerifText>no Comments ....</LightSansSerifText>
       ) : null}
     </Container>

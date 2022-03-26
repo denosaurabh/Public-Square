@@ -1,6 +1,5 @@
 import React from "react";
 import { styled, keyframes } from "@/stitches.config";
-import { violet, blackA, mauve, green } from "@radix-ui/colors";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 
 const overlayShow = keyframes({
@@ -24,8 +23,10 @@ const StyledOverlay = styled(DialogPrimitive.Overlay, {
 
 const StyledContent = styled(DialogPrimitive.Content, {
   backgroundColor: "$grey600",
+  color: "$grey500",
+
   borderRadius: 14,
-  border: "1px solid $grey300",
+  border: "1px solid $grey400",
   boxShadow:
     "hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px",
   position: "fixed",
@@ -53,24 +54,25 @@ const Content: React.FC = ({ children, ...props }) => {
 const StyledTitle = styled(DialogPrimitive.Title, {
   // margin: 0,
   fontWeight: 600,
-  color: "$grey100",
+  color: "$grey500",
   fontFamily: "$sansSerif",
   fontSize: "$xl",
 
   width: "100%",
   padding: "2rem",
 
-  borderBottom: "1px solid $grey200",
+  borderBottom: "1px solid $grey400",
 });
 
 const StyledDescription = styled(DialogPrimitive.Description, {
   // margin: '10px 0 20px',
-  color: "$grey200",
+  color: "$grey500",
   fontSize: 15,
   lineHeight: 1.5,
 });
 
 const StyledTrigger = styled(DialogPrimitive.Trigger, {
+  color: "$grey600",
   backgroundColor: "transparent",
 });
 

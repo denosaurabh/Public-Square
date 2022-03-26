@@ -80,10 +80,10 @@ const Accounts = () => {
     WalletStore.updateFromLocalStorage();
     const refreshData = await WalletStore.refreshAuth();
 
-    if (refreshData?.accessToken) {
-      setLoad(true);
-      return;
-    }
+    // if (refreshData?.accessToken) {
+    //   setLoad(true);
+    //   return;
+    // }
 
     if (account?.address) {
       // console.log("accountData", accountData);
@@ -135,13 +135,13 @@ const Accounts = () => {
     };
 
     // if (data?.profiles?.items[0]?.id) {
-    if (address && !allProfiles.length) {
+    if (accountData?.address && !allProfiles.length) {
       fetchAndUpdateProfiles();
     } else {
       console.log("no address");
     }
     // }
-  }, [address, allProfiles]);
+  }, [accountData, allProfiles]);
 
   const onSelectValChange = (val: string) => {
     if (val) {
@@ -155,46 +155,34 @@ const Accounts = () => {
     }
   };
 
-  if (!allProfiles?.length || !accountData) {
-    return (
-      <>
+  return (
+    <>
+      {allProfiles?.length && activeProfile ? (
+        <Select
+          defaultValue={activeProfileId}
+          value={activeProfileId}
+          onValueChange={onSelectValChange}>
+          <SelectTrigger>
+            <SelectValue>{activeProfile?.handle}</SelectValue>
+          </SelectTrigger>
+
+          <SelectContent css={{ backgroundColor: "$grey200" }}>
+            <SelectViewport>
+              {allProfiles.map((profile, i) => {
+                return (
+                  <SelectItem value={profile.id} key={i}>
+                    <SelectItemText>{profile.handle}</SelectItemText>
+                  </SelectItem>
+                );
+              })}
+            </SelectViewport>
+          </SelectContent>
+        </Select>
+      ) : (
         <Link href="/create/profile" passHref>
           <LinkText as={LightSansSerifText}>Create Profile</LinkText>
         </Link>
-
-        <TextButton onClick={() => onAuthClick("metamask")}>Connect</TextButton>
-      </>
-    );
-  }
-
-  return (
-    <>
-      <Select
-        defaultValue={activeProfileId}
-        value={activeProfileId}
-        onValueChange={onSelectValChange}>
-        <SelectTrigger>
-          <SelectValue>{activeProfile?.handle}</SelectValue>
-        </SelectTrigger>
-
-        <SelectContent css={{ backgroundColor: "$grey200" }}>
-          <SelectViewport>
-            {allProfiles ? (
-              allProfiles.map((profile) => {
-                return (
-                  <SelectItem value={profile.id} key={profile.id}>
-                    <SelectItemText>
-                      {profile.handle} {profile.id}
-                    </SelectItemText>
-                  </SelectItem>
-                );
-              })
-            ) : (
-              <LightSansSerifText>Create account</LightSansSerifText>
-            )}
-          </SelectViewport>
-        </SelectContent>
-      </Select>
+      )}
 
       {accountData ? (
         <TextButton onClick={disconnectAuth}>

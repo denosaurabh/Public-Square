@@ -20,7 +20,7 @@ const Constitution: React.FC<ConstitutionProps> = ({ constitutions }) => {
       </DialogTrigger>
 
       <DialogContent>
-        <DialogTitle>Constitution</DialogTitle>
+        <DialogTitle css={{ color: "$grey100" }}>Constitution</DialogTitle>
 
         {/* <DialogClose /> */}
 
@@ -49,13 +49,13 @@ const ConstitutionText = styled(TextDefault, {
 
   fontFamily: "$sansSerif",
   fontWeight: "500",
-  fontSize: "1.9rem",
+  fontSize: "1.6rem",
   color: "$grey200",
 
   padding: "1.5rem",
   margin: 0,
 
-  borderRight: "1px solid $grey300",
+  borderRight: "1px solid $grey400",
 });
 
 const ConstitutionTriggerText = styled(TextDefault, {

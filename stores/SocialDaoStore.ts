@@ -205,6 +205,44 @@ class SocialDAOStoreKlass {
     console.log("post", tx);
   }
 
+  async submitProposal(
+    abi: string,
+    functionName: string,
+    args: string,
+    address: string,
+    value: number
+  ) {
+    if (!abi || !functionName || !args || !address || !value) {
+      console.log("missing params");
+      return;
+    }
+
+    const socialDao = this.currentSocialDAOContract.get();
+
+    if (!socialDao) {
+      console.log("socialDao is null");
+      return;
+    }
+
+    try {
+      const argsObject = JSON.parse(args);
+
+      let contractI = new ethers.utils.Interface(abi);
+      const encodedData = contractI.encodeFunctionData(
+        functionName,
+        argsObject
+      );
+
+      const tx = await socialDao.submitTransaction(address, value, encodedData);
+
+      console.log("submitProposal", tx);
+
+      toast.error("Successfully Submitted Proposal" + err);
+    } catch (err) {
+      toast.error("Error calling contract function" + err);
+    }
+  }
+
   async confirmTransaction(txNum: number) {
     const socialDao = this.currentSocialDAOContract.get();
 

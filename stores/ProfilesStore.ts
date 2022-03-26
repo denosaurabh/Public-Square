@@ -58,15 +58,18 @@ class ProfilesStoreKlass {
 
       const localActiveAccountId =
         this.localStoreAccount.get()?.activeAccountAdr;
-      // if (localActiveAccountId) {
-      this.setActiveAccountAdr(`${localActiveAccountId}` || profiles[0].id);
 
-      this.setActiveAccount(
-        profiles.filter((p: any) => p.id === localActiveAccountId)[0]
-      );
+      console.log("fetchProfiles", localActiveAccountId);
 
-      // return;
-      // }
+      if (localActiveAccountId) {
+        this.setActiveAccountAdr(localActiveAccountId);
+
+        this.setActiveAccount(
+          profiles.filter((p: any) => p.id === localActiveAccountId)[0]
+        );
+
+        return;
+      }
 
       if (!this.activeProfile.get() || !this.activeProfileId.get()) {
         const currentProfile = profiles[0];
@@ -88,7 +91,7 @@ class ProfilesStoreKlass {
     this.activeProfileId.set(address);
   }
 
-  updateDataFromLocalStore(id: string) {
+  async updateDataFromLocalStore(id: string) {
     const localData = this.localStoreAccount.get();
     // const adr = this.authStore.address.get;
 
@@ -96,23 +99,22 @@ class ProfilesStoreKlass {
       this.activeProfileId.set(localData?.activeAccountAdr || id);
     }
 
-    // const data = await apolloClient.query({
-    //   query: gql(QUERY_PROFILE_BY_ID),
-    //   variables: {
-    //     request: {
-    //       // ownedBy: [],
-    //       profileIds: [localData?.activeAccountAdr || id],
-    //       limit: 1,
-    //     },
-    //   },
-    // });
+    const data = await apolloClient.query({
+      query: gql(QUERY_PROFILE_BY_ID),
+      variables: {
+        request: {
+          // ownedBy: [],
+          profileIds: [localData?.activeAccountAdr || id],
+          limit: 1,
+        },
+      },
+    });
 
-    // const profile = data?.data?.profiles?.items?.[0];
+    const profile = data?.data?.profiles?.items?.[0];
 
-    // if (profile) {
-    //   this.setActiveAccount(profile);
-    // }
-    // }
+    if (profile) {
+      this.setActiveAccount(profile);
+    }
   }
 
   clearProfiles() {

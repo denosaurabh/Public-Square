@@ -3,7 +3,7 @@ import { apolloClient } from "@/apollo/client";
 import { Avatar, AvatarImage } from "@/components/Avatar";
 import { H1 } from "@/components/Heading";
 import Input from "@/components/Input";
-import { TextDefault } from "@/components/Text";
+import { LightSansSerifText, TextDefault } from "@/components/Text";
 import { TextArea } from "@/components/TextArea";
 import {
   createProfile,
@@ -12,12 +12,13 @@ import {
 } from "@/graphql/PROFILE";
 import { styled } from "@/stitches.config";
 import { IPFSClient } from "@/utils/ipfs";
-import { gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { useObservable } from "@/stores/index";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ProfilesStore } from "@/stores/ProfilesStore";
 import { toast } from "react-toastify";
 import { SocialDAOStore } from "@/stores/SocialDaoStore";
+import AddressProfile from "../AddressProfile";
 
 const Settings = () => {
   const [uploadedImgData, setUploadedImgData] = useState<string | ArrayBuffer>(
@@ -49,8 +50,8 @@ const Settings = () => {
         twitterUrl: activeAccount?.twitterUrl || "",
       });
 
-      console.log(activeAccount.picture.original.url);
-      setUploadedImg(activeAccount.picture.original.url);
+      console.log(activeAccount?.picture?.original?.url);
+      setUploadedImg(activeAccount?.picture?.original?.url);
     }
   }, [activeAccount]);
 
@@ -144,8 +145,10 @@ const Settings = () => {
 
   return (
     <SettingsContainer>
+      <Owners />
+
       <H1 italic sansSerif>
-        Update your DAO
+        Update your DAO (You can&apos;t Update your DAO for now)
       </H1>
       <Container onSubmit={onFormSubmit}>
         <TopContainer>
@@ -236,6 +239,55 @@ const Settings = () => {
 };
 
 export default Settings;
+
+// interface OwnersProps {
+//   owners: string[];
+// }
+
+const Owners: React.FC = () => {
+  const info = useObservable(SocialDAOStore.currentDaoContractInfo);
+
+  const { data, loading } = useQuery(gql(QUERY_PROFILE_BY_ID), {
+    variables: {
+      request: {
+        ownedBy: info.owners,
+      },
+    },
+  });
+
+  console.log("owners info", data);
+
+  if (loading || !data?.profiles?.items) {
+    return <LightSansSerifText>Loading...</LightSansSerifText>;
+  }
+
+  const sorted = {};
+  data.profiles.items.forEach((profile: object) => {
+    if (!sorted[profile.ownedBy]) {
+      sorted[profile.ownedBy] = [];
+    }
+
+    sorted[profile.ownedBy].push(profile);
+  });
+
+  console.log("sorted", sorted);
+
+  return (
+    <>
+      <H1 italic sansSerif>
+        Owners
+      </H1>
+
+      <OwnerProfileContainer>
+        {Object.keys(sorted).map((key: string, i: number) => {
+          return (
+            <AddressProfile ownedBy={key} profiles={sorted[key]} key={i} />
+          );
+        })}
+      </OwnerProfileContainer>
+    </>
+  );
+};
 
 const SettingsContainer = styled("div", {
   marginTop: "5rem",
@@ -391,4 +443,12 @@ const NoBorderTextArea = styled(TextArea, {
   "&:last-child": {
     borderRight: 0,
   },
+});
+
+const OwnerProfileContainer = styled("div", {
+  display: "flex",
+  flexWrap: "wrap",
+  gap: "1.5rem",
+
+  marginBottom: "10rem",
 });

@@ -6,6 +6,7 @@ import { LineBox } from "./LineBox";
 import Post from "./Post";
 import Tag from "./Tag";
 import { LightSansSerifText, Text } from "./Text";
+import { now } from "@/utils/dayjs";
 
 interface PostsContainerProps {
   publications: object[];
@@ -34,7 +35,7 @@ const PostsContainer: React.FC<PostsContainerProps> = ({
             <Tag>Quote of the day</Tag>
 
             <Text size="md" italic sansSerif undeline>
-              12 noon monday, 27 March 2022
+              {now}
             </Text>
           </TopContainer>
           <Text

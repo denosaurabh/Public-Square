@@ -70,6 +70,7 @@ export const Text = styled("p", {
 });
 
 export const TextDefault = styled(Text, {
+  color: '$grey500',
   fontSize: "$md",
   margin: "1rem",
 });

@@ -8,6 +8,7 @@ import { LocalStore } from "@/utils/localStorage";
 import { gql } from "@apollo/client";
 import { Signer } from "ethers";
 import { observable } from ".";
+import { ProfilesStore } from "./ProfilesStore";
 
 class WalletStoreKlass {
   address = observable<string | null>(null);
@@ -127,9 +128,9 @@ class WalletStoreKlass {
 
     this.localStoresAuth.update({ accessToken: "", refreshToken: "" });
 
-    // this.accountStore.activeProfile.set(null);
-    // this.accountStore.activeProfileId.set("");
-    // this.accountStore.localStoreAccount.update({ activeAccountAdr: "" });
+    ProfilesStore.activeProfile.set(null);
+    ProfilesStore.activeProfileId.set("");
+    ProfilesStore.localStoreAccount.update({ activeAccountAdr: "" });
   }
 
   updateFromLocalStorage() {
