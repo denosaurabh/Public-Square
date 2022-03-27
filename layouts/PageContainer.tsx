@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import ActionBox from "@/components/ActionBox";
 import { SettingsStore } from "@/stores/SettingsStore";
 import { useObservable } from "@/stores";
+import Footer from "@/components/Footer";
 
 // import dynamic from "next/dynamic";
 // const Header = dynamic(() => import("@/components/Header"), {
@@ -23,6 +24,8 @@ const PageContainer: React.FC = ({ children }) => {
         <ActionBox />
         {children}
       </Main>
+
+      <Footer />
 
       {/* <ListenAccount /> */}
     </Container>

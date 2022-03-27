@@ -1,7 +1,6 @@
 import type { AppProps } from "next/app";
 import { globalStyles } from "@/stitches.config";
-import { createStore, StoreProvider } from "@/stores";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "micro-observables/batchingForReactDom";
 import { SWRConfig } from "swr";
 import { apolloClient } from "@/apollo/client";
