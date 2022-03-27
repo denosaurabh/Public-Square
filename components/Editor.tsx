@@ -4,6 +4,7 @@ import { SettingsStore } from "@/stores/SettingsStore";
 import { useObservable } from "@/stores";
 import { IPFSClient } from "@/utils/ipfs";
 import light, { dark } from "@/style/markdownTheme";
+import { useRouter } from "next/router";
 
 interface EditorProps extends Props {
   css?: Record<string, any>;
@@ -13,6 +14,8 @@ const Editor: React.FC<EditorProps> = (props) => {
   // const settingsStore = useStore(SettingsStore);
   const theme = useObservable(SettingsStore.theme);
 
+  const router = useRouter();
+
   return (
     <StyledEditor
       uploadImage={async (file) => {
@@ -20,6 +23,9 @@ const Editor: React.FC<EditorProps> = (props) => {
         const url = `https://ipfs.infura.io/ipfs/${added.path}`;
 
         return url;
+      }}
+      onClickHashtag={(hashtag) => {
+        router.push(`/search?query=${hashtag}`);
       }}
       //   dark={theme === "dark" ? true : false}
       theme={theme === "dark" ? dark : light}
@@ -42,6 +48,8 @@ const StyledEditor = styled(RichMarkdownEditor, {
   alignItems: "start",
 
   maxHeight: "20rem",
+  // maxWidth: "20rem",
+
   padding: "1rem 0 1rem 0",
 
   textOverflow: "ellipsis",

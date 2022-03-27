@@ -58,11 +58,13 @@ const PostsContainer: React.FC<PostsContainerProps> = ({
 
       <ContentContainer
         css={{
+          // width: "100%",
+          // overflowX: "hidden",
           gridTemplateColumns: `repeat(${noOfColumns}, 1fr)`,
         }}>
         {pubsArr.map((pubs, i) => {
           return (
-            <Posts key={i}>
+            <Posts key={i} css={{ maxWidth: "100%", overflow: "hidden" }}>
               {pubs.map((pub) => {
                 if (pub.__typename === "Post") {
                   return <Post {...pub} key={pub.id} />;
