@@ -7,6 +7,7 @@ import { Text } from "@/components/Text";
 import { Heading } from "@/components/Heading";
 import { Button } from "@/components/Button";
 import Gradient from "@/components/Gradient";
+import { Separator } from "@/components/Seperator";
 
 const LandingPage: React.FC = () => {
   return (
@@ -22,11 +23,11 @@ const LandingPage: React.FC = () => {
         <Text>Posted on 27 March 2022</Text>
       </TopBox>
       <CenterBox>
-        {/* <Logo
-          css={{ width: "160px", height: "auto" }}
+        <Logo
+          css={{ width: "160px", height: "auto", marginTop: "5rem" }}
           src="/img/logo.svg"
           alt="Bond logo"
-        /> */}
+        />
 
         <Heading as="h1" size="xxl" weight="bold" sansSerif italic>
           Public Square
@@ -50,9 +51,15 @@ const LandingPage: React.FC = () => {
         <Link href="/create/profile" passHref>
           <Button css={{ marginTop: "2rem" }}>Join this Community</Button>
         </Link>
+
+        <Text size="lg" css={{ margin: "2rem 0" }}>
+          Uniting Engineers, Designers & Thinkers
+        </Text>
       </CenterBox>
 
-      <Space>
+      <Separator css={{ margin: "6rem auto !important", maxWidth: "90%" }} />
+
+      <Space css={{ marginTop: "2rem" }}>
         <Heading
           as="h3"
           size="h1"
@@ -86,9 +93,9 @@ const LandingPage: React.FC = () => {
           alt="bond between Thinkers, Artists and Enginners"
         />
 
-        <Text sansSerif size="lg" width="80%">
+        {/* <Text sansSerif size="lg" width="80%">
           We live in such digital space where, 
-        </Text>
+        </Text> */}
       </Space>
 
       {/* <Gradient /> */}

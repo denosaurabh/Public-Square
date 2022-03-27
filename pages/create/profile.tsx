@@ -14,6 +14,7 @@ import { ChangeEvent, useState } from "react";
 import { toast } from "react-toastify";
 import { WalletStore } from "@/stores/WalletStore";
 import { useAccount, useConnect } from "wagmi";
+import { ProfilesStore } from "@/stores/ProfilesStore";
 
 const CreateProfile = () => {
   const [{ data }, connect] = useConnect();
@@ -91,6 +92,8 @@ const CreateProfile = () => {
         });
 
         console.log(res);
+
+        await ProfilesStore.fetchProfiles();
 
         router.push("/home");
       } catch (err) {
