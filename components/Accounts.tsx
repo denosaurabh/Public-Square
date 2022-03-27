@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+
 import { useAccount, useConnect, useSigner, useSignMessage } from "wagmi";
 import { useObservable } from "@/stores";
 
@@ -18,17 +21,21 @@ import {
   PopoverTrigger,
 } from "./Popover";
 
-import { LightSansSerifText, LinkText } from "./Text";
-import Link from "next/link";
 import { TextButton } from "./Button";
+import { LightSansSerifText, LinkText } from "./Text";
+
+import PlusSvg from "@/icons/plus.svg";
 
 import { toast } from "react-toastify";
 import { smallAddress } from "@/utils";
 
 import { WalletStore } from "@/stores/WalletStore";
 import { ProfilesStore } from "@/stores/ProfilesStore";
+import { Avatar, AvatarImage } from "./Avatar";
 
 const Accounts = () => {
+  const router = useRouter();
+
   const [{ data }, connect] = useConnect();
   const [{ data: accountData }, disconnect] = useAccount();
   const [, signMessage] = useSignMessage();
@@ -152,6 +159,12 @@ const Accounts = () => {
 
   const onSelectValChange = (val: string) => {
     if (val) {
+      if (val === "__CREATE_PROFILE__") {
+        router.push("/create/profile");
+
+        return;
+      }
+
       const profile = allProfiles.filter((profile) => profile.id === val);
 
       if (profile.length) {
@@ -162,6 +175,8 @@ const Accounts = () => {
     }
   };
 
+  console.log(activeProfile?.picture?.original?.url);
+
   return (
     <>
       {allProfiles?.length && activeProfile ? (
@@ -169,8 +184,19 @@ const Accounts = () => {
           defaultValue={activeProfileId}
           value={activeProfileId}
           onValueChange={onSelectValChange}>
-          <SelectTrigger>
-            <SelectValue>{activeProfile?.handle}</SelectValue>
+          <SelectTrigger css={{ padding: "1rem 2rem 1rem 1rem !important" }}>
+            <SelectValue>
+              <Avatar
+                css={{
+                  backgroundImage: `url(${activeProfile?.picture?.original?.url})`,
+                }}>
+                <AvatarImage
+                  alt="user"
+                  src={activeProfile?.picture?.original?.url}
+                />
+              </Avatar>
+              {activeProfile?.handle}
+            </SelectValue>
           </SelectTrigger>
 
           <SelectContent css={{ backgroundColor: "$grey200" }}>
@@ -182,6 +208,20 @@ const Accounts = () => {
                   </SelectItem>
                 );
               })}
+
+              <SelectItem
+                value={"__CREATE_PROFILE__"}
+                css={{ textDecoration: "underline !important" }}>
+                <SelectItemText
+                  css={{
+                    display: "flex",
+                    alignItems: "center",
+                    // svg: { marginTop: "0.8rem !important" },
+                  }}>
+                  <PlusSvg width={15} height={15} />
+                  Create profile
+                </SelectItemText>
+              </SelectItem>
             </SelectViewport>
           </SelectContent>
         </Select>

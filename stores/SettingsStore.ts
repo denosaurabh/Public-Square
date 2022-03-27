@@ -8,10 +8,19 @@ interface SettingsLocalStore {
   publicationsContainerColumns: number;
 }
 
+export type Filter = "TOP_COMMENTED" | "TOP_COLLECTED" | "LATEST";
+
+export type Action = "HOME" | "FILTER" | "POST";
+
 class SettingsStoreKlass {
   theme = observable<themeT>("dark");
   focusMode = observable<boolean>(false);
   publicationsContainerColumns = observable<number>(2);
+
+  action = observable<Action>("HOME");
+
+  filter = observable<Filter>("TOP_COMMENTED");
+  denoAppId = observable<boolean>(false);
 
   localStore = new LocalStore<SettingsLocalStore>("@settingsStore");
 

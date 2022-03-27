@@ -1,20 +1,22 @@
-import { apolloClientWithoutAuth } from "@/apollo/client";
-import Post from "@/components/Post";
 import PostsContainer from "@/components/PostsContainer";
-import { LightSansSerifText, TextDefault } from "@/components/Text";
+import { LightSansSerifText } from "@/components/Text";
 import { EXPLORE_PUBLICATIONS } from "@/graphql/DISCOVERY";
-// import { PostsContainer } from "@/components/PostsContainer";
+
 import { gql, useQuery } from "@apollo/client";
 import type { NextPage } from "next";
-import useSWR from "swr";
+import { useObservable } from "@/stores";
+import { SettingsStore } from "@/stores/SettingsStore";
 
-const Home: NextPage = ({ publications }) => {
+const Home: NextPage = () => {
+  const filter = useObservable(SettingsStore.filter);
+  const denoAppID = useObservable(SettingsStore.denoAppId);
+
   const { data, fetchMore } = useQuery(gql(EXPLORE_PUBLICATIONS), {
     variables: {
       request: {
         limit: 40,
-        sortCriteria: "TOP_COMMENTED",
-        // sources: ["deno-lensapp", "denolensapp"],
+        sortCriteria: filter,
+        sources: denoAppID ? ["denolensapp"] : [],
       },
     },
   });

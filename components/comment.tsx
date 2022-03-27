@@ -26,7 +26,10 @@ const Comment: React.FC = (props: any) => {
           <Editor
             readOnly
             value={metadata.content}
-            css={{ margin: 0, padding: 0 }}
+            css={{
+              margin: 0,
+              padding: 0,
+            }}
           />
         </ContentContainer>
       </Link>

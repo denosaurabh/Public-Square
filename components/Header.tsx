@@ -1,12 +1,9 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import { styled } from "@/stitches.config";
 
 import Network from "./Network";
 import Accounts from "./Accounts";
-import { ProfilesStore } from "@/stores/ProfilesStore";
-import { useStore, useObservable } from "@/stores";
 
 import PlusSvg from "@/icons/plus.svg";
 import {
