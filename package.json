@@ -30,7 +30,7 @@
     "ethers": "^5.6.1",
     "graphql": "^16.3.0",
     "graphql-request": "^4.1.0",
-    "ipfs-http-client": "^56.0.1",
+    "ipfs-http-client": "50.1.2",
     "micro-observables": "^1.7.1",
     "nanoid": "^3.3.1",
     "next": "12.1.0",
