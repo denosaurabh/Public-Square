@@ -23,9 +23,9 @@ const Header = () => {
       <HeaderHomeLink />
 
       <HeaderCenterBox>
-        <Link href="/social" passHref>
+        {/* <Link href="/social" passHref>
           <LinkText>Social Daos</LinkText>
-        </Link>
+        </Link> */}
 
         <Popover>
           <PopoverTrigger>
@@ -46,7 +46,7 @@ const Header = () => {
           </PopoverContent>
         </Popover>
 
-        <LinkText>Super Deno</LinkText>
+        {/* <LinkText>Super Deno</LinkText> */}
       </HeaderCenterBox>
 
       <HeaderRightBox>

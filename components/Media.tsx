@@ -14,7 +14,11 @@ const Media: React.FC<MediaProps> = ({ mediaArr }) => {
         if (media?.original.mimeType === "video/mp4") {
           return <Video {...media?.original} key={index} />;
         } else if (media?.original.mimeType === "image/gif") {
-          return <GIF {...media?.original} key={index} />;
+          return <Image {...media?.original} key={index} />;
+        } else if (media?.original.mimeType === "image/jpg") {
+          return <Image {...media?.original} key={index} />;
+        } else if (media?.original.mimeType === "image/png") {
+          return <Image {...media?.original} key={index} />;
         }
 
         return <></>;
@@ -47,7 +51,7 @@ const Video: React.FC<MediaProps> = ({ mimeType, url }) => {
   );
 };
 
-const GIF: React.FC<MediaProps> = ({ mimeType, url }) => {
+const Image: React.FC<MediaProps> = ({ mimeType, url }) => {
   console.log(mimeType, url);
 
   let httpUrl = url;
@@ -57,7 +61,7 @@ const GIF: React.FC<MediaProps> = ({ mimeType, url }) => {
     httpUrl = `https://ipfs.io/ipfs/${cid}`;
   }
 
-  return <GIFStyled src={httpUrl} alt="water man" width={300} height={300} />;
+  return <ImageStyled src={httpUrl} width={300} height={300} />;
 };
 
 const MediaContainer = styled("div", {
@@ -75,7 +79,7 @@ const VideoStyled = styled("video", {
   height: "auto",
 });
 
-const GIFStyled = styled("img", {
+const ImageStyled = styled("img", {
   width: "90%",
   height: "auto",
 });

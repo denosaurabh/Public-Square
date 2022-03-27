@@ -14,6 +14,13 @@ const Footer = () => {
         This project is created by{" "}
         <Link href="https://denosaurabh.me">denosaurabh</Link>
       </Heading>
+
+      <Heading sansSerif italic size="h6" as="h6">
+        This project is open source at{" "}
+        <Link href="https://github.com/denosaurabh/lens-social-media">
+          Github
+        </Link>
+      </Heading>
     </FooterStyled>
   );
 };
