@@ -47,7 +47,7 @@ const StyledEditor = styled(RichMarkdownEditor, {
   display: "block !important",
   alignItems: "start",
 
-  maxHeight: "20rem",
+  // maxHeight: "20rem",
   // maxWidth: "20rem",
 
   padding: "1rem 0 1rem 0",
