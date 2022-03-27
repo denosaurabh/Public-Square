@@ -8,7 +8,7 @@ const SEO: React.FC = () => {
       canonical="https://publicsquare.vercel.app/"
       openGraph={{
         url: "https://publicsquare.vercel.app/",
-        title: "Space",
+        title: "Public Square",
         description:
           "Place where Artists, Philosophers and Engineers can meet together to form better world",
         images: [],
