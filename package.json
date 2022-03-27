@@ -63,7 +63,7 @@
     "wagmi": "^0.2.21"
   },
   "engines": {
-    "node": "16.14.2"
+    "node": "14.17.3"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
