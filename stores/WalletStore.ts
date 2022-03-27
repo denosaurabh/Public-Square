@@ -47,7 +47,9 @@ class WalletStoreKlass {
   }
 
   async refreshAuth() {
-    if (!this.refreshToken.get()) return;
+    if (!this.refreshToken.get()) {
+      throw new Error("no refresh token");
+    }
 
     let data = null;
     try {
@@ -75,8 +77,23 @@ class WalletStoreKlass {
   }
 
   async authenticate() {
-    if (!this.address.get() || !this.signature.get()) return;
-    if (this.accessToken.get() && this.refreshToken.get()) return;
+    if (!this.address.get() || !this.signature.get()) {
+      console.log(
+        "no address or signature",
+        this.address.get(),
+        this.signature.get()
+      );
+      return;
+    }
+
+    if (this.accessToken.get() && this.refreshToken.get()) {
+      console.log(
+        "already accessToken or refreshToken",
+        this.accessToken.get(),
+        this.refreshToken.get()
+      );
+      return;
+    }
 
     let data = null;
     try {
@@ -90,10 +107,14 @@ class WalletStoreKlass {
         },
       });
     } catch (err) {
+      console.log("authenticate error");
       console.log(err);
     }
 
-    if (!data) return;
+    if (!data) {
+      console.log("no authenticate data");
+      return;
+    }
 
     this.accessToken.set(data.data.authenticate.accessToken);
     this.refreshToken.set(data.data.authenticate.refreshToken);
@@ -120,45 +141,58 @@ class WalletStoreKlass {
   }
 
   async login(address: string, signer: ethers.Signer) {
-    if (this.address.get()) return;
-
-    if (!address) {
-      throw new Error("no address given");
-    }
-
-    if (!address) {
-      throw new Error("no address given");
-    }
-
-    this.address.set(address);
-
-    this.updateFromLocalStorage();
-    await this.refreshAuth();
-
-    const challange = await this.getChallange();
-    console.log("challange", challange);
-
-    if (!challange?.data?.challenge?.text) {
-      await this.authenticate();
-
+    if (this.address.get()) {
       await ProfilesStore.updateDataFromLocalStore();
       await ProfilesStore.fetchProfiles();
 
       return;
     }
 
-    const sig = await signer.signMessage(challange.data.challenge.text);
-
-    if (!sig) {
-      throw new Error("no signature");
+    if (!address) {
+      throw new Error("no address given");
     }
 
-    this.signature.set(sig);
+    if (!signer) {
+      throw new Error("no signer given");
+    }
 
-    await this.authenticate();
+    this.address.set(address);
 
-    await ProfilesStore.updateDataFromLocalStore();
-    await ProfilesStore.fetchProfiles();
+    console.log("login", address, signer);
+
+    try {
+      this.updateFromLocalStorage();
+      await this.refreshAuth();
+    } catch (err) {
+      console.log("refresherror", err);
+
+      const challange = await this.getChallange();
+      console.log("challange", challange);
+
+      if (challange?.data?.challenge?.text) {
+        const sig = await signer.signMessage(challange.data.challenge.text);
+
+        if (!sig) {
+          throw new Error("no signature");
+        }
+
+        this.signature.set(sig);
+
+        await this.authenticate();
+
+        await ProfilesStore.updateDataFromLocalStore();
+        await ProfilesStore.fetchProfiles();
+      } else {
+        console.log("no challange");
+
+        await this.authenticate();
+
+        await ProfilesStore.updateDataFromLocalStore();
+        await ProfilesStore.fetchProfiles();
+
+        return;
+      }
+    }
   }
 
   logout() {

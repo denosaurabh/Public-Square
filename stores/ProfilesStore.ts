@@ -34,7 +34,19 @@ class ProfilesStoreKlass {
   async fetchProfiles() {
     const address = WalletStore.address.get();
 
-    if (!address) return;
+    if (!address) {
+      console.error("no address for fetchProfiles");
+      return;
+    }
+
+    if (
+      this.allProfiles.get().length > 0 &&
+      this.activeProfile.get() &&
+      this.activeProfileId.get()
+    ) {
+      console.log("profiles already fetched");
+      return;
+    }
 
     const data = await apolloClient.query({
       query: gql(QUERY_PROFILE_BY_ID),
@@ -48,6 +60,7 @@ class ProfilesStoreKlass {
     });
 
     const profiles = data?.data?.profiles?.items;
+    console.log("profiles", profiles);
 
     if (profiles?.length) {
       this.allProfiles.set(profiles);

@@ -10,7 +10,7 @@ import { IPFSClient } from "@/utils/ipfs";
 import { gql } from "@apollo/client";
 import { useObservable } from "@/stores";
 import { useRouter } from "next/router";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { WalletStore } from "@/stores/WalletStore";
 import { useAccount, useConnect } from "wagmi";
@@ -35,6 +35,14 @@ const CreateProfile = () => {
 
   const [uploadedImg, setUploadedImg] = useState();
 
+  const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
+    if (address && signer && !connected) {
+      setConnected(true);
+    }
+  }, [address, signer]);
+
   const onFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) return;
 
@@ -56,58 +64,80 @@ const CreateProfile = () => {
     reader.readAsDataURL(e.target.files[0]);
   };
 
+  const createProfile = async () => {
+    let imgUrl =
+      uploadedImg ||
+      `https://source.boringavatars.com/marble/25/${
+        formInput.handle || "deno"
+      }`;
+
+    if (!imgUrl || !formInput.handle) {
+      throw new Error("Please enter your handle");
+    }
+
+    console.log(uploadedImg, formInput.handle);
+
+    try {
+      const res = await apolloClient.mutate({
+        mutation: gql(MUTATE_PROFILE),
+        variables: {
+          request: {
+            handle: formInput.handle,
+            profilePictureUri: imgUrl,
+          },
+        },
+      });
+
+      console.log(res);
+
+      await ProfilesStore.fetchProfiles();
+
+      router.push("/home");
+    } catch (err) {
+      console.log(err);
+
+      throw new Error("error creating profile");
+    }
+  };
+
+  const onConnectClick = async () => {
+    await connect(data.connectors[0]);
+  };
+
   const onFormSubmit = async (e) => {
     e.preventDefault();
 
-    if (!address) {
-      await connect(data.connectors[0]);
-
-      if (accountData?.address && signer) {
-        await WalletStore.login(accountData?.address, signer);
-      }
-    }
-
-    const createProfile = async () => {
-      let imgUrl =
-        uploadedImg ||
-        `https://source.boringavatars.com/marble/25/${
-          formInput.handle || "deno"
-        }`;
-
-      if (!imgUrl || !formInput.handle) {
-        throw new Error("Please enter your handle");
-      }
-
-      console.log(uploadedImg, formInput.handle);
-
-      try {
-        const res = await apolloClient.mutate({
-          mutation: gql(MUTATE_PROFILE),
-          variables: {
-            request: {
-              handle: formInput.handle,
-              profilePictureUri: imgUrl,
-            },
-          },
-        });
-
-        console.log(res);
-
-        await ProfilesStore.fetchProfiles();
-
-        router.push("/home");
-      } catch (err) {
-        console.log(err);
-
-        throw new Error("error creating profile");
-      }
+    const createUser = async () => {
+      await createProfile();
+      await ProfilesStore.fetchProfiles();
     };
 
-    toast.promise(createProfile, {
-      pending: "Creating Profile...",
-      success: "Profile Created!",
-      error: "Error Creating Profile",
-    });
+    // if (!address) {
+    //   const connectData = await connect(data.connectors[0]);
+    //   console.log(connectData);
+
+    //   if (connectData.data?.account && signer) {
+    //     await WalletStore.login(connectData.data?.account, signer);
+
+    //     console.log("formsubmit", WalletStore.address.get());
+    //     await createProfile();
+    //   } else {
+    //     console.log("error connecting", {
+    //       accountData,
+    //       connectData,
+    //     });
+    //   }
+    // }
+
+    // await WalletStore.login(accountData?.address, signer);
+
+    if (address && signer) {
+      toast.promise(createUser, {
+        pending: "Creating Profile...",
+        success: "Profile Created!",
+        error: "Error Creating Profile",
+      });
+    }
   };
 
   const onInputChange = (e: ChangeEvent) => {
@@ -167,9 +197,15 @@ const CreateProfile = () => {
           </AvatarBox>
         </TopContainer>
 
-        <UpdateButton type="submit" onClick={onFormSubmit}>
-          Create Profile
-        </UpdateButton>
+        {!connected ? (
+          <UpdateButton type="button" onClick={onConnectClick}>
+            Connect Account 1/2
+          </UpdateButton>
+        ) : (
+          <UpdateButton type="submit" onClick={onFormSubmit}>
+            Create Profile
+          </UpdateButton>
+        )}
       </Container>
     </Center>
   );
