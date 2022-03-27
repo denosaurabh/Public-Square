@@ -92,7 +92,7 @@ const CreateProfile = () => {
 
         console.log(res);
 
-        router.push("/");
+        router.push("/home");
       } catch (err) {
         console.log(err);
 

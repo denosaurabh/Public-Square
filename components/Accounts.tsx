@@ -49,9 +49,6 @@ const Accounts = () => {
   const activeProfile = useObservable(ProfilesStore.activeProfile);
   const activeProfileId = useObservable(ProfilesStore.activeProfileId);
 
-  // const [accountChoice, setAccountChoice] = useState("metamask");
-
-  // const [open, setOpen] = useState(false);
   const [load, setLoad] = useState(false);
 
   const onAuthClick = async (val: string) => {

@@ -1,5 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+const withPlugins = require("next-compose-plugins");
+const withPWA = require("next-pwa");
+
+const prod = process.env.NODE_ENV === "production";
+
+const nextConfig = withPlugins([withPWA], {
+  pwa: {
+    disable: prod ? false : true,
+    dest: "public",
+  },
   reactStrictMode: true,
   typescript: {
     ignoreBuildErrors: true,
@@ -12,6 +22,6 @@ const nextConfig = {
 
     return config;
   },
-};
+});
 
 module.exports = nextConfig;
