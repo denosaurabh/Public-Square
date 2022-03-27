@@ -239,6 +239,10 @@ const Accounts = () => {
             {accountData?.ens?.name || smallAddress(accountData.address)}
           </PopoverTrigger>
           <PopoverContent>
+            <Link href="/account" passHref>
+              <PopoverText>Account</PopoverText>
+            </Link>
+
             <Link href="/revenue" passHref>
               <PopoverText>Revenue</PopoverText>
             </Link>

@@ -14,7 +14,7 @@ const Publications: React.FC = () => {
     {
       request: {
         profileId: id,
-        publicationTypes: ["POST", "COMMENT"],
+        publicationTypes: ["POST", "COMMENT", "MIRROR"],
         limit: 30,
       },
     },

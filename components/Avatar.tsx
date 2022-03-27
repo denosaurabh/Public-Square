@@ -40,15 +40,22 @@ const StyledAvatarGroup = styled("div", {
 
 interface AvatarGroupProps {
   gap?: number | string;
+  css?: object;
 }
 
-export const AvatarGroup: React.FC<AvatarGroupProps> = ({ gap, children }) => {
+export const AvatarGroup: React.FC<AvatarGroupProps> = ({
+  gap,
+  children,
+  css,
+}) => {
   return (
     <StyledAvatarGroup
       css={{
         "& > *": {
           marginRight: gap,
         },
+
+        ...css,
       }}>
       {children}
     </StyledAvatarGroup>

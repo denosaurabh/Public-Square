@@ -32,10 +32,10 @@ const Timeline = () => {
   return (
     <Container>
       <H1 size="h1" as="h1" sansSerif italic>
-        Timeline
+        Collections
       </H1>
       <Text italic sansSerif size="lg" css={{ marginBottom: "2rem" }}>
-        Timeline shows what your peers are doing on lens protocol.
+        Collections shows what your peers are doing on lens protocol.
       </Text>
 
       <PostsContainer

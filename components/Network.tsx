@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useNetwork } from "wagmi";
 import { LightSansSerifText } from "./Text";
 
@@ -10,8 +11,14 @@ const Network = () => {
     if (!window) return;
 
     if (switchNetwork && data.chain?.name !== "Mumbai" && !switching) {
-      switchNetwork(80001);
-      setSwitching(true);
+      try {
+        switchNetwork(80001);
+        setSwitching(true);
+
+        toast.success("Successfully switched network to polygon");
+      } catch (err) {
+        toast.error("Please add Polygon Mumabai network to your Metamask");
+      }
     }
   }, [data]);
 
