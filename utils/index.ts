@@ -100,3 +100,11 @@ export const chunkify = (a: any[], n: number, balanced: boolean) => {
 
   return out;
 };
+
+export const getIPFSUrlCID = (ipfsUrl: string) => {
+  if (!ipfsUrl) return;
+
+  const ipfsUrlParts = ipfsUrl?.replace("ipfs://", "")?.replace("/", "");
+
+  return ipfsUrlParts;
+};

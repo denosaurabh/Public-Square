@@ -43,6 +43,7 @@ import Editor from "@/components/Editor";
 import { day } from "@/utils/dayjs";
 import ReportPublication from "@/components/ReportPublication";
 import ActionBox from "@/components/ActionBox";
+import Media from "@/components/Media";
 
 const PostPage: NextPage = () => {
   const router = useRouter();
@@ -72,6 +73,8 @@ const PostPage: NextPage = () => {
     pollInterval: 3000,
     ssr: true,
   });
+
+  console.log(data);
 
   const { data: commentsData } = useQuery(gql(QUERY_PUBLICATIONS), {
     variables: {
@@ -142,6 +145,8 @@ const PostPage: NextPage = () => {
 
               <Editor readOnly value={pub.metadata.content} />
             </div>
+
+            <Media mediaArr={pub.metadata?.media} />
 
             <ColumnStatsBox>
               <StatsItem

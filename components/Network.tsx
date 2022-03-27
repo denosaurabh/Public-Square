@@ -1,15 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNetwork } from "wagmi";
 import { LightSansSerifText } from "./Text";
 
 const Network = () => {
   const [{ data, error, loading }, switchNetwork] = useNetwork();
+  const [switching, setSwitching] = useState(false);
 
   useEffect(() => {
     if (!window) return;
 
-    if (switchNetwork && data.chain?.name !== "Mumbai") {
+    if (switchNetwork && data.chain?.name !== "Mumbai" && !switching) {
       switchNetwork(80001);
+      setSwitching(true);
     }
   }, [data]);
 
