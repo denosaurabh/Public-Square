@@ -32,6 +32,8 @@ import { smallAddress } from "@/utils";
 import { WalletStore } from "@/stores/WalletStore";
 import { ProfilesStore } from "@/stores/ProfilesStore";
 import { Avatar, AvatarImage } from "./Avatar";
+import { gql, useQuery } from "@apollo/client";
+import { QUERY_PROFILE_BY_ID } from "@/graphql/PROFILE";
 
 const Accounts = () => {
   const router = useRouter();
@@ -50,6 +52,17 @@ const Accounts = () => {
   const activeProfileId = useObservable(ProfilesStore.activeProfileId);
 
   const [load, setLoad] = useState(false);
+
+  const { data: allProfilesData } = useQuery(gql(QUERY_PROFILE_BY_ID), {
+    variables: {
+      request: {
+        ownedBy: address,
+        // profileIds: [this.activeAccountAdr.get],
+        limit: 30,
+      },
+    },
+    pollInterval: 3000,
+  });
 
   const onAuthClick = async (val: string) => {
     try {
@@ -172,11 +185,9 @@ const Accounts = () => {
     }
   };
 
-  console.log(activeProfile?.picture?.original?.url);
-
   return (
     <>
-      {allProfiles?.length && activeProfile ? (
+      {allProfilesData?.profiles?.items?.length && activeProfile ? (
         <Select
           defaultValue={activeProfileId}
           value={activeProfileId}

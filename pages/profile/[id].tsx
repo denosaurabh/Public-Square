@@ -37,8 +37,6 @@ const Profile = () => {
     pollInterval: 3000,
   });
 
-  console.log(profileDataRes, signTypedData, accountRes.data?.address);
-
   if (loading || !profileDataRes) {
     return <LightSansSerifText>loading....</LightSansSerifText>;
   }

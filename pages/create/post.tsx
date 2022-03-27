@@ -3,7 +3,7 @@ import Input from "@/components/Input";
 import { createPostTypedData } from "@/graphql/POST";
 import useLensHub from "@/hooks/useLensHub";
 import { styled } from "@/stitches.config";
-import { useStore, useObservable } from "@/stores";
+import { useObservable } from "@/stores";
 import { ProfilesStore } from "@/stores/ProfilesStore";
 import { IPFSClient } from "@/utils/ipfs";
 import { splitSignature } from "ethers/lib/utils";
@@ -26,9 +26,13 @@ import {
 import { compareAddress } from "@/utils";
 import { H6 } from "@/components/Heading";
 import { ModuleSelect } from "@/components/ModuleSelect";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 const CreatePost = () => {
   const [, signTypedData] = useSignTypedData();
+
+  const router = useRouter();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -59,7 +63,7 @@ const CreatePost = () => {
 
   const lensHub = useLensHub();
 
-  const onCreatePostClick = async () => {
+  const createPost = async () => {
     console.log(name, content, activeProfileId);
 
     Number(moduleInputValues?.Collect?.collectLimit);
@@ -166,6 +170,22 @@ const CreatePost = () => {
     });
 
     console.log("created post with hash: ", tx.hash);
+
+    await tx.wait();
+
+    setName("");
+    setDescription("");
+    setContent("");
+
+    router.push(`/profile/${activeProfileId}`);
+  };
+
+  const onCreatePostClick = async () => {
+    toast.promise(createPost, {
+      pending: "Publishing...",
+      success: "Post Published!",
+      error: "Error publishing",
+    });
   };
 
   const onCollectModuleChange = (val: string) => {
