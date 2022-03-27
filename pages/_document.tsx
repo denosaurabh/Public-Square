@@ -49,10 +49,7 @@ export default class Document extends NextDocument {
             name="twitter:description"
             content="Place where Thinkers, Artists and Engineers can meet to form a better world"
           />
-          <meta
-            name="twitter:image"
-            content="https://yourdomain.com/icons/android-chrome-192x192.png"
-          />
+          <meta name="twitter:image" content="/img/seo.webp" />
           <meta name="twitter:creator" content="@denosaurabh" />
           <meta property="og:type" content="website" />
           <meta property="og:title" content="Public Square" />
@@ -62,10 +59,7 @@ export default class Document extends NextDocument {
           />
           <meta property="og:site_name" content="Public Square" />
           <meta property="og:url" content="https://publicsquare.vercel.app" />
-          <meta
-            property="og:image"
-            content="https://yourdomain.com/icons/apple-touch-icon.png"
-          />
+          <meta property="og:image" content="/img/seo.webp" />
 
           <style
             id="stitches"
