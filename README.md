@@ -1,6 +1,6 @@
 ## A Digital Social place where Artists, Engineers and Thinkers can join in to form a better world.  
 
-### SuperDenoDAO is a DAO Cnotract build upon a Multi Sig Wallet Contract from [Solidity by Example](https://solidity-by-example.org/app/multi-sig-wallet/)
+### SuperDenoDAO is a DAO Contract build upon a Multi Sig Wallet Contract from [Solidity by Example](https://solidity-by-example.org/app/multi-sig-wallet/)
 
 
 
