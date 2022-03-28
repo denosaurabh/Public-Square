@@ -1,8 +1,6 @@
 ## A Digital Social place where Artists, Engineers and Thinkers can join in to form a better world.  
 
-### SuperDenoDAO is a DAO Contract build upon a Multi Sig Wallet Contract from [Solidity by Example](https://solidity-by-example.org/app/multi-sig-wallet/)
-
-
+### SocialDAO Contract is build upon a simple Multi Sig Wallet Contract from [Solidity by Example](https://solidity-by-example.org/app/multi-sig-wallet/)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
