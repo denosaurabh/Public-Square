@@ -39,7 +39,7 @@ const CreatePost = () => {
   const [content, setContent] = useState("");
 
   const [collectModule, setCollectModule] = useState(
-    COLLECT_MODULES["EmptyCollectModuleSettings"]
+    COLLECT_MODULES["FreeCollectModuleSettings"]
   );
   const [referenceModule, setReferenceModule] = useState(
     REFERENCE_MODULES["none"]

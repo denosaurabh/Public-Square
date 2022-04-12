@@ -150,7 +150,7 @@ const Subject: NextPage = () => {
           <TooltipContent>
             {pub.collectModule
               ? COLLECT_MODULES[pub.collectModule.__typename].userMessage
-              : COLLECT_MODULES["EmptyCollectModuleSettings"].userMessage}
+              : COLLECT_MODULES["FreeCollectModuleSettings"].userMessage}
           </TooltipContent>
         </Tooltip>
 

@@ -138,7 +138,7 @@ export const COLLECT_MODULES: ModulesI = {
     dataValue: true,
     userMessage: "The post creater has disabled Collect for this post",
   },
-  EmptyCollectModuleSettings: {
+  FreeCollectModuleSettings: {
     type: "emptyCollectModule",
     name: "Empty Module",
     address: "0xb96e42b5579e76197B4d2EA710fF50e037881253",
