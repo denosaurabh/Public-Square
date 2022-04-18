@@ -59,7 +59,9 @@ const CreateComment: React.FC<CreateCommentI> = ({ publicationId, css }) => {
         publicationId,
         contentURI: "ipfs://" + ipfsResult.path,
         collectModule: {
-          freeCollectModule: true,
+          freeCollectModule: {
+            followerOnly: false,
+          },
         },
         referenceModule: {
           followerOnlyReferenceModule: false,
